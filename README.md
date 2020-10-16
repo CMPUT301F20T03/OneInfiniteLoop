@@ -10,4 +10,5 @@ We have to design and implement an Android application to achieve the following 
      Owner can denote when such book should be returned and can again make it available to other borrowers.
 
 **TA**
+
 Abdul Ali Bangash
