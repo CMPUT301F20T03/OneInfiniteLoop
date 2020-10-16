@@ -9,6 +9,7 @@ We have to design and implement an Android application to achieve the following 
      Once borrower's request is accepted, the book can be borrowed and a meeting location can then be decided on. 
      Owner can denote when such book should be returned and can again make it available to other borrowers.
 
+
 **TA**
 
 Abdul Ali Bangash
