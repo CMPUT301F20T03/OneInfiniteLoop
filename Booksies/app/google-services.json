@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "292987540903",
+    "firebase_url": "https://booksies-6aa46.firebaseio.com",
+    "project_id": "booksies-6aa46",
+    "storage_bucket": "booksies-6aa46.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292987540903:android:ef9498b793122b07129282",
+        "android_client_info": {
+          "package_name": "com.example.booksies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292987540903-pr03j6abcam0d0eku9pa13p1a0p3ehmq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVcPW0s-hRc0kRdxO76d9CT8B01vhFwXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "292987540903-pr03j6abcam0d0eku9pa13p1a0p3ehmq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
