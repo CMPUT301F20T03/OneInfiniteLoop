@@ -42,28 +42,38 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email= rEmail.getText().toString();
                 String pass = rPassword.getText().toString();
-                mAuth.createUserWithEmailAndPassword(email, pass)
-                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d("RegisterActivity", "createUserWithEmail:success");
-                                    Toast.makeText(RegisterActivity.this, "Authentication successful.",
-                                            Toast.LENGTH_SHORT).show();
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    updateUI(user);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w("RegisterActivity", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                    updateUI(null);
-                                }
+                if(!email.contains("@") && !(pass.length()<6))
+                {
+                    mAuth.createUserWithEmailAndPassword(email, pass)
+                            .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d("RegisterActivity", "createUserWithEmail:success");
+                                        Toast.makeText(RegisterActivity.this, "Authentication successful.",
+                                                Toast.LENGTH_SHORT).show();
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        updateUI(user);
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w("RegisterActivity", "createUserWithEmail:failure", task.getException());
+                                        Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                                Toast.LENGTH_SHORT).show();
+                                        updateUI(null);
+                                    }
 
-                                // ...
-                            }
-                        });
+                                    // ...
+                                }
+                            });
+
+                }
+                else{
+                    Toast.makeText(RegisterActivity.this, "Enter valid email and password must be atleast 6 characters",
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
 
             }
         });
