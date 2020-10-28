@@ -5,10 +5,10 @@ import android.app.DownloadManager; // potentially temporary for     ArrayList<D
 import java.util.ArrayList;
 // enum for status
 enum book_status {
-    UNUSED,
-    WAITING_FOR_PICKUP,
-    BORROWED,
-    WAITING_FOR_DROPOFF
+    AVAILABLE,
+    REQUESTED,
+    ACCEPTED,
+    BORROWED
 }
 
 public class Books {
@@ -29,7 +29,7 @@ public class Books {
         this.ISBN = ISBN;
         this.author = author;
         this.title = title;
-        this.status = book_status.UNUSED;
+        this.status = book_status.AVAILABLE;
 //        this.owner = owner;   // TODO: assign this owner to a book when creating instance
     }
 
