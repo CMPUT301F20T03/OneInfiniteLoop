@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email= rEmail.getText().toString();
                 String pass = rPassword.getText().toString();
-                if(!email.contains("@") && !(pass.length()<6))
+                if(email.contains("@") && !(pass.length()<6))
                 {
                     mAuth.createUserWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
