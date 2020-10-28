@@ -6,8 +6,13 @@
     <string name="create_user">Create an User</string>
     <string name="register">Register</string>
 
-
-
-
+    <string name="add_title">Title</string>
+    <string name="add_author">Author</string>
+    <string name="add_ISBN">ISBN</string>
+    <string name="add_comments">Comments</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="add_button">Add</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="delete_button">Delete</string>
 
 </resources>

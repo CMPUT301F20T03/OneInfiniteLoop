@@ -12,12 +12,13 @@ enum book_status {
 }
 
 public class Books {
-
-    private String ISBN;
-    private String author;
     private String title;
+    private String author;
+    private String ISBN;
     private book_status status;
     private String owner;
+    private String imageUrl;
+    private String comments;
     ArrayList<DownloadManager.Request> bookRequests;
 
 
@@ -71,5 +72,21 @@ public class Books {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 }
