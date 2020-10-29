@@ -18,8 +18,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".HomeActivity"
-            android:parentActivityName=".MainActivity">
+        <activity android:name=".NavigationActivity">
         </activity>
         <activity android:name=".RegisterActivity"
             android:parentActivityName=".MainActivity">

@@ -1,50 +1,51 @@
 package com.example.booksies;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * This class handles the home view
  */
-public class HomeActivity extends AppCompatActivity {
-    ArrayList<String> BooksData = new ArrayList<String>();
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+public class NavigationActivity extends AppCompatActivity {
 
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        String[] books = {"War and Peace", "Les Miserable","SCIENCE","MATH", "Physics", "History"
-                          ,"The three musketeers", "TWD","Calculus","Statistics"}; // test data for recycler view
-        BooksData.addAll(Arrays.asList(books)); // add all books to ArrayList
+        setContentView(R.layout.activity_navigation);
 
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.bottom_navigation); // handles switch for bottom navigation
+        HomeFragment frag =new HomeFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,frag).addToBackStack(null).commit();
+
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_home:
-
+                                HomeFragment frag = new HomeFragment();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,frag).addToBackStack(null).commit();
+                                break;
                             case R.id.action_request:
                                 break;
                             case R.id.action_add_book:
@@ -59,16 +60,37 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
 
-        // setting up recycler view
-        recyclerView =(RecyclerView) findViewById(R.id.book_list);
-        assert recyclerView != null;
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new MyAdapter(BooksData);
-        recyclerView.setAdapter(mAdapter);
+
+
 
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.action_bar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        switch(item.getItemId()){
+            case R.id.action_logout:   //this item has your app icon
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+
+                break;
+
+
+        }
+        return true;
+    }
+
 
 
 }
