@@ -39,6 +39,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -76,14 +77,22 @@ public class AddBookFragment extends Fragment {
     String currentPhotoPath = "";
     Uri mImageUri;
     CollectionReference collectionReference;
+    String downloadableUrl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View mView = inflater.inflate(R.layout.activity_add_book, container, false);
+        mView = inflater.inflate(R.layout.activity_add_book, container, false);
 
-        //find all the views by their ids
-        findViews();
+        addButton = mView.findViewById(R.id.addButton);
+        cancelButton = mView.findViewById(R.id.cancelButton);
+        addPhotoButton = mView.findViewById(R.id.addImageButton);
+        cameraImageView = mView.findViewById(R.id.cameraImageView);
+        scanISBNButton = mView.findViewById(R.id.scanISBNButton);
+        titleEditText = mView.findViewById(R.id.titleEditText);
+        authorEditText = mView.findViewById(R.id.authorEditText);
+        isbnEditText = mView.findViewById(R.id.ISBNEditText);
+        commentsEditText = mView.findViewById(R.id.commentEditText);
 
         //initialize Firestore and storage variables
         db = FirebaseFirestore.getInstance();
@@ -123,11 +132,12 @@ public class AddBookFragment extends Fragment {
 
     }
 
-    //Gets data from camera intent or from gallery and sets the image into imageView in AddBookActivity
+    //Gets data from camera intent or from gallery and sets the image into imageView in AddBookFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ImageView cameraImageView = mView.findViewById(R.id.cameraImageView);
+        Log.d("RequestCode", Integer.toString(requestCode));
+        cameraImageView = mView.findViewById(R.id.cameraImageView);
         if (resultCode != Activity.RESULT_CANCELED) {
             if(requestCode == REQUEST_IMAGE_CAPTURE) {
                 if (resultCode == Activity.RESULT_OK && data != null) {
@@ -173,7 +183,6 @@ public class AddBookFragment extends Fragment {
                         try {
                             photoFile = createImageFile();
                         } catch (IOException ex) {
-                            Log.d("picFile not created", "Error when creating file for picture");
                         }
                         // Continue only if the File was successfully created
                         if (photoFile != null) {
@@ -236,71 +245,75 @@ public class AddBookFragment extends Fragment {
         final String isbnStr = isbnEditText.getText().toString();
         String commentStr = commentsEditText.getText().toString();
         final HashMap<String, String> data = new HashMap<>();
-        data.put("title", titleStr);
-        data.put("author", authorStr);
-        data.put("isbn", isbnStr);
-        data.put("status", "AVAILABLE");
-        data.put("comment", commentStr);
-        data.put("owner", currentUserId);
-
-        //if no picture attached
-        if(currentPhotoPath.length() == 0 && mImageUri == null) {
-            data.put("imageUrl", "gs://booksies-6aa46.appspot.com/images/open-book-silhouette.jpg");
+        if (titleStr.length() > 0 && authorStr.length() > 0 && isbnStr.length() > 0) {
+            data.put("title", titleStr);
+            data.put("author", authorStr);
+            data.put("isbn", isbnStr);
+            data.put("status", "AVAILABLE");
+            data.put("comment", commentStr);
+            data.put("owner", currentUserId);
+        } else {
+            Toast toast = Toast.makeText(getActivity(), "Adding a book requires\n Title, Author and ISBN", Toast.LENGTH_LONG);
+            toast.show();
             return;
         }
-
         //if picture attached
-        if(currentPhotoPath.length()>0) {
-            mImageUri = Uri.fromFile(new File(currentPhotoPath));
-        }
-        StorageReference storage = storageReference.child("images/"+mImageUri.getLastPathSegment());
-        UploadTask uploadTask = storage.putFile(mImageUri);
-
-        // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.d("ImageUpload", "Upload failed");
+        if (currentPhotoPath.length() != 0 || mImageUri != null) {
+            if (currentPhotoPath.length() > 0) {
+                mImageUri = Uri.fromFile(new File(currentPhotoPath));
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d("ImageUpload", "Uploaded successfully");
-                String downloadableUrl = storageReference.child("images/"+mImageUri.getLastPathSegment()).getDownloadUrl().toString();
-                data.put("imageUrl", downloadableUrl);
+            final StorageReference storage = storageReference.child("images/" + mImageUri.getLastPathSegment());
+            UploadTask uploadTask = storage.putFile(mImageUri);
 
-                if (titleStr.length() > 0 && authorStr.length() > 0 && isbnStr.length() > 0) {
-                    collectionReference
-                            .add(data)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d("BookAdded", "Book has been added successfully");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d("BookNotAdded", "Book could not be added");
-                                }
-                            });
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            downloadableUrl = uri.toString();
+                            data.put("imageUrl", downloadableUrl);
+                            collectionReference
+                                    .add(data)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            Log.d("BookAdd", "Book added successfully");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("BookAdd", "Failed to add book");
+                                        }
+                                    });
+                        }
+                    });
                 }
+            });
+        }
 
-            }
-        });
+        //no picture attached make imageUrl the default book image from our Storage
+        else {
+            data.put("imageUrl", "https://firebasestorage.googleapis.com/v0/b/booksies-6aa46.appspot.com/o/images%2Fopen-book-silhouette.jpg?alt=media&token=34b3c0e2-0efc-4a25-aed5-86d9d2f0e230");
+            collectionReference
+                    .add(data)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d("BookAdd", "Book added successfully");
 
-    }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("BookAdd", "Failed to add book");
 
-    //function for finding the views just to make onCreate() method less cluttered.
-    private void findViews() {
-        addButton = mView.findViewById(R.id.addButton);
-        cancelButton = mView.findViewById(R.id.cancelButton);
-        addPhotoButton = mView.findViewById(R.id.addImageButton);
-        cameraImageView = mView.findViewById(R.id.cameraImageView);
-        scanISBNButton = mView.findViewById(R.id.scanISBNButton);
-        titleEditText = mView.findViewById(R.id.titleEditText);
-        authorEditText = mView.findViewById(R.id.authorEditText);
-        isbnEditText = mView.findViewById(R.id.ISBNEditText);
-        commentsEditText = mView.findViewById(R.id.commentEditText);
+                        }
+                    });
+        }
+        //Go back to whatever called this fragment
+        getFragmentManager().popBackStack();
     }
 }
