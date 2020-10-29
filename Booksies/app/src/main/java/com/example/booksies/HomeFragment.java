@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 public class HomeFragment extends Fragment {
     ArrayList<String> BooksData = new ArrayList<String>();
+    ArrayList<Books> BooksList = new ArrayList<Books>();
     private  RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -37,9 +38,17 @@ public class HomeFragment extends Fragment {
         assert recyclerView != null;
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new MyAdapter(BooksData);
+        BooksList.add(new Books("War and Peace","","",false));
+        BooksList.add(new Books("Les Miserable","","",false));
+        BooksList.add(new Books("SCIENCE","","",false));
+        BooksList.add(new Books("MATH","","",false));
+        BooksList.add(new Books("Physics","","",false));
+        BooksList.add(new Books("History","","",false));
+        BooksList.add(new Books("History","","",false));
+        mAdapter = new MyAdapter(BooksList);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
 
         return view;
 
