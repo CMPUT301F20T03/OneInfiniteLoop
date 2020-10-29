@@ -48,15 +48,15 @@ public class BooksTest {
     @Test
     public void getStatus() {
         Books book_1 = new Books(ISBN, author, title);
-        book_status temp_status = book_status.UNUSED;
+        book_status temp_status = book_status.AVAILABLE;
         assertEquals(book_1.getStatus(), temp_status);
-        temp_status = book_status.WAITING_FOR_PICKUP;
+        temp_status = book_status.REQUESTED;
         book_1.setStatus(temp_status);
         assertEquals(book_1.getStatus(), temp_status);
         temp_status = book_status.BORROWED;
         book_1.setStatus(temp_status);
         assertEquals(book_1.getStatus(), temp_status);
-        temp_status = book_status.WAITING_FOR_DROPOFF;
+        temp_status = book_status.ACCEPTED;
         book_1.setStatus(temp_status);
         assertEquals(book_1.getStatus(), temp_status);
     }

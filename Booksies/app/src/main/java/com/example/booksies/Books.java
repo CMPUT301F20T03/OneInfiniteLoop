@@ -5,19 +5,20 @@ import android.app.DownloadManager; // potentially temporary for     ArrayList<D
 import java.util.ArrayList;
 // enum for status
 enum book_status {
-    UNUSED,
-    WAITING_FOR_PICKUP,
-    BORROWED,
-    WAITING_FOR_DROPOFF
+    AVAILABLE,
+    REQUESTED,
+    ACCEPTED,
+    BORROWED
 }
 
 public class Books {
-
-    private String ISBN;
-    private String author;
     private String title;
+    private String author;
+    private String ISBN;
     private book_status status;
     private String owner;
+    private String imageUrl;
+    private String comments;
     ArrayList<DownloadManager.Request> bookRequests;
 
 
@@ -28,7 +29,7 @@ public class Books {
         this.ISBN = ISBN;
         this.author = author;
         this.title = title;
-        this.status = book_status.UNUSED;
+        this.status = book_status.AVAILABLE;
 //        this.owner = owner;   // TODO: assign this owner to a book when creating instance
     }
 
@@ -71,5 +72,21 @@ public class Books {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 }
