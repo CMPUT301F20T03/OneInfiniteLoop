@@ -1,16 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
+    android:id="@+id/linear_layout"
     android:background="@drawable/custom_border">
 
 
     <TextView
-        android:id="@+id/book_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView"
-        android:textSize="36sp" />
+        android:id="@+id/book_name"
+        android:text="Book"
+        android:textSize="22sp"
+        android:padding="1dp"
+        android:textColor="#000"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/book_author"
+        android:text="Book"
+        android:textSize="22sp"
+        android:padding="1dp"
+        android:textColor="#000"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/book_isbn"
+        android:text="Book"
+        android:textSize="22sp"
+        android:padding="1dp"
+        android:textColor="#000"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/expandable_layout"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/expand_rlist"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:listitem="@layout/content_home_expand"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+    </RelativeLayout>
 </LinearLayout>
+

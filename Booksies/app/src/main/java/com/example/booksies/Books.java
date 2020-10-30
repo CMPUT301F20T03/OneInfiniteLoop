@@ -17,18 +17,21 @@ public class Books {
     private String ISBN;
     private book_status status;
     private String owner;
+    public boolean expand;
     private String imageUrl;
     private String comments;
+  
     ArrayList<DownloadManager.Request> bookRequests;
 
 
 
 
     // Book constructor
-    public Books(String ISBN, String author, String title) {
+    public Books(String ISBN, String author, String title, boolean expand) {
         this.ISBN = ISBN;
         this.author = author;
         this.title = title;
+        this.expand = expand;
         this.status = book_status.AVAILABLE;
 //        this.owner = owner;   // TODO: assign this owner to a book when creating instance
     }
