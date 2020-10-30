@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_bar"
+        ></SearchView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/book_list"

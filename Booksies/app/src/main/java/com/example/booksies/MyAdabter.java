@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -29,16 +31,29 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     // you provide access to all the views for a data item in a view holder
     public class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView textView;
+        public TextView titleView;
+        public TextView authorView;
+        public TextView isbnView;
         public RelativeLayout expand;
         public LinearLayout linearLayout;
+        public RecyclerView r_view;
+        public RecyclerView.Adapter mAdapter;
+
+
         public MyViewHolder(View v) {
             super(v);
-            textView = v.findViewById(R.id.book_name);
+            titleView = v.findViewById(R.id.book_name);
+            authorView = v.findViewById(R.id.book_author);
+            isbnView = v.findViewById(R.id.book_isbn);
             expand = v.findViewById(R.id.expandable_layout);
+            r_view = (RecyclerView) v.findViewById(R.id.expand_rlist);
+            r_view.setLayoutManager(new LinearLayoutManager(v.getContext()));
+            mAdapter = new MyAdapter_Expand(mDataset);
+            r_view.setAdapter(mAdapter);
+            r_view.setItemAnimator(new DefaultItemAnimator());
+            r_view.setHasFixedSize(true);
             linearLayout = v.findViewById(R.id.linear_layout);
-
-            textView.setOnClickListener(new View.OnClickListener() {
+            linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Books book = mDataset.get(getAdapterPosition());
@@ -73,9 +88,12 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.textView.setText(mDataset.get(position).getISBN());
+        holder.titleView.setText(mDataset.get(position).getTitle());
+        holder.authorView.setText(mDataset.get(position).getAuthor());
+        holder.isbnView.setText(mDataset.get(position).getISBN());
+
         if(!mDataset.get(position).expand)
-        holder.expand.setVisibility(View.INVISIBLE);
+        holder.expand.setVisibility(View.GONE);
         else
         {
             holder.expand.setVisibility(View.VISIBLE);

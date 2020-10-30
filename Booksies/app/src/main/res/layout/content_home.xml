@@ -14,7 +14,25 @@
         android:id="@+id/book_name"
         android:text="Book"
         android:textSize="22sp"
-        android:padding="16dp"
+        android:padding="1dp"
+        android:textColor="#000"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/book_author"
+        android:text="Book"
+        android:textSize="22sp"
+        android:padding="1dp"
+        android:textColor="#000"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/book_isbn"
+        android:text="Book"
+        android:textSize="22sp"
+        android:padding="1dp"
         android:textColor="#000"
         />
 
@@ -24,39 +42,15 @@
         android:id="@+id/expandable_layout"
         >
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/request"
-            android:text="Request"
-            android:padding="16dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#a9a9a9"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/accept"
-            android:text="accept"
-            android:padding="16dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#a9a9a9"
-            android:layout_toLeftOf="@+id/reject"
+            android:id="@+id/expand_rlist"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:listitem="@layout/content_home_expand"
+            >
 
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/reject"
-            android:text="reject"
-            android:padding="16dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#a9a9a9"
-            android:layout_alignParentRight="true"
-            />
+        </androidx.recyclerview.widget.RecyclerView>
 
 
     </RelativeLayout>
