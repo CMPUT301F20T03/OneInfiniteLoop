@@ -67,6 +67,10 @@ public class Books {
         this.status = status;
     }
 
+    public boolean getExpand() { return expand; }
+
+    public void setExpand(boolean expand) { this.expand = expand; }
+
     public String getOwner() {
         return owner;
     }
