@@ -50,9 +50,17 @@ public class NavigationActivity extends AppCompatActivity {
                                 break;
                             case R.id.action_add_book:
                                 AddBookFragment addBookFrag = new AddBookFragment();
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, addBookFrag).addToBackStack(null).commit();
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment_container, addBookFrag)
+                                        .addToBackStack(null).commit();
                                 break;
                             case R.id.action_profile:
+                                UserProfileFragment userProfileFragment = new UserProfileFragment();
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment_container, userProfileFragment)
+                                        .addToBackStack(null).commit();
                                 break;
                             case R.id.action_scanner:
                                 break;
