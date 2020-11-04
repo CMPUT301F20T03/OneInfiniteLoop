@@ -5,6 +5,8 @@
     <string name="login">Login</string>
     <string name="create_user">Create an User</string>
     <string name="register">Register</string>
+    <string name="email">Email</string>
+
 
     <string name="add_title">Title</string>
     <string name="add_author">Author</string>
@@ -37,6 +39,7 @@
     <string name="user_email">Email: </string>
     <string name="user_notifications">Notifications</string>
     <string name="user_edit">Edit</string>
+    <string name="phone">Phone number</string>
 
 
 </resources>
