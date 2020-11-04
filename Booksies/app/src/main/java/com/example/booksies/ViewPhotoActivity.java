@@ -1,3 +1,9 @@
+/*
+* This activity gets the imageUrl from the extras in the intent and loads the image onto a full
+* screen image view
+ */
+
+
 package com.example.booksies;
 
 import androidx.appcompat.app.ActionBar;
@@ -31,7 +37,6 @@ public class ViewPhotoActivity extends AppCompatActivity {
     }
 
     //Go back to whatever opened this activity
-
     @Override
     public boolean onSupportNavigateUp() {
         finish();
