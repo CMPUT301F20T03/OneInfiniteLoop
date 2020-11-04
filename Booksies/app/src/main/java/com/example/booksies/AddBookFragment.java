@@ -1,7 +1,5 @@
 /*
-*AddBookFragment inflates activity_add_book.xml
-*
-* User
+* AddBookFragment inflates activity_add_book.xml
 *
 * Implements US 01.01.01 and 08.01.01
 *
@@ -66,7 +64,6 @@ public class AddBookFragment extends Fragment {
     Button cancelButton;
     ImageButton addPhotoButton;
     ImageView cameraImageView;
-    ImageButton scanISBNButton;
     EditText titleEditText;
     EditText authorEditText;
     EditText isbnEditText;
@@ -88,7 +85,6 @@ public class AddBookFragment extends Fragment {
         cancelButton = mView.findViewById(R.id.cancelButton);
         addPhotoButton = mView.findViewById(R.id.addImageButton);
         cameraImageView = mView.findViewById(R.id.cameraImageView);
-        scanISBNButton = mView.findViewById(R.id.scanISBNButton);
         titleEditText = mView.findViewById(R.id.titleEditText);
         authorEditText = mView.findViewById(R.id.authorEditText);
         isbnEditText = mView.findViewById(R.id.ISBNEditText);
@@ -162,7 +158,7 @@ public class AddBookFragment extends Fragment {
         }
     }
 
-    //Dialog for choosing between upload or take photo
+    // Dialog for choosing between upload or take photo
     private void selectImage(Context context) {
         final CharSequence[] options = { "Take Photo", "Upload From Gallery","Cancel" };
 
@@ -196,9 +192,9 @@ public class AddBookFragment extends Fragment {
                 }
 
                 else if (options[item].equals("Upload From Gallery")) {
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(pickPhoto, REQUEST_IMAGE_UPLOAD);
-
                 }
 
                 else if (options[item].equals("Cancel")) {
@@ -209,11 +205,10 @@ public class AddBookFragment extends Fragment {
         builder.show();
     }
 
-    /**
-    *Function for creating file when taking a picture with camera
-     * Also sets the currentPhotoPath variable to the path of file
-    * @return the image file
-     */
+
+    // Function for creating file when taking a picture with camera
+    // Also sets the currentPhotoPath variable to the path of file
+    // Returns the File object of image
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -230,11 +225,10 @@ public class AddBookFragment extends Fragment {
         return image;
     }
 
-    /**
-     * Function for adding a book to Firestore
-     * Puts into a document called Books with fields:
-     * title, author, isbn, comment, owner, status, and imageUrl
-     */
+
+     // Function for adding a book to Firestore
+     // Puts into a document called Books with fields:
+     // title, author, isbn, comment, owner, status, and imageUrl
     private void addBookToFirestore() {
         //final String currentUserId = mAuth.getCurrentUser().getUid();
         //This is Temporary
@@ -253,7 +247,8 @@ public class AddBookFragment extends Fragment {
             data.put("comment", commentStr);
             data.put("owner", currentUserId);
         } else {
-            Toast toast = Toast.makeText(getActivity(), "Adding a book requires\n Title, Author and ISBN", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getActivity(),
+                    "Adding a book requires\n Title, Author and ISBN", Toast.LENGTH_LONG);
             toast.show();
             return;
         }
@@ -262,9 +257,10 @@ public class AddBookFragment extends Fragment {
             if (currentPhotoPath.length() > 0) {
                 mImageUri = Uri.fromFile(new File(currentPhotoPath));
             }
-            final StorageReference storage = storageReference.child("images/" + mImageUri.getLastPathSegment());
+            final StorageReference storage = storageReference.child("images/"
+                    + mImageUri.getLastPathSegment());
             UploadTask uploadTask = storage.putFile(mImageUri);
-
+            //Waits for image to be uploaded to storage before adding book to Firestore
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -295,21 +291,20 @@ public class AddBookFragment extends Fragment {
 
         //no picture attached make imageUrl the default book image from our Storage
         else {
-            data.put("imageUrl", "https://firebasestorage.googleapis.com/v0/b/booksies-6aa46.appspot.com/o/images%2Fopen-book-silhouette.jpg?alt=media&token=34b3c0e2-0efc-4a25-aed5-86d9d2f0e230");
+            data.put("imageUrl",
+                    "https://firebasestorage.googleapis.com/v0/b/booksies-6aa46.appspot.com/o/images%2Fopen-book-silhouette.jpg?alt=media&token=34b3c0e2-0efc-4a25-aed5-86d9d2f0e230");
             collectionReference
                     .add(data)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d("BookAdd", "Book added successfully");
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.d("BookAdd", "Failed to add book");
-
                         }
                     });
         }
