@@ -66,7 +66,6 @@ public class AddBookFragment extends Fragment {
     Button cancelButton;
     ImageButton addPhotoButton;
     ImageView cameraImageView;
-    ImageButton scanISBNButton;
     EditText titleEditText;
     EditText authorEditText;
     EditText isbnEditText;
@@ -88,7 +87,6 @@ public class AddBookFragment extends Fragment {
         cancelButton = mView.findViewById(R.id.cancelButton);
         addPhotoButton = mView.findViewById(R.id.addImageButton);
         cameraImageView = mView.findViewById(R.id.cameraImageView);
-        scanISBNButton = mView.findViewById(R.id.scanISBNButton);
         titleEditText = mView.findViewById(R.id.titleEditText);
         authorEditText = mView.findViewById(R.id.authorEditText);
         isbnEditText = mView.findViewById(R.id.ISBNEditText);
