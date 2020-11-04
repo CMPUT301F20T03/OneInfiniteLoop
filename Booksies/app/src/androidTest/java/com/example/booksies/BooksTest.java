@@ -16,11 +16,11 @@ public class BooksTest {
     String ISBN = "978-0345339737";
     String author = "JRR Tolkien";
     String title = "The Lord of the Rings: The Return of the King";
-    Books book_1 = new Books(ISBN, author, title, true);
+    Books book_1 = new Books(ISBN, author, title);
 
     @Test
     public void getISBN() {
-        Books book_1 = new Books(ISBN, author, title, true);
+        Books book_1 = new Books(ISBN, author, title);
         String temp_ISBN = "978-0345339730";
         assertEquals(book_1.getISBN(), ISBN);
         book_1.setISBN(temp_ISBN);
@@ -29,7 +29,7 @@ public class BooksTest {
 
     @Test
     public void getAuthor() {
-        Books book_1 = new Books(ISBN, author, title, true);
+        Books book_1 = new Books(ISBN, author, title);
         String temp_author = "Michael Elgie";
         assertEquals(book_1.getAuthor(), author);
         book_1.setAuthor(temp_author);
@@ -38,7 +38,7 @@ public class BooksTest {
 
     @Test
     public void getTitle() {
-        Books book_1 = new Books(ISBN, author, title, true);
+        Books book_1 = new Books(ISBN, author, title);
         String temp_title = "The Lord of the Rings: The Two Towers";
         assertEquals(book_1.getTitle(), title);
         book_1.setTitle(temp_title);
@@ -47,7 +47,7 @@ public class BooksTest {
 
     @Test
     public void getStatus() {
-        Books book_1 = new Books(ISBN, author, title, true);
+        Books book_1 = new Books(ISBN, author, title);
         book_status temp_status = book_status.AVAILABLE;
         assertEquals(book_1.getStatus(), temp_status);
         temp_status = book_status.REQUESTED;
@@ -64,4 +64,4 @@ public class BooksTest {
     @Test
     public void getOwner() {
     }
-}
+} 
