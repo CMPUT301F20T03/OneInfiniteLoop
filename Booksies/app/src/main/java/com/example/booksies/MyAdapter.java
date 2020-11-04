@@ -34,6 +34,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public TextView titleView;
         public TextView authorView;
         public TextView isbnView;
+        public TextView statusView;
         public RelativeLayout expand;
         public LinearLayout linearLayout;
         public RecyclerView r_view;
@@ -45,6 +46,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             titleView = v.findViewById(R.id.book_name);
             authorView = v.findViewById(R.id.book_author);
             isbnView = v.findViewById(R.id.book_isbn);
+            statusView = v.findViewById(R.id.book_status);
             expand = v.findViewById(R.id.expandable_layout);
             r_view = (RecyclerView) v.findViewById(R.id.expand_rlist);
             r_view.setLayoutManager(new LinearLayoutManager(v.getContext()));
@@ -91,6 +93,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.titleView.setText(mDataset.get(position).getTitle());
         holder.authorView.setText(mDataset.get(position).getAuthor());
         holder.isbnView.setText(mDataset.get(position).getISBN());
+        holder.statusView.setText(mDataset.get(position).getStatus().toString().toLowerCase());
 
         if(!mDataset.get(position).expand)
         holder.expand.setVisibility(View.GONE);
