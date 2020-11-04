@@ -32,4 +32,8 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="my_profile">My Profile</string>
 
+    <string name="todo">Todo</string>
+    <string name="mock_username">Booklover123</string>
+    <string name="edit_button">Edit</string>
+
 </resources>

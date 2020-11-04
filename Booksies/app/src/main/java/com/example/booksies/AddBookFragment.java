@@ -71,7 +71,6 @@ public class AddBookFragment extends Fragment {
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     StorageReference storageReference;
-    String currentPhotoPath = "";
     Uri mImageUri;
     CollectionReference collectionReference;
     String downloadableUrl;
@@ -124,39 +123,18 @@ public class AddBookFragment extends Fragment {
                 }
             }
         });
+
+        cameraImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent viewImageIntent = new Intent(getActivity(), ViewPhotoActivity.class);
+                    viewImageIntent.putExtra("imageUrl", mImageUri.toString());
+                    startActivity(viewImageIntent);
+                }
+            });
         return mView;
-
     }
 
-    //Gets data from camera intent or from gallery and sets the image into imageView in AddBookFragment
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("RequestCode", Integer.toString(requestCode));
-        cameraImageView = mView.findViewById(R.id.cameraImageView);
-        if (resultCode != Activity.RESULT_CANCELED) {
-            if(requestCode == REQUEST_IMAGE_CAPTURE) {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    Bitmap imageBitmap = BitmapFactory.decodeFile(currentPhotoPath);
-                    addPhotoButton.setVisibility(View.INVISIBLE);
-                    cameraImageView.setVisibility(View.VISIBLE);
-                    cameraImageView.setImageBitmap(imageBitmap);
-                    Log.d("photopath", currentPhotoPath);
-                }
-            }
-            else{
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    Uri imageUri = data.getData();
-                    addPhotoButton.setVisibility(View.INVISIBLE);
-                    cameraImageView.setVisibility(View.VISIBLE);
-                    cameraImageView.setImageURI(imageUri);
-                    mImageUri = imageUri;
-                    Log.d("photopath", mImageUri.toString());
-                }
-            }
-
-        }
-    }
 
     // Dialog for choosing between upload or take photo
     private void selectImage(Context context) {
@@ -205,9 +183,8 @@ public class AddBookFragment extends Fragment {
         builder.show();
     }
 
-
     // Function for creating file when taking a picture with camera
-    // Also sets the currentPhotoPath variable to the path of file
+    // Also sets the mImageUri to uri of current picture
     // Returns the File object of image
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -221,10 +198,34 @@ public class AddBookFragment extends Fragment {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
+        String currentPhotoPath = image.getAbsolutePath();
+        mImageUri = Uri.fromFile(new File(currentPhotoPath));
         return image;
     }
 
+    //Gets data from camera intent or from gallery and sets the image into imageView in AddBookFragment
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("RequestCode", Integer.toString(requestCode));
+        cameraImageView = mView.findViewById(R.id.cameraImageView);
+        if (resultCode != Activity.RESULT_CANCELED) {
+            if(requestCode == REQUEST_IMAGE_CAPTURE) {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    cameraImageView.setImageURI(mImageUri);
+                }
+            }
+            else{
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    Uri imageUri = data.getData();
+                    cameraImageView.setImageURI(imageUri);
+                    mImageUri = imageUri;
+                }
+            }
+            addPhotoButton.setVisibility(View.GONE);
+            cameraImageView.setVisibility(View.VISIBLE);
+        }
+    }
 
      // Function for adding a book to Firestore
      // Puts into a document called Books with fields:
@@ -253,10 +254,7 @@ public class AddBookFragment extends Fragment {
             return;
         }
         //if picture attached
-        if (currentPhotoPath.length() != 0 || mImageUri != null) {
-            if (currentPhotoPath.length() > 0) {
-                mImageUri = Uri.fromFile(new File(currentPhotoPath));
-            }
+        if (mImageUri != null) {
             final StorageReference storage = storageReference.child("images/"
                     + mImageUri.getLastPathSegment());
             UploadTask uploadTask = storage.putFile(mImageUri);

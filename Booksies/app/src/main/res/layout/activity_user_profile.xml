@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/booklover123"
+        android:text="@string/mock_username"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="#00000000"
-        android:text="@string/edit"
+        android:text="@string/edit_button"
         android:textColor="#0288D1" />
 
     <LinearLayout

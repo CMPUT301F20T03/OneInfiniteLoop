@@ -53,6 +53,7 @@ public class NavigationActivity extends AppCompatActivity {
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, addBookFrag).addToBackStack(null).commit();
                                 break;
                             case R.id.action_profile:
+
                                 break;
                             case R.id.action_scanner:
                                 break;
