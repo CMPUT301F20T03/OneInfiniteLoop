@@ -27,11 +27,11 @@ public class Books {
 
 
     // Book constructor
-    public Books(String ISBN, String author, String title, boolean expand) {
+    public Books(String ISBN, String author, String title) {
         this.ISBN = ISBN;
         this.author = author;
         this.title = title;
-        this.expand = expand;
+        this.expand = false;
         this.status = book_status.AVAILABLE;
 //        this.owner = owner;   // TODO: assign this owner to a book when creating instance
     }
@@ -61,9 +61,7 @@ public class Books {
         this.title = title;
     }
 
-    public book_status getStatus() {
-        return status;
-    }
+    public book_status getStatus() { return status; }
 
     public void setStatus(book_status status) {
         this.status = status;
