@@ -247,6 +247,7 @@ public class AddBookFragment extends Fragment {
             data.put("status", "AVAILABLE");
             data.put("comment", commentStr);
             data.put("owner", currentUserId);
+            data.put("expandable", "FALSE");
         } else {
             Toast toast = Toast.makeText(getActivity(),
                     "Adding a book requires\n Title, Author and ISBN", Toast.LENGTH_LONG);
