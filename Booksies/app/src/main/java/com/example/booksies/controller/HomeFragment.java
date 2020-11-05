@@ -5,6 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,27 +20,16 @@ import com.example.booksies.model.Books;
 import com.example.booksies.model.FirestoreHandler;
 import com.example.booksies.model.MyAdapter;
 import com.example.booksies.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    ArrayList<Books> booksList = new ArrayList<Books>();
+
     private  RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+
     private RecyclerView.LayoutManager layoutManager;
-    private FirebaseFirestore db;
+    FirestoreHandler f;
+
+    View view;
 
 
     @Override
@@ -45,17 +37,76 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_home, container, false);
+        view =  inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView =(RecyclerView) view.findViewById(R.id.book_list);
         assert recyclerView != null;
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        FirestoreHandler f = new FirestoreHandler(recyclerView,  layoutManager);
-        f.listBooks();
+
+
+
 
         return view;
 
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        f = new FirestoreHandler(recyclerView,  layoutManager, view.getContext());
+        f.listBooks();
+
+        Spinner spinnerFilter = (Spinner) view.findViewById(R.id.filter);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.filter_items, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapterFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinnerFilter.setAdapter(adapterFilter);
+        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                f.setFilterString(parentView.getItemAtPosition(position).toString().toUpperCase());
+                f.filter();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                return;
+            }
+
+        });
+
+
+        Spinner spinnerSort = (Spinner) view.findViewById(R.id.sort);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapterSort = ArrayAdapter.createFromResource(getActivity(),
+                R.array.sort_items, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapterSort.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinnerSort.setAdapter(adapterSort);
+
+        spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                f.setSortString(parentView.getItemAtPosition(position).toString());
+                f.sort();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                return;
+            }
+
+        });
+
+
+
+    }
 }
