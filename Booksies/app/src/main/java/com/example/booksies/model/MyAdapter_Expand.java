@@ -1,14 +1,13 @@
-package com.example.booksies;
+package com.example.booksies.model;
 
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.booksies.R;
 
 import java.util.ArrayList;
 

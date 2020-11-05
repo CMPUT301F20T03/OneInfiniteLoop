@@ -1,18 +1,33 @@
-package com.example.booksies;
+package com.example.booksies.model;
 
 
+import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
+import com.bumptech.glide.request.RequestOptions;
+import com.example.booksies.R;
+
+import com.google.firebase.storage.FirebaseStorage;
+
+
+import java.io.InputStream;
 import java.util.ArrayList;
+
 
 /**
  * This class is a custom adapter for RecyclerView
@@ -21,9 +36,12 @@ import java.util.ArrayList;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public ArrayList<Books> mDataset;
     //public static ArrayList<Boolean> expandable;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    Context context;
+    String url;
 
 
     // Provide a reference to the views for each data item
@@ -35,6 +53,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public TextView authorView;
         public TextView isbnView;
         public TextView statusView;
+        public ImageView imageView;
         public RelativeLayout expand;
         public LinearLayout linearLayout;
         public RecyclerView r_view;
@@ -43,6 +62,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         public MyViewHolder(View v) {
             super(v);
+            context = v.getContext();
             titleView = v.findViewById(R.id.book_name);
             authorView = v.findViewById(R.id.book_author);
             isbnView = v.findViewById(R.id.book_isbn);
@@ -54,6 +74,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             r_view.setAdapter(mAdapter);
             r_view.setItemAnimator(new DefaultItemAnimator());
             r_view.setHasFixedSize(true);
+            imageView = (ImageView) v.findViewById(R.id.book_image);
             linearLayout = v.findViewById(R.id.linear_layout);
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,7 +92,8 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public MyAdapter(ArrayList<Books> myDataset) {
-        mDataset = myDataset;
+        this.mDataset = myDataset;
+
     }
 
     // Create new views (invoked by the layout manager)
@@ -95,6 +117,13 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.isbnView.setText(mDataset.get(position).getISBN());
         holder.statusView.setText(mDataset.get(position).getStatus().toString().toLowerCase());
 
+
+        Glide.with(context)
+                .load(mDataset.get(position).getImageUrl())
+                .into(holder.imageView);
+
+
+
         if(!mDataset.get(position).expand)
         holder.expand.setVisibility(View.GONE);
         else
@@ -112,3 +141,4 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         return mDataset.size();
     }
 }
+
