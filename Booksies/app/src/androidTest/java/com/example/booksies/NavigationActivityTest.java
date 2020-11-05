@@ -1,6 +1,13 @@
 package com.example.booksies;
 
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import android.view.View;
+
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -9,6 +16,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.booksies.controller.NavigationActivity;
+import com.example.booksies.controller.ViewPhotoActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -46,8 +54,6 @@ public class NavigationActivityTest {
         solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.addButton));
         assertTrue(solo.waitForText("Calculus",1,2000));
         assertTrue(solo.waitForText("Stewart",1,2000));
-
-
     }
 
     @Test
@@ -64,7 +70,5 @@ public class NavigationActivityTest {
 
 
     }
-
-
 
 }
