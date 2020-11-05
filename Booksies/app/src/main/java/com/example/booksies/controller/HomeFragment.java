@@ -1,6 +1,7 @@
-package com.example.booksies;
+package com.example.booksies.controller;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +13,31 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.booksies.model.Books;
+import com.example.booksies.model.FirestoreHandler;
+import com.example.booksies.model.MyAdapter;
 import com.example.booksies.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class HomeFragment extends Fragment {
-    ArrayList<String> BooksData = new ArrayList<String>();
-    ArrayList<Books> BooksList = new ArrayList<Books>();
+
+    ArrayList<Books> booksList = new ArrayList<Books>();
     private  RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private FirebaseFirestore db;
 
 
     @Override
@@ -35,17 +50,9 @@ public class HomeFragment extends Fragment {
         assert recyclerView != null;
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        BooksList.add(new Books("123456","Leo Tolstoy","War and Peace"));
-        BooksList.add(new Books("616165","Victor Hugo","Les Miserable"));
-        BooksList.add(new Books("225522","Albert Eistein","SCIENCE"));
-        BooksList.add(new Books("236266","Ramanujan","MATH"));
-        BooksList.add(new Books("646223","Newton","Physics"));
-        BooksList.add(new Books("314623","Iranian","History"));
-        BooksList.add(new Books("616315","Indian","Computer"));
-        mAdapter = new MyAdapter(BooksList);
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setHasFixedSize(true);
+
+        FirestoreHandler f = new FirestoreHandler(recyclerView,  layoutManager);
+        f.listBooks();
 
         return view;
 
