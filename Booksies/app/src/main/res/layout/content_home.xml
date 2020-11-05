@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:id="@+id/linear_layout"
     android:background="@drawable/custom_border">
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,45 +50,70 @@
             android:padding="1dp" />
 
     </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/author_name"
-        android:text="Author"
-        android:textSize="22sp"
-        android:padding="1dp"
-        android:textColor="#000"
-        android:textStyle="bold"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_author"
-        android:text="Book"
-        android:textSize="17sp"
-        android:padding="1dp"
-        android:textColor="#000"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/isbn_code"
-        android:text="ISBN"
-        android:textSize="22sp"
-        android:padding="1dp"
-        android:textColor="#000"
-        android:textStyle="bold"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_isbn"
-        android:text="Book"
-        android:textSize="17sp"
-        android:padding="1dp"
-        android:textColor="#000"
-        />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/author_name"
+                android:text="Author"
+                android:textSize="22sp"
+                android:padding="1dp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/book_author"
+                android:text="Book"
+                android:textSize="17sp"
+                android:padding="1dp"
+                android:textColor="#000"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/isbn_code"
+                android:text="ISBN"
+                android:textSize="22sp"
+                android:padding="1dp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/book_isbn"
+                android:text="Book"
+                android:textSize="17sp"
+                android:padding="1dp"
+                android:textColor="#000"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/book_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:srcCompat="@tools:sample/avatars" />
+
+    </LinearLayout>
+
 
 
 
