@@ -1,6 +1,9 @@
 package com.example.booksies;
 
+import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -46,5 +49,22 @@ public class NavigationActivityTest {
 
 
     }
+
+    @Test
+    public void checkFilter(){
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+
+        Spinner spinner = (Spinner)solo.getView(R.id.filter);
+        spinner.setSelection(1, true);
+
+        assertFalse(solo.waitForText("accepted",1,2000));
+        assertFalse(solo.waitForText("requested",1,2000));
+        assertFalse(solo.waitForText("borrowed",1,2000));
+
+
+
+    }
+
+
 
 }
