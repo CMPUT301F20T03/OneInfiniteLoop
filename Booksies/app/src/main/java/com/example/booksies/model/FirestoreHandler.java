@@ -54,7 +54,21 @@ public class FirestoreHandler {
                 booksList.clear();
 
                 for (QueryDocumentSnapshot book : value) {
-                    booksList.add(new Books(book.getString("isbn"),book.getString("author"),book.getString("title")));
+                    Books b = new Books(book.getString("isbn"),book.getString("author"),book.getString("title"));
+                    if ((book.getString("status")).toUpperCase().equals("AVAILABLE")){
+                        b.setStatus(book_status.AVAILABLE);
+                    } else if ((book.getString("status").toUpperCase()).equals("REQUESTED")){
+                        b.setStatus(book_status.REQUESTED);
+
+                    } else if((book.getString("status")).toUpperCase().equals("ACCEPTED")){
+                        b.setStatus(book_status.ACCEPTED);
+
+                    } else if ((book.getString("status")).toUpperCase().equals("BORROWED")){
+                        b.setStatus(book_status.BORROWED);
+
+                    }
+
+                    booksList.add(b);
 
                 }
 

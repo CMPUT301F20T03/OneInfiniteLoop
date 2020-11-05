@@ -1,5 +1,7 @@
 package com.example.booksies;
 
+import android.widget.EditText;
+
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
@@ -29,11 +31,18 @@ public class NavigationActivityTest {
     }
 
     @Test
-    public void checkList(){
+    public void checkMyBooks(){
         solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
-        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.action_home));
-        assertTrue(solo.waitForText("War and Peace",1,2000));
-        assertTrue(solo.waitForText("Les Miserable",1,2000));
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.action_add_book));
+        solo.enterText((EditText) solo.getView(R.id.titleEditText), "Calculus");
+        solo.enterText((EditText) solo.getView(R.id.authorEditText), "Stewart");
+        solo.enterText((EditText) solo.getView(R.id.ISBNEditText), "34555631");
+        solo.enterText((EditText) solo.getView(R.id.commentEditText), "Good Condition");
+
+
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.addButton));
+        assertTrue(solo.waitForText("Calculus",1,2000));
+        assertTrue(solo.waitForText("Stewart",1,2000));
 
 
     }
