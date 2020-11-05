@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.booksies.R;
+import com.example.booksies.model.FirestoreHandler;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -237,7 +238,7 @@ public class AddBookFragment extends Fragment {
     private void addBookToFirestore() {
         //final String currentUserId = mAuth.getCurrentUser().getUid();
         //This is Temporary
-        final String currentUserId = "JackyH56";
+        final String currentUserId = FirestoreHandler.getCurrentUserEmail();
 
         final String titleStr = titleEditText.getText().toString();
         final String authorStr = authorEditText.getText().toString();
