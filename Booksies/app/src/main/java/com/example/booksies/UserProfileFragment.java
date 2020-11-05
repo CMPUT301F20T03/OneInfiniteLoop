@@ -25,6 +25,7 @@ public class UserProfileFragment extends Fragment {
     TextView userEmail;
     TextView userPhone;
     Button editProfile;
+    User user;
 
 
     @Override
@@ -38,9 +39,9 @@ public class UserProfileFragment extends Fragment {
         editProfile = view.findViewById(R.id.edit_button);
 
         //Temp
-        username.setText("BookLover123");
-        userEmail.setText("BookLover123@gmail.com");
-        userPhone.setText("(780)123-4567");
+        username.setText(user.getUsername());
+        userEmail.setText(user.getEmail());
+        userPhone.setText(user.getPhone());
 
         return view;
 

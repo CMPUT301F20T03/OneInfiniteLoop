@@ -37,6 +37,7 @@
     <string name="user_email">Email: </string>
     <string name="user_notifications">Notifications</string>
     <string name="user_edit">Edit</string>
+    <string name="userprofilepicture">userProfilePicture</string>
 
 
 </resources>
