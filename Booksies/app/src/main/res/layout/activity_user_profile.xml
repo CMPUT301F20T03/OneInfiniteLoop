@@ -10,18 +10,17 @@
     <ImageView
         android:id="@+id/user_picture"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_marginTop="20dp"
-        android:contentDescription="@string/todo"
-        tools:srcCompat="@tools:sample/avatars[0]" />
+        android:src="@drawable/baseline_account_circle_24" />
 
     <TextView
         android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/mock_username"
         android:textAlignment="center"
+        android:text="Username"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <Button
@@ -29,8 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:text="@string/user_edit"
         android:background="#00000000"
-        android:text="@string/edit_button"
         android:textColor="#0288D1" />
 
     <LinearLayout
@@ -42,11 +41,11 @@
 
         <TextView
             android:id="@+id/phone_number_title"
-            android:layout_width="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_weight="1"
-            android:text="Cell: "
+            android:text="@string/user_cellphone"
             android:textColor="#000000" />
 
         <TextView
@@ -54,8 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:text="" />
+            android:layout_weight="4" />
 
     </LinearLayout>
 
@@ -66,20 +64,19 @@
 
         <TextView
             android:id="@+id/email_title"
-            android:layout_width="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_weight="1"
-            android:text="Email: "
+            android:text="@string/user_email"
             android:textColor="#000000" />
 
         <TextView
             android:id="@+id/email_display"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:text="" />
+            android:layout_weight="4" />
 
     </LinearLayout>
 
@@ -93,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text="Notification"
+            android:text="@string/user_notifications"
             android:textColor="#000000"
             android:textSize="25sp"
             android:textStyle="bold" />

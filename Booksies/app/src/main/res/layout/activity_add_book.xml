@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".AddBookFragment">
+    tools:context=".controller.AddBookFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
         </LinearLayout>
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp">
@@ -62,20 +62,19 @@
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
+                android:layout_marginEnd="16dp"
+
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
                 android:text="@string/add_ISBN" />
 
             <EditText
                 android:id="@+id/ISBNEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/textView3"
                 android:ems="10"
                 android:inputType="number" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView4"
@@ -114,9 +113,7 @@
                 android:layout_width="100dp"
                 android:layout_height="150dp"
                 android:layout_marginBottom="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
         </FrameLayout>
 

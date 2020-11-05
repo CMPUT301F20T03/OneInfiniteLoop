@@ -4,17 +4,17 @@
  */
 
 
-package com.example.booksies;
+package com.example.booksies.controller;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.booksies.R;
 
 public class ViewPhotoActivity extends AppCompatActivity {
 

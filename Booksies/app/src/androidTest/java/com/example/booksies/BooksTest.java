@@ -8,6 +8,9 @@
 
 package com.example.booksies;
 
+import com.example.booksies.model.Books;
+import com.example.booksies.model.book_status;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;

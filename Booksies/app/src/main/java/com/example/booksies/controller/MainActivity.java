@@ -1,4 +1,4 @@
-package com.example.booksies;
+package com.example.booksies.controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.booksies.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -46,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email= mEmail.getText().toString();
                 String pass = mPassword.getText().toString();
-                email = "sazimi@ualberta.ca";
-                pass = "123456";
+
                 if(!email.equals("") && !pass.equals("")){
                     mAuth.signInWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        toastMessage("Successfully signed in as User: "+user.getEmail().toString());
+                                        toastMessage("Successfully signed in as User: " + user.getEmail().toString());
                                         Intent intent = new Intent(MainActivity.this, NavigationActivity.class);
                                         startActivity(intent);
                                     } else {

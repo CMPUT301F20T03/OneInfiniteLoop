@@ -10,7 +10,7 @@
  */
 
 
-package com.example.booksies;
+package com.example.booksies.controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -39,6 +39,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.booksies.R;
+import com.example.booksies.model.FirestoreHandler;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -233,7 +235,7 @@ public class AddBookFragment extends Fragment {
     private void addBookToFirestore() {
         //final String currentUserId = mAuth.getCurrentUser().getUid();
         //This is Temporary
-        final String currentUserId = "JackyH56";
+        final String currentUserId = FirestoreHandler.getCurrentUserEmail();
 
         final String titleStr = titleEditText.getText().toString();
         final String authorStr = authorEditText.getText().toString();
@@ -247,7 +249,6 @@ public class AddBookFragment extends Fragment {
             data.put("status", "AVAILABLE");
             data.put("comment", commentStr);
             data.put("owner", currentUserId);
-            data.put("expandable", "FALSE");
         } else {
             Toast toast = Toast.makeText(getActivity(),
                     "Adding a book requires\n Title, Author and ISBN", Toast.LENGTH_LONG);

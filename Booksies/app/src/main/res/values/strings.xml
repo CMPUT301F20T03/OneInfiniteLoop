@@ -29,11 +29,14 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
+
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="my_profile">My Profile</string>
 
-    <string name="todo">Todo</string>
-    <string name="mock_username">Booklover123</string>
-    <string name="edit_button">Edit</string>
+    <string name="user_cellphone">Cell: </string>
+    <string name="user_email">Email: </string>
+    <string name="user_notifications">Notifications</string>
+    <string name="user_edit">Edit</string>
+
 
 </resources>

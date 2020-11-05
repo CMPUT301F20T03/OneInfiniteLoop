@@ -1,15 +1,9 @@
-package com.example.booksies;
+package com.example.booksies.model;
 
 import android.app.DownloadManager; // potentially temporary for     ArrayList<DownloadManager.Request> bookRequests        to not throw any errors
 
 import java.util.ArrayList;
-// enum for status
-enum book_status {
-    AVAILABLE,
-    REQUESTED,
-    ACCEPTED,
-    BORROWED
-}
+
 
 public class Books {
     private String title;
@@ -27,11 +21,11 @@ public class Books {
 
 
     // Book constructor
-    public Books(String ISBN, String author, String title, boolean expand) {
+    public Books(String ISBN, String author, String title) {
         this.ISBN = ISBN;
         this.author = author;
         this.title = title;
-        this.expand = expand;
+        this.expand = false;
         this.status = book_status.AVAILABLE;
 //        this.owner = owner;   // TODO: assign this owner to a book when creating instance
     }
@@ -61,13 +55,15 @@ public class Books {
         this.title = title;
     }
 
-    public book_status getStatus() {
-        return status;
-    }
+    public book_status getStatus() { return status; }
 
     public void setStatus(book_status status) {
         this.status = status;
     }
+
+    public boolean getExpand() { return expand; }
+
+    public void setExpand(boolean expand) { this.expand = expand; }
 
     public String getOwner() {
         return owner;
