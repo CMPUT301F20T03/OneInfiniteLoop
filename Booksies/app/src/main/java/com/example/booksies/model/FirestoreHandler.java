@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
@@ -31,6 +34,7 @@ public class FirestoreHandler {
     FirebaseFirestore db;
     ArrayList<Books> booksList = new ArrayList<Books>();
     ArrayList<Books> filteredList = new ArrayList<Books>();
+    ArrayList<Books> searchList = new ArrayList<Books>();
     RecyclerView recyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -38,16 +42,15 @@ public class FirestoreHandler {
     private String filterString = "NO FILTER";
     String sortString = "Title";
 
-    public FirestoreHandler(RecyclerView recyclerView,  RecyclerView.LayoutManager layoutManager, Context context){
+    public FirestoreHandler(RecyclerView recyclerView,  RecyclerView.LayoutManager layoutManager){
         this.recyclerView = recyclerView;
 
         this.layoutManager = layoutManager;
-        this.context = context;
+
+
     }
 
     public void listBooks(){
-        db = FirebaseFirestore.getInstance();
-
         db = FirebaseFirestore.getInstance();
 
         db.collection("Books").whereEqualTo("owner", getCurrentUserEmail()).addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -90,6 +93,50 @@ public class FirestoreHandler {
             }
 
         });
+    }
+
+    public void handleSearch(String s){
+        db = FirebaseFirestore.getInstance();
+        db.collection("Books")
+                .whereEqualTo("title",  s)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot book : task.getResult()) {
+                                Books b = new Books(book.getString("isbn").toUpperCase(),
+                                        book.getString("author").toUpperCase(),
+                                        book.getString("title").toUpperCase());
+                                if ((book.getString("status")).toUpperCase().equals("AVAILABLE")){
+                                    b.setStatus(book_status.AVAILABLE);
+                                } else if ((book.getString("status").toUpperCase()).equals("REQUESTED")){
+                                    b.setStatus(book_status.REQUESTED);
+
+                                } else if((book.getString("status")).toUpperCase().equals("ACCEPTED")){
+                                    b.setStatus(book_status.ACCEPTED);
+
+                                } else if ((book.getString("status")).toUpperCase().equals("BORROWED")){
+                                    b.setStatus(book_status.BORROWED);
+
+                                }
+
+                                searchList.add(b);
+                                mAdapter.notifyDataSetChanged();
+
+
+                            }
+                        } else {
+                            Log.d("error", "Error getting documents: ", task.getException());
+                        }
+
+                    }
+                });
+        mAdapter = new SearchAdapter(searchList);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
+
     }
 
     public void setFilterString(String f){
