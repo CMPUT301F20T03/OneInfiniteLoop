@@ -1,6 +1,7 @@
 package com.example.booksies;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public ArrayList<Books> mDataset;
     //public static ArrayList<Boolean> expandable;
+    public RecyclerView.Adapter mAdapter;
 
 
     // Provide a reference to the views for each data item
@@ -38,7 +42,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public RelativeLayout expand;
         public LinearLayout linearLayout;
         public RecyclerView r_view;
-        public RecyclerView.Adapter mAdapter;
+//        public RecyclerView.Adapter mAdapter;
 
 
         public MyViewHolder(View v) {
@@ -62,10 +66,9 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     book.expand = !book.expand;
 
                     notifyItemChanged(getAdapterPosition());
-
-
                 }
             });
+
         }
     }
 
@@ -101,9 +104,6 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         {
             holder.expand.setVisibility(View.VISIBLE);
         }
-
-
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
