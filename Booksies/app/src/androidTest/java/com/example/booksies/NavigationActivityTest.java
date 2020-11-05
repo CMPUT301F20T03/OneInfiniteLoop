@@ -1,14 +1,11 @@
 package com.example.booksies;
 
-import android.app.Activity;
-import android.widget.EditText;
-import android.widget.ListView;
-
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
+
+import com.example.booksies.controller.NavigationActivity;
 import com.robotium.solo.Solo;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

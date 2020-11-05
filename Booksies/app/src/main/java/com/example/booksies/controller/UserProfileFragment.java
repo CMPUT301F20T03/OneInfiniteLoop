@@ -1,4 +1,4 @@
-package com.example.booksies;
+package com.example.booksies.controller;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.booksies.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import javax.annotation.Nullable;

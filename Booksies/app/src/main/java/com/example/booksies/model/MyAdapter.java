@@ -1,4 +1,4 @@
-package com.example.booksies;
+package com.example.booksies.model;
 
 
 import android.view.LayoutInflater;
@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.booksies.R;
+
 import java.util.ArrayList;
 
 /**
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public ArrayList<Books> mDataset;
     //public static ArrayList<Boolean> expandable;
 
