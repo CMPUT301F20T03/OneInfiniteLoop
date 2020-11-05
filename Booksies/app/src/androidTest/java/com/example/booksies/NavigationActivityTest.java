@@ -2,16 +2,24 @@ package com.example.booksies;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.view.Display;
+import android.view.KeyEvent;
 import android.view.View;
 
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
@@ -33,6 +41,8 @@ public class NavigationActivityTest {
     @Rule
     public ActivityTestRule<NavigationActivity> rule =
             new ActivityTestRule<NavigationActivity>(NavigationActivity.class, true, true);
+
+    public IntentsTestRule<NavigationActivity> intentsRule = new IntentsTestRule<>(NavigationActivity.class);
 
 
     @Before
@@ -71,4 +81,69 @@ public class NavigationActivityTest {
 
     }
 
+    @Test
+    public void checkAddBookRequiredFieldsAndAddNoImage() {
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.action_add_book));
+        assertTrue(solo.waitForText("Title", 1, 2000));
+        assertTrue(solo.waitForText("Author", 1, 2000));
+        assertTrue(solo.waitForText("ISBN", 1, 2000));
+        assertTrue(solo.waitForText("Comments", 1, 2000));
+        assertTrue(solo.waitForText("Add Photo", 1, 2000));
+
+        solo.clickOnView(solo.getCurrentActivity().findViewById((R.id.addButton)));
+        solo.waitForText("Adding a book requires", 1, 2000);
+
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.titleEditText), "UI Test Book");
+        solo.clickOnView(solo.getCurrentActivity().findViewById((R.id.addButton)));
+        solo.waitForText("Adding a book requires", 1, 2000);
+
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.authorEditText), "UI Test Author");
+        solo.clickOnView(solo.getCurrentActivity().findViewById((R.id.addButton)));
+        solo.waitForText("Adding a book requires", 1, 2000);
+
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.ISBNEditText), "1234");
+        solo.clickOnView(solo.getCurrentActivity().findViewById((R.id.addButton)));
+
+    }
+
+    @Test
+    public void checkAddBookOpenCamera() {
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.action_add_book));
+
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.titleEditText), "UI Test Book");
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.authorEditText), "UI Test Author");
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.ISBNEditText), "UI Test Author");
+
+        solo.clickOnImageButton(0);
+
+        solo.waitForText("Take Photo", 1, 2000);
+        solo.waitForText("Upload From Gallery", 1, 2000);
+        solo.waitForText("Cancel", 1, 2000);
+
+        solo.clickOnText("Take Photo");
+
+        solo.waitForActivity(MediaStore.ACTION_IMAGE_CAPTURE);
+
+    }
+
+    @Test
+    public void checkAddBookOpenGallery() {
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.action_add_book));
+
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.titleEditText), "UI Test Book");
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.authorEditText), "UI Test Author");
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.ISBNEditText), "UI Test Author");
+
+        solo.clickOnImageButton(0);
+        solo.waitForText("Take Photo", 1, 2000);
+        solo.waitForText("Upload From Gallery", 1, 2000);
+        solo.waitForText("Cancel", 1, 2000);
+
+        solo.clickOnText("Upload From Gallery");
+
+        solo.waitForActivity(Intent.ACTION_PICK);
+    }
 }
