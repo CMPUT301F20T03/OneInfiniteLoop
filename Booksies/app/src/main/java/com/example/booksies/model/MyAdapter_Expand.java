@@ -71,7 +71,7 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.request.setText(requestList.get(position));
+        holder.request.setText(requestList.get(position).split(":")[0]);
 
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -72,6 +72,7 @@ public class FirestoreHandler {
         db = FirebaseFirestore.getInstance();
 
         db.collection("Books").whereEqualTo("owner", getCurrentUserEmail())
+
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
@@ -130,6 +131,9 @@ public class FirestoreHandler {
 
                 });
     }
+
+
+
 
     /**
      * Performs search of the database using a keyword string
@@ -266,8 +270,36 @@ public class FirestoreHandler {
     }
 
     /**
-     * Sorts results
+     * filters requested books by the borrower
      */
+
+    public void reqfilter(){
+        if(!filterString.equals("NO FILTER")){
+            filteredList.clear();
+            for (Books book:booksList){
+                if ((book.getStatus().toString().toUpperCase()).equals(filterString)){
+                    filteredList.add(book);
+                }
+            }
+            mAdapter = new RequestListAdapter(filteredList);
+            recyclerView.setAdapter(mAdapter);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setHasFixedSize(true);
+
+        } else {
+            mAdapter = new RequestListAdapter(booksList);
+            recyclerView.setAdapter(mAdapter);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setHasFixedSize(true);
+
+        }
+
+    }
+
+    /**
+     * sorts list of books based on author, title or isbn
+     */
+
     public void sort (){
         switch (sortString){
             case "Author":
@@ -373,7 +405,72 @@ public class FirestoreHandler {
 
     }
 
+    /**
+     * List books requested
+     */
 
+    public void listReqBooks(){
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("Books").whereNotEqualTo("owner", getCurrentUserEmail())
+                .whereArrayContains("request",getCurrentUserEmail()+":"+userID)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+
+                            Log.w("error", "Listen failed.", e);
+                            return;
+                        }
+                        booksList.clear();
+
+                        for (QueryDocumentSnapshot book : value) {
+                            Books b = new Books(book.getString("isbn").toUpperCase(),
+                                    book.getString("author").toUpperCase(),
+                                    book.getString("title").toUpperCase());
+                            b.setOwner(book.getString("owner"));
+
+                            if ((book.getString("status")).toUpperCase().equals("AVAILABLE")){
+                                b.setStatus(book_status.AVAILABLE);
+                            } else if ((book.getString("status").toUpperCase()).equals("REQUESTED")){
+                                b.setStatus(book_status.REQUESTED);
+
+                            } else if((book.getString("status")).toUpperCase().equals("ACCEPTED")){
+                                b.setStatus(book_status.ACCEPTED);
+
+                            } else if ((book.getString("status")).toUpperCase().equals("BORROWED")){
+                                b.setStatus(book_status.BORROWED);
+
+                            }
+
+                            if(book.get("request") != null){
+                                b.setBookRequests((ArrayList<String>)book.get("request"));
+                                db.collection("Books").document(book.getId()).update("status","REQUESTED");
+                                b.setStatus(book_status.REQUESTED);
+
+                            }
+                            else
+                            {
+                                b.setBookRequests(new ArrayList<String>());
+
+                            }
+                            b.setImageUrl(book.getString("imageUrl"));
+                            b.setOwner(book.getString("owner").split("@")[0]);
+                            b.setDocID(book.getId());
+
+                            booksList.add(b);
+
+                        }
+                        reqfilter();
+                        sort();
+
+                    }
+
+                });
+
+
+    }
 
 
 }
