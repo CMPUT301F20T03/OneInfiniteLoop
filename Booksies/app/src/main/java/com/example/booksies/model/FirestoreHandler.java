@@ -43,6 +43,7 @@ public class FirestoreHandler {
     RecyclerView.LayoutManager layoutManager;
     private String filterString = "NO FILTER";
     String sortString = "Title";
+    static String userID;
 
     public FirestoreHandler(RecyclerView recyclerView,  RecyclerView.LayoutManager layoutManager){
         this.recyclerView = recyclerView;
@@ -69,6 +70,8 @@ public class FirestoreHandler {
                     Books b = new Books(book.getString("isbn").toUpperCase(),
                                         book.getString("author").toUpperCase(),
                                         book.getString("title").toUpperCase());
+
+
                     if ((book.getString("status")).toUpperCase().equals("AVAILABLE")){
                         b.setStatus(book_status.AVAILABLE);
                     } else if ((book.getString("status").toUpperCase()).equals("REQUESTED")){
@@ -79,6 +82,16 @@ public class FirestoreHandler {
 
                     } else if ((book.getString("status")).toUpperCase().equals("BORROWED")){
                         b.setStatus(book_status.BORROWED);
+
+                    }
+                    if(book.getString("requests") != null){
+                        b.setBookRequests(book.getString("requests").split(","));
+                        b.setStatus(book_status.REQUESTED);
+
+                    }
+                    else
+                    {
+                        b.setBookRequests(new String[0]);
 
                     }
                     b.setImageUrl(book.getString("imageUrl"));
@@ -301,6 +314,50 @@ public class FirestoreHandler {
         return "";
 
     }
+
+    public static void setCurrentUserID()
+    {
+        String owner = getCurrentUserEmail();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Users")
+                .whereEqualTo("email","sazimi@ualberta.ca")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot user : task.getResult()) {
+                                userID = user.getId();
+                            }
+                        }
+                    }
+
+                });
+
+    }
+
+    public static void addRequest(String bookID)
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Books").document(bookID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String requests="";
+                Object request = documentSnapshot.get("requests");
+                if(request == null){
+                    requests="";
+                }
+                else{
+                    requests+=request.toString()+",";
+                }
+                requests +=getCurrentUserEmail()+":"+userID;
+                db.collection("Books").document(bookID).update("requests", requests);
+
+            }
+        });
+
+    }
+
 
 
 

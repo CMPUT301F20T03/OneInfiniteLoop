@@ -2,7 +2,9 @@ package com.example.booksies.model;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,11 +27,27 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.booksies.R;
 
+import com.example.booksies.controller.HomeFragment;
+import com.example.booksies.controller.MainActivity;
+import com.example.booksies.controller.NavigationActivity;
+import com.example.booksies.controller.SearchActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.example.booksies.model.FirestoreHandler.addRequest;
+import static com.example.booksies.model.FirestoreHandler.getCurrentUserEmail;
 
 
 /**
@@ -65,6 +86,32 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             isbnView = v.findViewById(R.id.book_isbn);
             statusView = v.findViewById(R.id.book_status);
             ownerView = v.findViewById(R.id.owner_user_name);
+            linearLayout = v.findViewById(R.id.search_layout);
+
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //Yes button clicked
+                                    addRequest("0JmjlCI3hwWfvpR5O7dp");
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Do you want to REQUEST this book?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+            }
+            });
 
 
         }

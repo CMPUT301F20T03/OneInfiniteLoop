@@ -14,8 +14,9 @@ public class Books {
     public boolean expand;
     private String imageUrl;
     private String comments;
+    private String docID;
   
-    ArrayList<DownloadManager.Request> bookRequests;
+    private String[] bookRequests;
 
 
 
@@ -87,5 +88,21 @@ public class Books {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public String getDocID() {
+        return docID;
+    }
+
+    public void setDocID(String docID) {
+        this.docID = docID;
+    }
+
+    public String[] getBookRequests() {
+        return bookRequests;
+    }
+
+    public void setBookRequests(String[] bookRequests) {
+        this.bookRequests = bookRequests;
     }
 }

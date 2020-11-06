@@ -27,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -70,10 +71,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             expand = v.findViewById(R.id.expandable_layout);
             r_view = (RecyclerView) v.findViewById(R.id.expand_rlist);
             r_view.setLayoutManager(new LinearLayoutManager(v.getContext()));
-            mAdapter = new MyAdapter_Expand(mDataset);
-            r_view.setAdapter(mAdapter);
-            r_view.setItemAnimator(new DefaultItemAnimator());
-            r_view.setHasFixedSize(true);
+
             imageView = (ImageView) v.findViewById(R.id.book_image);
             linearLayout = v.findViewById(R.id.linear_layout);
             linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +128,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         {
             holder.expand.setVisibility(View.VISIBLE);
         }
+
+        holder.mAdapter = new MyAdapter_Expand(new ArrayList(Arrays.asList(mDataset.get(position).getBookRequests())));
+        holder.r_view.setAdapter(holder.mAdapter);
+        holder.r_view.setItemAnimator(new DefaultItemAnimator());
+        holder.r_view.setHasFixedSize(true);
 
 
 

@@ -4,6 +4,7 @@ package com.example.booksies.model;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
 class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolder> {
-    public ArrayList<Books> mDataset;
+    public ArrayList<String> mDataset;
     //public static ArrayList<Boolean> expandable;
 
 
@@ -27,15 +28,18 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView request;
+
         // each data item is just a string in this case
         public MyViewHolder(View v) {
             super(v);
+            request = v.findViewById(R.id.request);
 
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter_Expand(ArrayList<Books> myDataset) {
+    public MyAdapter_Expand(ArrayList<String> myDataset) {
         mDataset = myDataset;
     }
 
@@ -55,6 +59,7 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        holder.request.setText(mDataset.get(position));
 
 
 
