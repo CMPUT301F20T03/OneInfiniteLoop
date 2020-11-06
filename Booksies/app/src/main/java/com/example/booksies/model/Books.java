@@ -15,7 +15,9 @@ public class Books {
     public boolean expand;
     private String imageUrl;
     private String comments;
-    private ArrayList<Request> bookRequests;
+    private String docID;
+  
+    private String[] bookRequests;
 
 
 
@@ -89,18 +91,19 @@ public class Books {
         this.comments = comments;
     }
 
-    public ArrayList<Request> getBookRequests() {
+    public String getDocID() {
+        return docID;
+    }
+
+    public void setDocID(String docID) {
+        this.docID = docID;
+    }
+
+    public String[] getBookRequests() {
         return bookRequests;
     }
 
-    public void setBookRequests(ArrayList<Request> bookRequests) {
+    public void setBookRequests(String[] bookRequests) {
         this.bookRequests = bookRequests;
-    }
-
-    public void addBookRequest(String owner, String borrower) {
-
-        Request new_book = new Request(owner,borrower,"Request Received");
-        this.bookRequests.add(new_book);
-
     }
 }

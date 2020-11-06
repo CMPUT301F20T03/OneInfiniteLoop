@@ -2,7 +2,9 @@ package com.example.booksies.model;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,12 +27,27 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.booksies.R;
 
+import com.example.booksies.controller.HomeFragment;
+import com.example.booksies.controller.MainActivity;
+import com.example.booksies.controller.NavigationActivity;
+import com.example.booksies.controller.SearchActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.example.booksies.model.FirestoreHandler.addRequest;
+import static com.example.booksies.model.FirestoreHandler.getCurrentUserEmail;
 
 
 /**
@@ -37,12 +57,10 @@ import java.util.Arrays;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder> {
     public ArrayList<Books> mDataset;
     //public static ArrayList<Boolean> expandable;
-    FirebaseStorage storage = FirebaseStorage.getInstance();
     Context context;
-    String url;
 
 
     // Provide a reference to the views for each data item
@@ -54,10 +72,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public TextView authorView;
         public TextView isbnView;
         public TextView statusView;
-        public ImageView imageView;
-        public RelativeLayout expand;
+        public TextView ownerView;
+
         public LinearLayout linearLayout;
-        public RecyclerView r_view;
         public RecyclerView.Adapter mAdapter;
 
 
@@ -68,38 +85,50 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             authorView = v.findViewById(R.id.book_author);
             isbnView = v.findViewById(R.id.book_isbn);
             statusView = v.findViewById(R.id.book_status);
-            expand = v.findViewById(R.id.expandable_layout);
-            r_view = (RecyclerView) v.findViewById(R.id.expand_rlist);
-            r_view.setLayoutManager(new LinearLayoutManager(v.getContext()));
+            ownerView = v.findViewById(R.id.owner_user_name);
+            linearLayout = v.findViewById(R.id.search_layout);
 
-            imageView = (ImageView) v.findViewById(R.id.book_image);
-            linearLayout = v.findViewById(R.id.linear_layout);
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    Books book = mDataset.get(getAdapterPosition());
-                    book.expand = !book.expand;
+                public void onClick(View v) {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //Yes button clicked
+                                    addRequest("0JmjlCI3hwWfvpR5O7dp");
+                                    break;
 
-                    notifyItemChanged(getAdapterPosition());
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
 
-
-                }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Do you want to REQUEST this book?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+            }
             });
+
+
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<Books> myDataset) {
+    public SearchAdapter(ArrayList<Books> myDataset) {
         this.mDataset = myDataset;
 
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SearchAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.content_home, parent, false);
+                .inflate(R.layout.search_list_content, parent, false);
 
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
@@ -110,31 +139,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.titleView.setText(mDataset.get(position).getTitle());
-        holder.authorView.setText(mDataset.get(position).getAuthor());
-        holder.isbnView.setText(mDataset.get(position).getISBN());
+        holder.titleView.setText(mDataset.get(position).getTitle().toUpperCase());
+        holder.authorView.setText(mDataset.get(position).getAuthor().toUpperCase());
+        holder.isbnView.setText(mDataset.get(position).getISBN().toUpperCase());
         holder.statusView.setText(mDataset.get(position).getStatus().toString().toLowerCase());
-
-
-        Glide.with(context)
-                .load(mDataset.get(position).getImageUrl())
-                .into(holder.imageView);
-
-
-
-        if(!mDataset.get(position).expand)
-        holder.expand.setVisibility(View.GONE);
-        else
-        {
-            holder.expand.setVisibility(View.VISIBLE);
-        }
-
-        holder.mAdapter = new MyAdapter_Expand(new ArrayList(Arrays.asList(mDataset.get(position).getBookRequests())));
-        holder.r_view.setAdapter(holder.mAdapter);
-        holder.r_view.setItemAnimator(new DefaultItemAnimator());
-        holder.r_view.setHasFixedSize(true);
-
-
+        holder.ownerView.setText(mDataset.get(position).getOwner());
 
     }
 

@@ -7,12 +7,11 @@
     android:orientation="vertical">
 
 
-
-
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_bar"
+        android:queryHint="Search by Title, Author or ISBN"
         ></SearchView>
 
     <LinearLayout
@@ -20,7 +19,8 @@
         android:layout_height="wrap_content"
         android:background="#ECE9E9"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:id="@+id/filter_dropdowns">
 
         <TextView
             android:id="@+id/filterLabel"
