@@ -39,7 +39,6 @@ import java.util.Arrays;
 
 public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.MyViewHolder> {
     public ArrayList<Books> bookList;
-    //public static ArrayList<Boolean> expandable;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     Context context;
     String url;
