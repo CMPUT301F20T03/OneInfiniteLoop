@@ -27,15 +27,6 @@
         </activity>
         <activity android:name=".controller.ViewPhotoActivity" />
         <activity
-            android:name=".model.BooksActivity"
-            android:parentActivityName=".controller.MainActivity">
-
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controller.MainActivity" />
-        </activity>
-        <activity
             android:name=".controller.NavigationActivity"
             android:exported="true" />
         <activity

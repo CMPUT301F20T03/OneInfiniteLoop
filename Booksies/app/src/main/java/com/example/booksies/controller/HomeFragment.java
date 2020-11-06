@@ -27,11 +27,10 @@ import com.example.booksies.model.FirestoreHandler;
 import com.example.booksies.model.MyAdapter;
 import com.example.booksies.R;
 
+// Class controls the home fragment
 public class HomeFragment extends Fragment {
 
-
     private  RecyclerView recyclerView;
-
 
     private RecyclerView.LayoutManager layoutManager;
     FirestoreHandler f;
@@ -114,6 +113,7 @@ public class HomeFragment extends Fragment {
         });
 
         Intent intent = new Intent(getActivity(), SearchActivity.class);
+        //on pressing the search button
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
