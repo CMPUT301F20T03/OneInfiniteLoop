@@ -14,6 +14,8 @@ import com.example.booksies.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static com.example.booksies.model.FirestoreHandler.setCurrentUserID;
+
 /**
  * This class handles the home view
  */
@@ -24,6 +26,7 @@ public class NavigationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        setCurrentUserID();
 
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.bottom_navigation); // handles switch for bottom navigation
@@ -40,6 +43,10 @@ public class NavigationActivity extends AppCompatActivity {
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,frag).addToBackStack(null).commit();
                                 break;
                             case R.id.action_request:
+                                RequestListFragment reqFrag = new RequestListFragment();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.fragment_container,reqFrag)
+                                        .addToBackStack(null).commit();
                                 break;
                             case R.id.action_add_book:
                                 AddBookFragment addBookFrag = new AddBookFragment();

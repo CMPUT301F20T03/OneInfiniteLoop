@@ -29,15 +29,11 @@ import com.example.booksies.R;
 
 public class HomeFragment extends Fragment {
 
-
     private  RecyclerView recyclerView;
-
-
     private RecyclerView.LayoutManager layoutManager;
     FirestoreHandler f;
     SearchView searchView;
     View view;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +59,6 @@ public class HomeFragment extends Fragment {
         f = new FirestoreHandler(recyclerView,  layoutManager);
         f.listBooks();
 
-
         Spinner spinnerFilter = (Spinner) view.findViewById(R.id.filter);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getActivity(),
@@ -77,7 +72,7 @@ public class HomeFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
                 f.setFilterString(parentView.getItemAtPosition(position).toString().toUpperCase());
-                f.filter();
+                f.filter();;
 
             }
 

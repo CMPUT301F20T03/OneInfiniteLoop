@@ -51,6 +51,12 @@
         <item>Borrowed</item>
     </string-array>
 
+    <string-array name="req_filter_items">
+        <item>Requested</item>
+        <item>Accepted</item>
+        <item>Borrowed</item>
+    </string-array>
+
     <string-array name="sort_items">
         <item>Title</item>
         <item>Author</item>
