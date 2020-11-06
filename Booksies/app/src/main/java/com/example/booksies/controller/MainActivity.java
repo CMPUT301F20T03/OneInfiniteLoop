@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         updateUI(currentUser);
     }
 
-
+    // Permissions required for most of the user stories. Found guide at https://developers.google.com/android/guides/permissions
     private void requestPermissions() {
         boolean coarseLocationNeeded = ActivityCompat
                 .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
