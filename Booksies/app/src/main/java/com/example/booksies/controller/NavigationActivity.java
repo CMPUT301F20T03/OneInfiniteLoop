@@ -73,6 +73,11 @@ public class NavigationActivity extends AppCompatActivity {
                                         .addToBackStack(null).commit();
                                 break;
                             case R.id.action_scanner:
+                                ScanFragment scanFragment = new ScanFragment();
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment_container, scanFragment)
+                                        .addToBackStack(null).commit();
                                 break;
                         }
                         return true;
