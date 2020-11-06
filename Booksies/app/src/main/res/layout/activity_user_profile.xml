@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textAlignment="center"
-        android:text="Username"
+        android:text="@string/username"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <Button
@@ -41,7 +41,7 @@
 
         <TextView
             android:id="@+id/phone_number_title"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_weight="1"
@@ -64,7 +64,7 @@
 
         <TextView
             android:id="@+id/email_title"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_weight="1"
@@ -73,7 +73,7 @@
 
         <TextView
             android:id="@+id/email_display"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_weight="4" />
