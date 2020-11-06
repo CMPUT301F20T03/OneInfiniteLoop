@@ -1,5 +1,7 @@
 package com.example.booksies.controller;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -26,9 +32,10 @@ public class HomeFragment extends Fragment {
 
     private  RecyclerView recyclerView;
 
+
     private RecyclerView.LayoutManager layoutManager;
     FirestoreHandler f;
-
+    SearchView searchView;
     View view;
 
 
@@ -39,12 +46,11 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView =(RecyclerView) view.findViewById(R.id.book_list);
+
         assert recyclerView != null;
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
-
-
-
+        searchView = (SearchView) view.findViewById(R.id.search_bar);
 
 
         return view;
@@ -54,8 +60,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        f = new FirestoreHandler(recyclerView,  layoutManager, view.getContext());
+        f = new FirestoreHandler(recyclerView,  layoutManager);
         f.listBooks();
+
 
         Spinner spinnerFilter = (Spinner) view.findViewById(R.id.filter);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -106,7 +113,23 @@ public class HomeFragment extends Fragment {
 
         });
 
+        Intent intent = new Intent(getActivity(), SearchActivity.class);
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false);
+                searchView.setIconifiedByDefault(false);
+                searchView.clearFocus();
+
+                startActivity(intent);
+
+
+            }
+        });
+
 
 
     }
+
+
 }
