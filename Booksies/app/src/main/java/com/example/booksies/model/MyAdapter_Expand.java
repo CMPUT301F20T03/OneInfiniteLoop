@@ -56,8 +56,6 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)

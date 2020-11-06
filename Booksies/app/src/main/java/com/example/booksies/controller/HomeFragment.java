@@ -43,10 +43,6 @@ public class HomeFragment extends Fragment {
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-
-
-
-
         return view;
 
     }
