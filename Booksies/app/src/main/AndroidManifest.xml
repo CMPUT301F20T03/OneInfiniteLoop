@@ -17,8 +17,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controller.SearchActivity" />
+
         <activity android:name=".controller.EditUserProfileActivity" />
+        <activity android:name=".controller.SearchActivity"
+            android:parentActivityName=".controller.NavigationActivity">
+
+        </activity>
         <activity android:name=".controller.ViewPhotoActivity" />
         <activity
             android:name=".model.BooksActivity"
