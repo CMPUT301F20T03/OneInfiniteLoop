@@ -18,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static com.example.booksies.model.FirestoreHandler.setCurrentUserID;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         toastMessage("Successfully signed in as User: " + user.getEmail().toString());
                                         Intent intent = new Intent(MainActivity.this, NavigationActivity.class);
+
                                         startActivity(intent);
                                     } else {
                                         // If sign in fails, display a message to the user.

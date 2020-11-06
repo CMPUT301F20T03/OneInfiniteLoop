@@ -25,6 +25,7 @@ import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -43,6 +44,7 @@ public class FirestoreHandler {
     RecyclerView.LayoutManager layoutManager;
     private String filterString = "NO FILTER";
     String sortString = "Title";
+    static String userID;
 
     public FirestoreHandler(RecyclerView recyclerView,  RecyclerView.LayoutManager layoutManager){
         this.recyclerView = recyclerView;
@@ -54,7 +56,8 @@ public class FirestoreHandler {
     public void listBooks(){
         db = FirebaseFirestore.getInstance();
 
-        db.collection("Books").whereEqualTo("owner", getCurrentUserEmail()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("Books").whereEqualTo("owner", getCurrentUserEmail())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
@@ -69,6 +72,8 @@ public class FirestoreHandler {
                     Books b = new Books(book.getString("isbn").toUpperCase(),
                                         book.getString("author").toUpperCase(),
                                         book.getString("title").toUpperCase());
+
+
                     if ((book.getString("status")).toUpperCase().equals("AVAILABLE")){
                         b.setStatus(book_status.AVAILABLE);
                     } else if ((book.getString("status").toUpperCase()).equals("REQUESTED")){
@@ -81,8 +86,22 @@ public class FirestoreHandler {
                         b.setStatus(book_status.BORROWED);
 
                     }
+
+                    if(book.get("request") != null){
+                        b.setBookRequests((ArrayList<String>)book.get("request"));
+                        db.collection("Books").document(book.getId()).update("status","REQUESTED");
+                        b.setStatus(book_status.REQUESTED);
+
+                    }
+                    else
+                    {
+                        b.setBookRequests(new ArrayList<String>());
+                        db.collection("Books").document(book.getId()).update("status","AVAILABLE");
+
+                    }
                     b.setImageUrl(book.getString("imageUrl"));
                     b.setOwner(book.getString("owner").split("@")[0]);
+                    b.setDocID(book.getId());
 
                     booksList.add(b);
 
@@ -126,12 +145,12 @@ public class FirestoreHandler {
 
                                     }
                                     b.setOwner(book.getString("owner").split("@")[0]);
+                                    b.setDocID(book.getId());
 
                                     searchList.add(b);
                                     mAdapter.notifyDataSetChanged();
 
                                 }
-
 
                             }
                         } else {
@@ -166,6 +185,7 @@ public class FirestoreHandler {
 
                                     }
                                     b.setOwner(book.getString("owner").split("@")[0]);
+                                    b.setDocID(book.getId());
 
                                     searchList.add(b);
                                     mAdapter.notifyDataSetChanged();
@@ -205,6 +225,7 @@ public class FirestoreHandler {
 
                                     }
                                     b.setOwner(book.getString("owner").split("@")[0]);
+                                    b.setDocID(book.getId());
 
                                     searchList.add(b);
                                     mAdapter.notifyDataSetChanged();
@@ -301,6 +322,47 @@ public class FirestoreHandler {
         return "";
 
     }
+
+    public static void setCurrentUserID()
+    {
+        String owner = getCurrentUserEmail();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Users")
+                .whereEqualTo("email","sazimi@ualberta.ca")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot user : task.getResult()) {
+                            userID = user.getId();
+                        }
+                    }
+                });
+
+    }
+
+    public static void addRequest(String bookID)
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Books").document(bookID).update("borrowerID",FieldValue.delete());
+        String requests=getCurrentUserEmail()+":"+userID;
+        db.collection("Books").document(bookID).update("request", FieldValue.arrayUnion(requests));
+
+    }
+
+    public static void acceptRequest(String requestor, String bookID){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Books").document(bookID).update("request",FieldValue.delete());
+        db.collection("Books").document(bookID).update("borrowerID",requestor);
+        db.collection("Books").document(bookID).update("status","ACCEPTED");
+
+    }
+
+    public static void rejectRequest(String requestor, String bookID){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Books").document(bookID).update("request",FieldValue.arrayRemove(requestor));
+
+    }
+
 
 
 
