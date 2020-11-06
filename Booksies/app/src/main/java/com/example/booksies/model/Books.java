@@ -1,7 +1,7 @@
 package com.example.booksies.model;
 
-import android.app.DownloadManager; // potentially temporary for     ArrayList<DownloadManager.Request> bookRequests        to not throw any errors
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -14,8 +14,9 @@ public class Books {
     public boolean expand;
     private String imageUrl;
     private String comments;
+    private String docID;
   
-    ArrayList<DownloadManager.Request> bookRequests;
+    private ArrayList<String> bookRequests;
 
 
 
@@ -87,5 +88,21 @@ public class Books {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public String getDocID() {
+        return docID;
+    }
+
+    public void setDocID(String docID) {
+        this.docID = docID;
+    }
+
+    public ArrayList<String> getBookRequests() {
+        return bookRequests;
+    }
+
+    public void setBookRequests(ArrayList<String> bookRequests) {
+        this.bookRequests = bookRequests;
     }
 }

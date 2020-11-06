@@ -23,6 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
+import static com.example.booksies.model.FirestoreHandler.setCurrentUserID;
+
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email= mEmail.getText().toString();
                 String pass = mPassword.getText().toString();
-                email = "sazimi@ualberta.ca";pass="123456";
+//                email = "sazimi@ualberta.ca";pass="123456";
                 if(!email.equals("") && !pass.equals("")){
                     mAuth.signInWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         toastMessage("Successfully signed in as User: " + user.getEmail().toString());
                                         Intent intent = new Intent(MainActivity.this, NavigationActivity.class);
+
                                         startActivity(intent);
                                     } else {
                                         // If sign in fails, display a message to the user.
@@ -108,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser currentUser) {
-
+ 
     }
 
     public boolean permissionsAccepted;
