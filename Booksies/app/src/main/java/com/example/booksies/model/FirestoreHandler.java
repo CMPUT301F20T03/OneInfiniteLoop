@@ -201,7 +201,7 @@ public class FirestoreHandler {
                 });
         db.collection("Books")
                 .whereEqualTo("status","AVAILABLE")
-                .whereLessThanOrEqualTo("author",  s)
+                .whereEqualTo("author",  s)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
