@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.booksies.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.annotation.Nullable;
 
@@ -37,11 +39,6 @@ public class UserProfileFragment extends Fragment {
         userEmail = view.findViewById(R.id.email_display);
         userPhone = view.findViewById(R.id.phone_number_display);
         editProfile = view.findViewById(R.id.edit_button);
-
-        //Temp
-        username.setText("BookLover123");
-        userEmail.setText("BookLover123@gmail.com");
-        userPhone.setText("(780)123-4567");
 
         return view;
 
