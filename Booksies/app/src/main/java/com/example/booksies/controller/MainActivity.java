@@ -49,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email= mEmail.getText().toString();
                 String pass = mPassword.getText().toString();
-                email = "architsiby@gmail.com";pass="123456";
+
+//                email = "sazimi@ualberta.ca";pass="123456";
+
                 if(!email.equals("") && !pass.equals("")){
                     mAuth.signInWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
@@ -105,6 +107,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser currentUser) {
-
+ 
     }
 }

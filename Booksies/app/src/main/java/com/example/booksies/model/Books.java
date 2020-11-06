@@ -4,7 +4,9 @@ package com.example.booksies.model;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-
+/**
+ * This class keeps track of the attributes of a book object
+ */
 public class Books {
     private String title;
     private String author;
