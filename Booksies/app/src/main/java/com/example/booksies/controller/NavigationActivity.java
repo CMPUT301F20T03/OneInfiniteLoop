@@ -17,10 +17,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import static com.example.booksies.model.FirestoreHandler.setCurrentUserID;
 
 /**
- * This class handles the home view
+ * This Class handles the Home view
  */
 public class NavigationActivity extends AppCompatActivity {
 
+
+    /**
+     * Responsible for creating activity when first launched
+     * @param savedInstanceState: savedInstanceState is a reference to a Bundle object passed into the onCreate method
+     */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,11 @@ public class NavigationActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    /**
+                     * Responsible for creating new fragments and setting new layouts when a
+                     * specific menu item is selected
+                     * @param item: A MenuItem which is part of the NavigationActivity at the bottom of the ui
+                     */
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
@@ -75,6 +85,10 @@ public class NavigationActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * onCreateOptionsMenu is useful for creating a new Menu.
+     * @param menu: A Menu object that is used to create Navigation Activity
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
 
@@ -82,6 +96,11 @@ public class NavigationActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * If Menu Item and in this case action_logout is selected, the instance of FirebaseAuth is
+     * signed out and this logs out the current user and a new user can thus login.
+     * @param item: A MenuItem at the top of user interface
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
 

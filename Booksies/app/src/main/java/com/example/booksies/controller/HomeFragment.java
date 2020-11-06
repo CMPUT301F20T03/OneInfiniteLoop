@@ -27,6 +27,10 @@ import com.example.booksies.model.FirestoreHandler;
 import com.example.booksies.model.MyAdapter;
 import com.example.booksies.R;
 
+/**
+ * This Class has a Recycler View and is responsible for showing all the books that are available,
+ * requested, accepted and borrowed
+ */
 public class HomeFragment extends Fragment {
 
     private  RecyclerView recyclerView;
@@ -34,6 +38,14 @@ public class HomeFragment extends Fragment {
     FirestoreHandler f;
     SearchView searchView;
     View view;
+
+
+    /**
+     * Responsible for creating view when first launched
+     * @param inflater: inflater is responsible for converting layout to view objects
+     * @param container: It is a ViewGroup object
+     * @param savedInstanceState: savedInstanceState is a reference to a Bundle object passed into the onCreate method
+     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +65,10 @@ public class HomeFragment extends Fragment {
 
     }
 
+    /**
+     * It is useful for modifying UI elements.
+     * @param savedInstanceState: savedInstanceState is a reference to a Bundle object passed into the onCreate method
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -76,6 +92,10 @@ public class HomeFragment extends Fragment {
 
             }
 
+            /**
+             * Executed when nothing is selected
+             * @param parentView: It is the parent view
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 return;
@@ -94,6 +114,12 @@ public class HomeFragment extends Fragment {
         spinnerSort.setAdapter(adapterSort);
 
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             * It is run when an Item is selected in HomeFragment.
+             * @param parentView: It is the parent view
+             * @param selectedItemView: It is the selected Item view
+             * @param position: It is useful for getting item at a certain position
+             */
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 f.setSortString(parentView.getItemAtPosition(position).toString());
@@ -101,6 +127,10 @@ public class HomeFragment extends Fragment {
 
             }
 
+            /**
+             * Executed when nothing is selected
+             * @param parentView: It is the parent view
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 return;
@@ -110,6 +140,10 @@ public class HomeFragment extends Fragment {
 
         Intent intent = new Intent(getActivity(), SearchActivity.class);
         searchView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Executed on click
+             * @param v: It is a View object
+             */
             @Override
             public void onClick(View v) {
                 searchView.setIconified(false);
