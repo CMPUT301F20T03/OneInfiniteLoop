@@ -22,12 +22,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This Class handles searchView and is responsible for querying and returning requested strings
+ */
 public class SearchActivity extends AppCompatActivity {
 
     SearchView searchView;
     RecyclerView searchRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
 
+    /**
+     * Responsible for creating activity when first launched
+     * @param savedInstanceState: savedInstanceState is a reference to a Bundle object passed into the onCreate method
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,15 +47,17 @@ public class SearchActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         searchRecyclerView.setLayoutManager(layoutManager);
         searchView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 searchView.setIconified(false);
-
-
             }
         });
 
         searchView.setOnCloseListener(new SearchView.OnCloseListener(){
+            /**
+             * Executed on close
+             */
 
             @Override
             public boolean onClose() {
@@ -58,6 +67,11 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            /**
+             * Creates new FirestoreHandler to manage search
+             * @param s: String to be searched
+             */
             @Override
             public boolean onQueryTextSubmit(String s) {
                 FirestoreHandler search = new FirestoreHandler(searchRecyclerView, layoutManager);
