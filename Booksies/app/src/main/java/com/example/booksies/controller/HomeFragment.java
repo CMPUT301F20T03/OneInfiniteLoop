@@ -118,21 +118,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 searchView.setIconified(false);
+                searchView.setIconifiedByDefault(false);
+                searchView.clearFocus();
 
                 startActivity(intent);
 
 
             }
         });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener(){
-
-            @Override
-            public boolean onClose() {
-
-                return false;
-            }
-        });
-
 
 
 

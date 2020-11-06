@@ -16,12 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -38,7 +41,6 @@ public class FirestoreHandler {
     RecyclerView recyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
-    Context context;
     private String filterString = "NO FILTER";
     String sortString = "Title";
 
@@ -46,7 +48,6 @@ public class FirestoreHandler {
         this.recyclerView = recyclerView;
 
         this.layoutManager = layoutManager;
-
 
     }
 
@@ -81,6 +82,7 @@ public class FirestoreHandler {
 
                     }
                     b.setImageUrl(book.getString("imageUrl"));
+                    b.setOwner(book.getString("owner").split("@")[0]);
 
                     booksList.add(b);
 
@@ -97,7 +99,9 @@ public class FirestoreHandler {
 
     public void handleSearch(String s){
         db = FirebaseFirestore.getInstance();
+        String owner = getCurrentUserEmail();
         db.collection("Books")
+                .whereEqualTo("status","AVAILABLE")
                 .whereEqualTo("title",  s)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -105,24 +109,28 @@ public class FirestoreHandler {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot book : task.getResult()) {
-                                Books b = new Books(book.getString("isbn").toUpperCase(),
-                                        book.getString("author").toUpperCase(),
-                                        book.getString("title").toUpperCase());
-                                if ((book.getString("status")).toUpperCase().equals("AVAILABLE")){
-                                    b.setStatus(book_status.AVAILABLE);
-                                } else if ((book.getString("status").toUpperCase()).equals("REQUESTED")){
-                                    b.setStatus(book_status.REQUESTED);
+                                if (!book.getString("owner").equals(owner)){
+                                    Books b = new Books(book.getString("isbn").toUpperCase(),
+                                            book.getString("author").toUpperCase(),
+                                            book.getString("title").toUpperCase());
+                                    if ((book.getString("status")).toUpperCase().equals("AVAILABLE")){
+                                        b.setStatus(book_status.AVAILABLE);
+                                    } else if ((book.getString("status").toUpperCase()).equals("REQUESTED")){
+                                        b.setStatus(book_status.REQUESTED);
 
-                                } else if((book.getString("status")).toUpperCase().equals("ACCEPTED")){
-                                    b.setStatus(book_status.ACCEPTED);
+                                    } else if((book.getString("status")).toUpperCase().equals("ACCEPTED")){
+                                        b.setStatus(book_status.ACCEPTED);
 
-                                } else if ((book.getString("status")).toUpperCase().equals("BORROWED")){
-                                    b.setStatus(book_status.BORROWED);
+                                    } else if ((book.getString("status")).toUpperCase().equals("BORROWED")){
+                                        b.setStatus(book_status.BORROWED);
+
+                                    }
+                                    b.setOwner(book.getString("owner").split("@")[0]);
+
+                                    searchList.add(b);
+                                    mAdapter.notifyDataSetChanged();
 
                                 }
-
-                                searchList.add(b);
-                                mAdapter.notifyDataSetChanged();
 
 
                             }
@@ -132,6 +140,85 @@ public class FirestoreHandler {
 
                     }
                 });
+        db.collection("Books")
+                .whereEqualTo("status","AVAILABLE")
+                .whereEqualTo("isbn",  s)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot book : task.getResult()) {
+                                if (!book.getString("owner").equals(owner)){
+                                    Books b = new Books(book.getString("isbn").toUpperCase(),
+                                            book.getString("author").toUpperCase(),
+                                            book.getString("title").toUpperCase());
+                                    if ((book.getString("status")).toUpperCase().equals("AVAILABLE")){
+                                        b.setStatus(book_status.AVAILABLE);
+                                    } else if ((book.getString("status").toUpperCase()).equals("REQUESTED")){
+                                        b.setStatus(book_status.REQUESTED);
+
+                                    } else if((book.getString("status")).toUpperCase().equals("ACCEPTED")){
+                                        b.setStatus(book_status.ACCEPTED);
+
+                                    } else if ((book.getString("status")).toUpperCase().equals("BORROWED")){
+                                        b.setStatus(book_status.BORROWED);
+
+                                    }
+                                    b.setOwner(book.getString("owner").split("@")[0]);
+
+                                    searchList.add(b);
+                                    mAdapter.notifyDataSetChanged();
+
+                                }
+
+                            }
+                        } else {
+                            Log.d("error", "Error getting documents: ", task.getException());
+                        }
+
+                    }
+                });
+        db.collection("Books")
+                .whereEqualTo("status","AVAILABLE")
+                .whereLessThanOrEqualTo("author",  s)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot book : task.getResult()) {
+                                if (!book.getString("owner").equals(owner)){
+                                    Books b = new Books(book.getString("isbn").toUpperCase(),
+                                            book.getString("author").toUpperCase(),
+                                            book.getString("title").toUpperCase());
+                                    if ((book.getString("status")).toUpperCase().equals("AVAILABLE")){
+                                        b.setStatus(book_status.AVAILABLE);
+                                    } else if ((book.getString("status").toUpperCase()).equals("REQUESTED")){
+                                        b.setStatus(book_status.REQUESTED);
+
+                                    } else if((book.getString("status")).toUpperCase().equals("ACCEPTED")){
+                                        b.setStatus(book_status.ACCEPTED);
+
+                                    } else if ((book.getString("status")).toUpperCase().equals("BORROWED")){
+                                        b.setStatus(book_status.BORROWED);
+
+                                    }
+                                    b.setOwner(book.getString("owner").split("@")[0]);
+
+                                    searchList.add(b);
+                                    mAdapter.notifyDataSetChanged();
+
+                                }
+
+                            }
+                        } else {
+                            Log.d("error", "Error getting documents: ", task.getException());
+                        }
+
+                    }
+                });
+
         mAdapter = new SearchAdapter(searchList);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

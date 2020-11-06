@@ -51,6 +51,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         public TextView authorView;
         public TextView isbnView;
         public TextView statusView;
+        public TextView ownerView;
 
         public LinearLayout linearLayout;
         public RecyclerView.Adapter mAdapter;
@@ -63,6 +64,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             authorView = v.findViewById(R.id.book_author);
             isbnView = v.findViewById(R.id.book_isbn);
             statusView = v.findViewById(R.id.book_status);
+            ownerView = v.findViewById(R.id.owner_user_name);
 
 
         }
@@ -90,12 +92,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.titleView.setText(mDataset.get(position).getTitle());
-        holder.authorView.setText(mDataset.get(position).getAuthor());
-        holder.isbnView.setText(mDataset.get(position).getISBN());
+        holder.titleView.setText(mDataset.get(position).getTitle().toUpperCase());
+        holder.authorView.setText(mDataset.get(position).getAuthor().toUpperCase());
+        holder.isbnView.setText(mDataset.get(position).getISBN().toUpperCase());
         holder.statusView.setText(mDataset.get(position).getStatus().toString().toLowerCase());
-
-
+        holder.ownerView.setText(mDataset.get(position).getOwner());
 
     }
 
