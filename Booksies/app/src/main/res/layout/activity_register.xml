@@ -45,7 +45,7 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16d"
+            android:layout_marginBottom="16dp"
             android:ems="10"
             android:fontFamily="sans-serif-condensed-medium"
             android:hint="@string/example_gmail_com"
