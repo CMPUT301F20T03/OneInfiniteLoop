@@ -128,7 +128,7 @@ public class FirestoreHandler {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot book : task.getResult()) {
-                                if (book.getString("owner").equals(owner)){
+                                if (!book.getString("owner").equals(owner)){
                                     Books b = new Books(book.getString("isbn").toUpperCase(),
                                             book.getString("author").toUpperCase(),
                                             book.getString("title").toUpperCase());
@@ -168,7 +168,7 @@ public class FirestoreHandler {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot book : task.getResult()) {
-                                if (book.getString("owner").equals(owner)){
+                                if (!book.getString("owner").equals(owner)){
                                     Books b = new Books(book.getString("isbn").toUpperCase(),
                                             book.getString("author").toUpperCase(),
                                             book.getString("title").toUpperCase());
@@ -208,7 +208,7 @@ public class FirestoreHandler {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot book : task.getResult()) {
-                                if (book.getString("owner").equals(owner)){
+                                if (!book.getString("owner").equals(owner)){
                                     Books b = new Books(book.getString("isbn").toUpperCase(),
                                             book.getString("author").toUpperCase(),
                                             book.getString("title").toUpperCase());
@@ -353,6 +353,7 @@ public class FirestoreHandler {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Books").document(bookID).update("request",FieldValue.delete());
         db.collection("Books").document(bookID).update("borrowerID",requestor);
+        db.collection("Books").document(bookID).update("status","ACCEPTED");
 
     }
 
