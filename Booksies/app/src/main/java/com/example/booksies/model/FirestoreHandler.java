@@ -112,8 +112,6 @@ public class FirestoreHandler {
                             else
                             {
                                 b.setBookRequests(new ArrayList<String>());
-                                db.collection("Books").document(book.getId()).update("status","AVAILABLE");
-
                             }
                             b.setImageUrl(book.getString("imageUrl"));
                             b.setOwner(book.getString("owner").split("@")[0]);
@@ -274,7 +272,7 @@ public class FirestoreHandler {
      */
 
     public void reqfilter(){
-        if(!filterString.equals("NO FILTER")){
+        if(!filterString.equals("REQUESTED")){
             filteredList.clear();
             for (Books book:booksList){
                 if ((book.getStatus().toString().toUpperCase()).equals(filterString)){
