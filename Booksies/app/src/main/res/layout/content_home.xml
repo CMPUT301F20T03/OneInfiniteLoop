@@ -48,7 +48,7 @@
             android:paddingEnd="20dp"
             android:text="Book Status"
             android:textAllCaps="true"
-            android:textColor="#009688"
+            android:textColor="#030304"
             android:textSize="30sp"
             android:textStyle="bold" />
 

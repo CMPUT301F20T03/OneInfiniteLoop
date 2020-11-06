@@ -25,6 +25,7 @@ import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -55,7 +56,8 @@ public class FirestoreHandler {
     public void listBooks(){
         db = FirebaseFirestore.getInstance();
 
-        db.collection("Books").whereEqualTo("owner", getCurrentUserEmail()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("Books").whereEqualTo("owner", getCurrentUserEmail())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
@@ -84,18 +86,22 @@ public class FirestoreHandler {
                         b.setStatus(book_status.BORROWED);
 
                     }
-                    if(book.getString("requests") != null){
-                        b.setBookRequests(book.getString("requests").split(","));
+
+                    if(book.get("request") != null){
+                        b.setBookRequests((ArrayList<String>)book.get("request"));
+                        db.collection("Books").document(book.getId()).update("status","REQUESTED");
                         b.setStatus(book_status.REQUESTED);
 
                     }
                     else
                     {
-                        b.setBookRequests(new String[0]);
+                        b.setBookRequests(new ArrayList<String>());
+                        db.collection("Books").document(book.getId()).update("status","AVAILABLE");
 
                     }
                     b.setImageUrl(book.getString("imageUrl"));
                     b.setOwner(book.getString("owner").split("@")[0]);
+                    b.setDocID(book.getId());
 
                     booksList.add(b);
 
@@ -122,7 +128,7 @@ public class FirestoreHandler {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot book : task.getResult()) {
-                                if (!book.getString("owner").equals(owner)){
+                                if (book.getString("owner").equals(owner)){
                                     Books b = new Books(book.getString("isbn").toUpperCase(),
                                             book.getString("author").toUpperCase(),
                                             book.getString("title").toUpperCase());
@@ -139,12 +145,12 @@ public class FirestoreHandler {
 
                                     }
                                     b.setOwner(book.getString("owner").split("@")[0]);
+                                    b.setDocID(book.getId());
 
                                     searchList.add(b);
                                     mAdapter.notifyDataSetChanged();
 
                                 }
-
 
                             }
                         } else {
@@ -162,7 +168,7 @@ public class FirestoreHandler {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot book : task.getResult()) {
-                                if (!book.getString("owner").equals(owner)){
+                                if (book.getString("owner").equals(owner)){
                                     Books b = new Books(book.getString("isbn").toUpperCase(),
                                             book.getString("author").toUpperCase(),
                                             book.getString("title").toUpperCase());
@@ -179,6 +185,7 @@ public class FirestoreHandler {
 
                                     }
                                     b.setOwner(book.getString("owner").split("@")[0]);
+                                    b.setDocID(book.getId());
 
                                     searchList.add(b);
                                     mAdapter.notifyDataSetChanged();
@@ -201,7 +208,7 @@ public class FirestoreHandler {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot book : task.getResult()) {
-                                if (!book.getString("owner").equals(owner)){
+                                if (book.getString("owner").equals(owner)){
                                     Books b = new Books(book.getString("isbn").toUpperCase(),
                                             book.getString("author").toUpperCase(),
                                             book.getString("title").toUpperCase());
@@ -218,6 +225,7 @@ public class FirestoreHandler {
 
                                     }
                                     b.setOwner(book.getString("owner").split("@")[0]);
+                                    b.setDocID(book.getId());
 
                                     searchList.add(b);
                                     mAdapter.notifyDataSetChanged();
@@ -322,16 +330,12 @@ public class FirestoreHandler {
         db.collection("Users")
                 .whereEqualTo("email","sazimi@ualberta.ca")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot user : task.getResult()) {
-                                userID = user.getId();
-                            }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot user : task.getResult()) {
+                            userID = user.getId();
                         }
                     }
-
                 });
 
     }
@@ -339,22 +343,22 @@ public class FirestoreHandler {
     public static void addRequest(String bookID)
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Books").document(bookID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String requests="";
-                Object request = documentSnapshot.get("requests");
-                if(request == null){
-                    requests="";
-                }
-                else{
-                    requests+=request.toString()+",";
-                }
-                requests +=getCurrentUserEmail()+":"+userID;
-                db.collection("Books").document(bookID).update("requests", requests);
+        db.collection("Books").document(bookID).update("borrowerID",FieldValue.delete());
+        String requests=getCurrentUserEmail()+":"+userID;
+        db.collection("Books").document(bookID).update("request", FieldValue.arrayUnion(requests));
 
-            }
-        });
+    }
+
+    public static void acceptRequest(String requestor, String bookID){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Books").document(bookID).update("request",FieldValue.delete());
+        db.collection("Books").document(bookID).update("borrowerID",requestor);
+
+    }
+
+    public static void rejectRequest(String requestor, String bookID){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Books").document(bookID).update("request",FieldValue.arrayRemove(requestor));
 
     }
 

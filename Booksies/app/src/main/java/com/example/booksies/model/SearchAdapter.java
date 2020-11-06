@@ -58,7 +58,7 @@ import static com.example.booksies.model.FirestoreHandler.getCurrentUserEmail;
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder> {
-    public ArrayList<Books> mDataset;
+    public ArrayList<Books> bookList;
     //public static ArrayList<Boolean> expandable;
     Context context;
 
@@ -88,38 +88,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             ownerView = v.findViewById(R.id.owner_user_name);
             linearLayout = v.findViewById(R.id.search_layout);
 
-            linearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which){
-                                case DialogInterface.BUTTON_POSITIVE:
-                                    //Yes button clicked
-                                    addRequest("0JmjlCI3hwWfvpR5O7dp");
-                                    break;
 
-                                case DialogInterface.BUTTON_NEGATIVE:
-                                    //No button clicked
-                                    break;
-                            }
-                        }
-                    };
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage("Do you want to REQUEST this book?").setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener).show();
-            }
-            });
 
 
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public SearchAdapter(ArrayList<Books> myDataset) {
-        this.mDataset = myDataset;
+    public SearchAdapter(ArrayList<Books> bookList) {
+        this.bookList = bookList;
 
     }
 
@@ -139,18 +116,44 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.titleView.setText(mDataset.get(position).getTitle().toUpperCase());
-        holder.authorView.setText(mDataset.get(position).getAuthor().toUpperCase());
-        holder.isbnView.setText(mDataset.get(position).getISBN().toUpperCase());
-        holder.statusView.setText(mDataset.get(position).getStatus().toString().toLowerCase());
-        holder.ownerView.setText(mDataset.get(position).getOwner());
+        holder.titleView.setText(bookList.get(position).getTitle().toUpperCase());
+        holder.authorView.setText(bookList.get(position).getAuthor().toUpperCase());
+        holder.isbnView.setText(bookList.get(position).getISBN().toUpperCase());
+        holder.statusView.setText(bookList.get(position).getStatus().toString().toLowerCase());
+        holder.ownerView.setText(bookList.get(position).getOwner());
+
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Yes button clicked
+                                addRequest(bookList.get(position).getDocID());
+
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Do you want to REQUEST this book?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+            }
+        });
 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return bookList.size();
     }
 }
 

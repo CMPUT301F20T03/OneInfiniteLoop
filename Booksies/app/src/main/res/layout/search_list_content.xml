@@ -41,13 +41,17 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/book_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/book_status"
-            android:text="Book Status"
-            android:textSize="22sp"
+            android:fontFamily="monospace"
+            android:padding="1dp"
             android:paddingEnd="20dp"
-            android:padding="1dp" />
+            android:text="Book Status"
+            android:textAllCaps="true"
+            android:textColor="#030304"
+            android:textSize="30sp"
+            android:textStyle="bold"  />
 
     </LinearLayout>
     <LinearLayout

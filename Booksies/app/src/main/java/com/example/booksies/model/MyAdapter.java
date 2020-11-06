@@ -38,7 +38,7 @@ import java.util.Arrays;
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    public ArrayList<Books> mDataset;
+    public ArrayList<Books> bookList;
     //public static ArrayList<Boolean> expandable;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     Context context;
@@ -77,7 +77,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Books book = mDataset.get(getAdapterPosition());
+                    Books book = bookList.get(getAdapterPosition());
                     book.expand = !book.expand;
 
                     notifyItemChanged(getAdapterPosition());
@@ -89,8 +89,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<Books> myDataset) {
-        this.mDataset = myDataset;
+    public MyAdapter(ArrayList<Books> bookList) {
+        this.bookList = bookList;
 
     }
 
@@ -110,26 +110,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.titleView.setText(mDataset.get(position).getTitle());
-        holder.authorView.setText(mDataset.get(position).getAuthor());
-        holder.isbnView.setText(mDataset.get(position).getISBN());
-        holder.statusView.setText(mDataset.get(position).getStatus().toString().toLowerCase());
+        holder.titleView.setText(bookList.get(position).getTitle());
+        holder.authorView.setText(bookList.get(position).getAuthor());
+        holder.isbnView.setText(bookList.get(position).getISBN());
+        holder.statusView.setText(bookList.get(position).getStatus().toString().toLowerCase());
 
 
         Glide.with(context)
-                .load(mDataset.get(position).getImageUrl())
+                .load(bookList.get(position).getImageUrl())
                 .into(holder.imageView);
 
 
 
-        if(!mDataset.get(position).expand)
+        if(!bookList.get(position).expand)
         holder.expand.setVisibility(View.GONE);
         else
         {
             holder.expand.setVisibility(View.VISIBLE);
         }
 
-        holder.mAdapter = new MyAdapter_Expand(new ArrayList(Arrays.asList(mDataset.get(position).getBookRequests())));
+        holder.mAdapter = new MyAdapter_Expand(bookList.get(position).getBookRequests(),bookList.get(position).getDocID());
         holder.r_view.setAdapter(holder.mAdapter);
         holder.r_view.setItemAnimator(new DefaultItemAnimator());
         holder.r_view.setHasFixedSize(true);
@@ -141,7 +141,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return bookList.size();
     }
 }
 
