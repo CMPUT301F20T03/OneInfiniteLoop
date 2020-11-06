@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
                 f.setFilterString(parentView.getItemAtPosition(position).toString().toUpperCase());
-                f.filter();
+                f.filter();;
 
             }
 
