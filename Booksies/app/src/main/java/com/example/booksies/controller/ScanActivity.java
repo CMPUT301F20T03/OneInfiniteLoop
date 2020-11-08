@@ -100,34 +100,6 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     /**
-     * Process the result of the barcode, if the ISBN if found return the ISBN code to the calling
-     * activity. Otherwise, display the correct error message. Adapted from
-     * https://firebase.google.com/docs/ml-kit/android/read-barcodes
-     * @param firebaseVisionBarcodes: the list of barcodes
-     */
-    private void processResult(List<FirebaseVisionBarcode> firebaseVisionBarcodes) {
-        if (firebaseVisionBarcodes.size() == 0){
-            Toast.makeText(this, "Nothing found to scan. Please try again", Toast.LENGTH_SHORT).show();
-        }
-
-        for (FirebaseVisionBarcode barcode : firebaseVisionBarcodes){
-//            Log.d(TAG, "onSuccess: take it NICE");
-            if (barcode.getValueType() == FirebaseVisionBarcode.TYPE_ISBN){
-//                Log.d(TAG, "onSuccess: NICE");
-                Toast.makeText(this, "processing   " + barcode.getDisplayValue(), Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent();
-                intent.putExtra("ISBN", barcode.getDisplayValue());
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-                return;
-            }
-        }
-        Toast.makeText(this, "Found improper barcode. Please try again", Toast.LENGTH_SHORT).show();
-        scanImage();
-    }
-
-    /**
      * Run when Scanner activity returns result
      * @param requestCode: requested Code to know about the request made
      * @param resultCode: result code which shows if a result was OK or NOT or CANCELLED
