@@ -242,6 +242,8 @@ public class AddBookFragment extends Fragment {
         final String isbnStr = isbnEditText.getText().toString();
         String commentStr = commentsEditText.getText().toString();
         final HashMap<String, String> data = new HashMap<>();
+
+        String myId = collectionReference.document().getId();
         if (titleStr.length() > 0 && authorStr.length() > 0 && isbnStr.length() > 0) {
             data.put("title", titleStr);
             data.put("author", authorStr);
@@ -249,6 +251,7 @@ public class AddBookFragment extends Fragment {
             data.put("status", "AVAILABLE");
             data.put("comment", commentStr);
             data.put("owner", currentUserId);
+            data.put("id", myId);
         } else {
             Toast toast = Toast.makeText(getActivity(),
                     "Adding a book requires\n Title, Author and ISBN", Toast.LENGTH_LONG);

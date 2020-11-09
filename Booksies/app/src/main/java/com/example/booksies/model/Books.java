@@ -14,6 +14,7 @@ public class Books {
     public boolean expand;
     private String imageUrl;
     private String comments;
+    private String id;
   
     ArrayList<DownloadManager.Request> bookRequests;
 
@@ -89,5 +90,7 @@ public class Books {
         this.comments = comments;
     }
 
+    public String getId() { return id; }
 
+    public void setId(String id) { this.id = id; }
 }

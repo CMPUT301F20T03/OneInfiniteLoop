@@ -1,4 +1,4 @@
-package com.example.booksies;
+package com.example.booksies.controller;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,6 +26,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.example.booksies.R;
+import com.example.booksies.model.Books;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -304,7 +306,9 @@ public class EditBookFragment extends Fragment {
 
 
     public void updateBook(Books newBook) {
-        collectionReference.document();
+        db = FirebaseFirestore.getInstance();
+        db.collection("Books").whereEqualTo("id", newBook.getId());
+
     }
 
 }

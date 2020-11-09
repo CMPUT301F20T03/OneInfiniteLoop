@@ -1,5 +1,9 @@
 package com.example.booksies.controller;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +30,10 @@ public class HomeFragment extends Fragment {
 
 
     private  RecyclerView recyclerView;
-
+    private ColorDrawable swipeBackgroundDelete = new ColorDrawable(Color.parseColor("#FF0000"));
+    private ColorDrawable swipeBackgroundEdit = new ColorDrawable(Color.parseColor("#30BEFF"));
+    private Drawable deleteIcon;
+    private Drawable editIcon;
     private RecyclerView.LayoutManager layoutManager;
     FirestoreHandler f;
 
