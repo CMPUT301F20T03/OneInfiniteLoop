@@ -1,6 +1,4 @@
-package com.example.booksies;
-
-import android.app.DownloadManager;
+package com.example.booksies.model;
 
 import java.util.ArrayList;
 

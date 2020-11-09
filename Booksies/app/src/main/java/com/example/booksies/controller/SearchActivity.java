@@ -1,4 +1,4 @@
-package com.example.booksies;
+package com.example.booksies.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.AutoCompleteTextView;
+
+import com.example.booksies.model.Books;
+import com.example.booksies.model.MyAdapter;
+import com.example.booksies.R;
+import com.example.booksies.model.book_status;
 
 import java.util.ArrayList;
 import java.util.Arrays;

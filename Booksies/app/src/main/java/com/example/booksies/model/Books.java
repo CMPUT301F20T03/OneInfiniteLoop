@@ -1,15 +1,9 @@
-package com.example.booksies;
+package com.example.booksies.model;
 
 import android.app.DownloadManager; // potentially temporary for     ArrayList<DownloadManager.Request> bookRequests        to not throw any errors
 
 import java.util.ArrayList;
-// enum for status
-enum book_status {
-    AVAILABLE,
-    REQUESTED,
-    ACCEPTED,
-    BORROWED
-}
+
 
 public class Books {
     private String title;
