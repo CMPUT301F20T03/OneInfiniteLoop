@@ -1,12 +1,13 @@
 /*
 * AddBookFragment inflates activity_add_book.xml
 *
-* Implements US 01.01.01 and 08.01.01
+* Implements US 01.01.01, 08.01.01, and 08.03.01
 *
-* Only things missing in this activity is being able to view and delete attached image and
-* adding the owner of the book to the Firestore.
+* Only things missing in this activity is being able to delete attached image
 *
-*
+* Acknowledgments
+* https://developer.android.com/training/camera/photobasics
+* https://medium.com/@hasangi/capture-image-or-choose-from-gallery-photos-implementation-for-android-a5ca59bc6883
  */
 
 

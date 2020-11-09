@@ -3,37 +3,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/custom_border"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/search_layout"
+    android:background="@drawable/custom_border">
 
 
     <TextView
-        android:id="@+id/title_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="1dp"
+        android:id="@+id/title_name"
         android:text="Title"
-        android:textColor="#000"
         android:textSize="22sp"
-        android:textStyle="bold" />
-
+        android:padding="1dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
         <TextView
-            android:id="@+id/book_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="1dp"
+            android:id="@+id/book_name"
             android:text="Book"
+            android:textSize="17sp"
+            android:padding="1dp"
             android:textColor="#000"
-            android:textSize="17sp" />
-
+            />
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -50,10 +51,9 @@
             android:textAllCaps="true"
             android:textColor="#030304"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"  />
 
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,73 +63,89 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="1">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/author_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:text="Author"
-                android:textColor="#000"
                 android:textSize="22sp"
-                android:textStyle="bold" />
+                android:padding="1dp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/book_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:text="Book"
+                android:textSize="17sp"
+                android:padding="1dp"
                 android:textColor="#000"
-                android:textSize="17sp" />
+                />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/isbn_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:text="ISBN"
-                android:textColor="#000"
                 android:textSize="22sp"
-                android:textStyle="bold" />
-
+                android:padding="1dp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                />
             <TextView
-                android:id="@+id/book_isbn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
+                android:id="@+id/book_isbn"
                 android:text="Book"
+                android:textSize="17sp"
+                android:padding="1dp"
                 android:textColor="#000"
-                android:textSize="17sp" />
+                />
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/book_image"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:orientation="vertical"
+            android:layout_weight="2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/owner_label"
+                android:text="Owner"
+                android:textSize="22sp"
+                android:padding="1dp"
+                android:textColor="#000"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/owner_user_name"
+                android:text="owner"
+                android:textSize="17sp"
+                android:padding="1dp"
+                android:textColor="#000"
+
+                />
+
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/expandable_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/expand_rlist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/content_home_expand">
-
-        </androidx.recyclerview.widget.RecyclerView>
 
 
-    </RelativeLayout>
 </LinearLayout>
 

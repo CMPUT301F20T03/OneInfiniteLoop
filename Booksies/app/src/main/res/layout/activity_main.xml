@@ -33,7 +33,7 @@
         android:layout_marginBottom="32dp"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
-        android:hint="@string/username"
+        android:hint="@string/email"
         android:inputType="textPersonName"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"

@@ -2,8 +2,11 @@ package com.example.booksies.controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +21,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import static com.example.booksies.model.FirestoreHandler.setCurrentUserID;
+
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -26,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     //UI references
     private EditText mEmail,mPassword;
     private Button btnSignIn,btnRegister;
+
+    public boolean permissionsAccepted;
+    private static final int PERMISSIONS_RC = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +51,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        permissionsAccepted = false;
+        requestPermissions();
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email= mEmail.getText().toString();
                 String pass = mPassword.getText().toString();
+
 //                email = "sazimi@ualberta.ca";pass="123456";
+
                 if(!email.equals("") && !pass.equals("")){
                     mAuth.signInWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
@@ -59,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         toastMessage("Successfully signed in as User: " + user.getEmail().toString());
                                         Intent intent = new Intent(MainActivity.this, NavigationActivity.class);
+
                                         startActivity(intent);
                                     } else {
                                         // If sign in fails, display a message to the user.
@@ -101,7 +116,46 @@ public class MainActivity extends AppCompatActivity {
         updateUI(currentUser);
     }
 
-    private void updateUI(FirebaseUser currentUser) {
+    // Permissions required for most of the user stories. Found guide at https://developers.google.com/android/guides/permissions
+    private void requestPermissions() {
+        boolean coarseLocationNeeded = ActivityCompat
+                .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED;
+        boolean fineLocationNeeded = ActivityCompat
+                .checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED;
+        boolean cameraNeeded = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED;
+        boolean storageNeeded = ActivityCompat
+                .checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED;
 
+        ArrayList<String> permissions = new ArrayList<>();
+
+        if (coarseLocationNeeded){
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (fineLocationNeeded){
+            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (cameraNeeded){
+            permissions.add(Manifest.permission.CAMERA);
+        }
+        if (storageNeeded){
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (permissions.size() > 0){
+            ActivityCompat.requestPermissions(this,
+                    permissions.toArray(new String[permissions.size()]),
+                    PERMISSIONS_RC);
+        }
+        else{
+            permissionsAccepted = true;
+        }
+    }
+
+    private void updateUI(FirebaseUser currentUser) {
+ 
     }
 }
