@@ -67,6 +67,7 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            FirestoreHandler search = new FirestoreHandler(searchRecyclerView, layoutManager);
 
             /**
              * Creates new FirestoreHandler to manage search
@@ -74,7 +75,7 @@ public class SearchActivity extends AppCompatActivity {
              */
             @Override
             public boolean onQueryTextSubmit(String s) {
-                FirestoreHandler search = new FirestoreHandler(searchRecyclerView, layoutManager);
+
                 search.handleSearch(s);
 
                 return false;
@@ -82,6 +83,13 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
+                if(!s.equals("")){
+                    search.handleSearch(s);
+                } else {
+                    search.clearSearchResults();
+                }
+
+
                 return false;
             }
         });
