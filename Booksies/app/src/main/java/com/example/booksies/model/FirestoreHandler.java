@@ -45,12 +45,14 @@ public class FirestoreHandler {
     FirebaseFirestore db;
     ArrayList<Books> booksList = new ArrayList<Books>();
     ArrayList<Books> filteredList = new ArrayList<Books>();
-    ArrayList<Books> searchList = new ArrayList<Books>();
+    private ArrayList<Books> searchList = new ArrayList<Books>();
+
     RecyclerView recyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
     private String filterString = "NO FILTER";
     private String sortString = "Title";
+    private String query;
     static String userID;
 
     /**
@@ -130,6 +132,12 @@ public class FirestoreHandler {
                 });
     }
 
+    public void clearSearchResults(){
+        searchList.clear();
+        mAdapter.notifyDataSetChanged();
+
+    }
+
 
 
 
@@ -141,30 +149,15 @@ public class FirestoreHandler {
     public void handleSearch(String s){
         db = FirebaseFirestore.getInstance();
         String owner = getCurrentUserEmail();
+        query = s.toLowerCase();
         ArrayList<Task<QuerySnapshot>> tasks = new ArrayList<>();
         Task<QuerySnapshot> q1 = db.collection("Books")
                 .whereEqualTo("status","AVAILABLE")
-                .whereEqualTo("title",  s)
-                .get();
-        tasks.add(q1);
-
-        Task<QuerySnapshot> q2 =  db.collection("Books")
-                .whereEqualTo("status","AVAILABLE")
-                .whereEqualTo("isbn",  s)
-                .get();
-
-        tasks.add(q2);
-        Task<QuerySnapshot> q3 = db.collection("Books")
-                .whereEqualTo("status","AVAILABLE")
-                .whereEqualTo("author",  s)
-                .get();
-        tasks.add(q3);
-
-        for(Task<QuerySnapshot> q: tasks){
-            q.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
+                        searchList.clear();
                         for (QueryDocumentSnapshot book : task.getResult()) {
                             if (!book.getString("owner").equals(owner)){
                                 Books b = new Books(book.getString("isbn").toUpperCase(),
@@ -184,8 +177,22 @@ public class FirestoreHandler {
                                 }
                                 b.setOwner(book.getString("owner").split("@")[0]);
                                 b.setDocID(book.getId());
+                                String textTitle = b.getTitle().toLowerCase();
+                                String textISBN = b.getISBN().toLowerCase();
+                                String textAuthor = b.getAuthor().toLowerCase();
 
-                                searchList.add(b);
+
+                                if (textTitle.contains(query)) {
+                                    searchList.add(b);
+                                }
+                                else if (textISBN.contains(query)) {
+                                    searchList.add(b);
+                                }
+                                else if (textAuthor.contains(query)) {
+                                    searchList.add(b);
+                                }
+
+
                                 mAdapter.notifyDataSetChanged();
 
                             }
@@ -197,7 +204,7 @@ public class FirestoreHandler {
 
                 }
             });
-        }
+
 
         mAdapter = new SearchAdapter(searchList);
         recyclerView.setAdapter(mAdapter);
