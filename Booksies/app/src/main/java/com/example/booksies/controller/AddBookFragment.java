@@ -232,6 +232,7 @@ public class AddBookFragment extends Fragment {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     String imageUrl = data.getStringExtra("imageUrl");
                     if (imageUrl.length() == 0) {
+                        mImageUri = null;
                         addPhotoButton.setVisibility(View.VISIBLE);
                         cameraImageView.setImageURI(null);
                         cameraImageView.setVisibility(View.GONE);
