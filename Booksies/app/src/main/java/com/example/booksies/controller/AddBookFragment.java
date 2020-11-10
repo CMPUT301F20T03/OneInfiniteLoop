@@ -32,6 +32,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,6 +45,7 @@ import com.example.booksies.R;
 import com.example.booksies.model.FirestoreHandler;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -77,6 +79,7 @@ public class AddBookFragment extends Fragment {
     Uri mImageUri;
     CollectionReference collectionReference;
     String downloadableUrl;
+    BottomNavigationView bottomNavigation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -310,6 +313,10 @@ public class AddBookFragment extends Fragment {
                     });
         }
         //Go back to whatever called this fragment
-        getFragmentManager().popBackStack();
+        View action = getActivity().findViewById(R.id.action_home);
+        action.performClick();
+
+
     }
+
 }
