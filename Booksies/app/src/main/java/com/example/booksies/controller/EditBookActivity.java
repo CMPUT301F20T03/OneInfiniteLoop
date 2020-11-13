@@ -118,7 +118,6 @@ public class EditBookActivity extends AppCompatActivity {
         authorEditText.setText(author);
         isbnEditText.setText(isbn);
         commentsEditText.setText(comments);
-//        cameraImageView.
 
         Log.d("EDIT LOG: ", "---------- " + title + " " + author + " " + isbn + " " + comments +  " " + imageURL + " ---------- ");
 
