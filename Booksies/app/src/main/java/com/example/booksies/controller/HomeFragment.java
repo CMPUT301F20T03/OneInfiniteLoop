@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     FirestoreHandler f;
-    SearchView searchView;
+    LinearLayout searchView;
     View view;
     public LinearLayout linearLayout;
     FirebaseFirestore db;
@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
         assert recyclerView != null;
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        searchView = (SearchView) view.findViewById(R.id.search_bar);
+        searchView = (LinearLayout) view.findViewById(R.id.search_bar);
 
 //        linearLayout = view.findViewById(R.id.linear_layout);
 //        Log.d("SOME TAG", linearLayout + " --------------------------------------------");
@@ -151,6 +151,8 @@ public class HomeFragment extends Fragment {
 
         });
 
+
+
         Intent intent = new Intent(getActivity(), SearchActivity.class);
         searchView.setOnClickListener(new View.OnClickListener() {
             /**
@@ -159,15 +161,15 @@ public class HomeFragment extends Fragment {
              */
             @Override
             public void onClick(View v) {
-                searchView.setIconified(false);
-                searchView.setIconifiedByDefault(false);
-                searchView.clearFocus();
+
 
                 startActivity(intent);
 
 
+
             }
         });
+
 
 
 

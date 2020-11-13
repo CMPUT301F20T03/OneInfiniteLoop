@@ -32,6 +32,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,6 +45,7 @@ import com.example.booksies.R;
 import com.example.booksies.model.FirestoreHandler;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -61,6 +63,7 @@ import java.util.HashMap;
 public class AddBookFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_IMAGE_UPLOAD = 2;
+    static final int REQUEST_VIEW_IMAGE = 3;
 
     View mView;
     Button addButton;
@@ -77,6 +80,7 @@ public class AddBookFragment extends Fragment {
     Uri mImageUri;
     CollectionReference collectionReference;
     String downloadableUrl;
+    BottomNavigationView bottomNavigation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -132,7 +136,7 @@ public class AddBookFragment extends Fragment {
                 public void onClick(View view) {
                     Intent viewImageIntent = new Intent(getActivity(), ViewPhotoActivity.class);
                     viewImageIntent.putExtra("imageUrl", mImageUri.toString());
-                    startActivity(viewImageIntent);
+                    startActivityForResult(viewImageIntent, REQUEST_VIEW_IMAGE);
                 }
             });
         return mView;
@@ -213,27 +217,37 @@ public class AddBookFragment extends Fragment {
         Log.d("RequestCode", Integer.toString(requestCode));
         cameraImageView = mView.findViewById(R.id.cameraImageView);
         if (resultCode != Activity.RESULT_CANCELED) {
-            if(requestCode == REQUEST_IMAGE_CAPTURE) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     cameraImageView.setImageURI(mImageUri);
+                    addPhotoButton.setVisibility(View.GONE);
+                    cameraImageView.setVisibility(View.VISIBLE);
                 }
-            }
-            else{
+            } else if (requestCode == REQUEST_IMAGE_UPLOAD) {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     Uri imageUri = data.getData();
                     cameraImageView.setImageURI(imageUri);
                     mImageUri = imageUri;
+                    addPhotoButton.setVisibility(View.GONE);
+                    cameraImageView.setVisibility(View.VISIBLE);
+                }
+            } else {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    String imageUrl = data.getStringExtra("imageUrl");
+                    if (imageUrl.length() == 0) {
+                        addPhotoButton.setVisibility(View.VISIBLE);
+                        cameraImageView.setImageURI(null);
+                        cameraImageView.setVisibility(View.GONE);
+                        }
+                    }
                 }
             }
-            addPhotoButton.setVisibility(View.GONE);
-            cameraImageView.setVisibility(View.VISIBLE);
         }
-    }
 
      // Function for adding a book to Firestore
      // Puts into a document called Books with fields:
      // title, author, isbn, comment, owner, status, and imageUrl
-    private void addBookToFirestore() {
+    private void addBookToFirestore(){
         //final String currentUserId = mAuth.getCurrentUser().getUid();
         //This is Temporary
         final String currentUserId = FirestoreHandler.getCurrentUserEmail();
@@ -313,6 +327,10 @@ public class AddBookFragment extends Fragment {
                     });
         }
         //Go back to whatever called this fragment
-        getFragmentManager().popBackStack();
+        View action = getActivity().findViewById(R.id.action_home);
+        action.performClick();
+
+
     }
+
 }

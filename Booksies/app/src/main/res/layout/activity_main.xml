@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9EF34444"
+    android:background="@color/colorBackground"
     tools:context=".controller.MainActivity">
 
     <TextView
@@ -63,6 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="388dp"
         android:background="@android:color/holo_blue_dark"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorAccent"
         android:fontFamily="monospace"
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"

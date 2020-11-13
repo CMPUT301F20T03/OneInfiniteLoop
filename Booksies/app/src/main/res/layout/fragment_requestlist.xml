@@ -12,7 +12,8 @@
         android:text="Requests"
         android:textAllCaps="true"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:padding="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
