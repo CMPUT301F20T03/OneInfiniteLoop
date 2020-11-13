@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -17,29 +18,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchActivity" />
+
+        <activity android:name=".controller.EditUserProfileActivity" />
+        <activity android:name=".controller.EditBookActivity" />
+        <activity android:name=".controller.SearchActivity"
+            android:parentActivityName=".controller.NavigationActivity">
+
+        </activity>
+        <activity android:name=".controller.ViewPhotoActivity" />
         <activity
-            android:name=".BooksActivity"
-            android:parentActivityName=".MainActivity">
+            android:name=".model.BooksActivity"
+            android:parentActivityName=".controller.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".controller.MainActivity" />
         </activity>
         <activity
-            android:name=".NavigationActivity"
+            android:name=".controller.NavigationActivity"
             android:exported="true" />
         <activity
-            android:name=".RegisterActivity"
-            android:parentActivityName=".MainActivity">
+            android:name=".controller.RegisterActivity"
+            android:parentActivityName=".controller.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".controller.MainActivity" />
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".controller.ScanActivity"
+            android:parentActivityName=".controller.NavigationActivity"/>
+        <activity android:name=".controller.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

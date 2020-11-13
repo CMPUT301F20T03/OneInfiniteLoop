@@ -1,37 +1,39 @@
-package com.example.booksies;
+package com.example.booksies.controller;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.booksies.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import static com.example.booksies.model.FirestoreHandler.setCurrentUserID;
 
 /**
- * This class handles the home view
+ * This Class handles the Home view
  */
 public class NavigationActivity extends AppCompatActivity {
 
+
+    /**
+     * Responsible for creating activity when first launched
+     * @param savedInstanceState: savedInstanceState is a reference to a Bundle object passed into the onCreate method
+     */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-
+        setCurrentUserID();
+        Log.d("EDITBOOK", "----------------------------------------EDIT BOOK----------------------------------------");
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.bottom_navigation); // handles switch for bottom navigation
         HomeFragment frag =new HomeFragment();
@@ -39,6 +41,11 @@ public class NavigationActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    /**
+                     * Responsible for creating new fragments and setting new layouts when a
+                     * specific menu item is selected
+                     * @param item: A MenuItem which is part of the NavigationActivity at the bottom of the ui
+                     */
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
@@ -47,6 +54,10 @@ public class NavigationActivity extends AppCompatActivity {
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,frag).addToBackStack(null).commit();
                                 break;
                             case R.id.action_request:
+                                RequestListFragment reqFrag = new RequestListFragment();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.fragment_container,reqFrag)
+                                        .addToBackStack(null).commit();
                                 break;
                             case R.id.action_add_book:
                                 AddBookFragment addBookFrag = new AddBookFragment();
@@ -63,6 +74,11 @@ public class NavigationActivity extends AppCompatActivity {
                                         .addToBackStack(null).commit();
                                 break;
                             case R.id.action_scanner:
+                                ScanFragment scanFragment = new ScanFragment();
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.fragment_container, scanFragment)
+                                        .addToBackStack(null).commit();
                                 break;
                         }
                         return true;
@@ -75,6 +91,10 @@ public class NavigationActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * onCreateOptionsMenu is useful for creating a new Menu.
+     * @param menu: A Menu object that is used to create Navigation Activity
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
 
@@ -82,6 +102,11 @@ public class NavigationActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * If Menu Item and in this case action_logout is selected, the instance of FirebaseAuth is
+     * signed out and this logs out the current user and a new user can thus login.
+     * @param item: A MenuItem at the top of user interface
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
 

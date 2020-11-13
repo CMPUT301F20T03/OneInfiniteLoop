@@ -1,4 +1,4 @@
-package com.example.booksies;
+package com.example.booksies.model;
 
 import androidx.appcompat.app.AppCompatActivity;
 
