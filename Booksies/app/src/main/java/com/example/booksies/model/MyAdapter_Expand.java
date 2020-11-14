@@ -84,8 +84,6 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
             @Override
             public void onClick(View v) {
                 acceptRequest(requestList.get(position),bookID);
-                // TODO
-                // Need to hook this up with a small map icon instead of the accept button
                 AppCompatActivity currentActivity = (AppCompatActivity) v.getContext();
                 Intent intent = new Intent(currentActivity, MapsActivity.class);
                 intent.putExtra("bookId", bookID);
