@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -155,7 +156,7 @@ public class FirestoreHandler {
         query = s.toLowerCase();
         ArrayList<Task<QuerySnapshot>> tasks = new ArrayList<>();
         Task<QuerySnapshot> q1 = db.collection("Books")
-                .whereEqualTo("status","AVAILABLE")
+                .whereIn("status", Arrays.asList("AVAILABLE", "REQUESTED"))
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {

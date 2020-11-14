@@ -26,19 +26,24 @@ import com.example.booksies.model.Books;
 import com.example.booksies.model.FirestoreHandler;
 import com.example.booksies.model.MyAdapter;
 import com.example.booksies.R;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 /**
  * This Class has a Recycler View and is responsible for showing all the books that are available,
  * requested, accepted and borrowed
  */
 public class HomeFragment extends Fragment {
-
-    private  RecyclerView recyclerView;
+    public ArrayList<Books> bookList;
+    private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     FirestoreHandler f;
     LinearLayout searchView;
     View view;
+    public LinearLayout linearLayout;
+    FirebaseFirestore db;
+
 
 
     /**
@@ -86,7 +91,6 @@ public class HomeFragment extends Fragment {
         spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-
                 f.setFilterString(parentView.getItemAtPosition(position).toString().toUpperCase());
                 f.filter();;
 

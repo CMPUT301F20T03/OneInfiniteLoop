@@ -84,6 +84,7 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
             @Override
             public void onClick(View v) {
                 acceptRequest(requestList.get(position),bookID);
+                //TODO move this onto the onclicklistener of the map button
                 AppCompatActivity currentActivity = (AppCompatActivity) v.getContext();
                 Intent intent = new Intent(currentActivity, MapsActivity.class);
                 intent.putExtra("bookId", bookID);
