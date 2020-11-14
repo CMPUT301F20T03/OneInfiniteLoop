@@ -62,6 +62,7 @@
         <item>Author</item>
         <item>ISBN</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

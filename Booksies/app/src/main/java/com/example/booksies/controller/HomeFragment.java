@@ -26,6 +26,7 @@ import com.example.booksies.model.Books;
 import com.example.booksies.model.FirestoreHandler;
 import com.example.booksies.model.MyAdapter;
 import com.example.booksies.R;
+import com.google.android.gms.maps.SupportMapFragment;
 
 /**
  * This Class has a Recycler View and is responsible for showing all the books that are available,
@@ -59,7 +60,6 @@ public class HomeFragment extends Fragment {
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
         searchView = (LinearLayout) view.findViewById(R.id.search_bar);
-
 
         return view;
 
