@@ -72,28 +72,6 @@ public class UserProfileFragment extends Fragment {
         //initialize Firestore and storage variables
         db = FirebaseFirestore.getInstance();
         documentReference = db.collection("Users").document(user.getUid());
-//        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Log.d("docExists", "DocumentSnapshot data: " + document.getData());
-//                        uName = document.getString("username");
-//                        uPhone = document.getString("phone");
-//                        uPass = document.getString("password");
-//                        username.setText(uName);
-//                        userPhone.setText(uPhone);
-//                        userEmail.setText(user.getEmail());
-//                    } else {
-//                        Log.d("noDoc", "No such document");
-//                    }
-//                } else {
-//                    Log.d("fail", "get failed with ", task.getException());
-//                }
-//            }
-//        });
-
 
 
         final Button editProfile = view.findViewById(R.id.edit_button);
@@ -137,6 +115,7 @@ public class UserProfileFragment extends Fragment {
                 }
             }
         });
+
 
 
         return view;
