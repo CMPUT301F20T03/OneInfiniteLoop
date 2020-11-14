@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".controller.AddBookFragment">
+    tools:context=".controller.EditBookActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:text="@string/add_title" />
 
             <EditText
-                android:id="@+id/titleEditText"
+                android:id="@+id/titleEditText_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -46,7 +46,7 @@
                 android:text="@string/add_author" />
 
             <EditText
-                android:id="@+id/authorEditText"
+                android:id="@+id/authorEditText_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -68,7 +68,7 @@
                 android:text="@string/add_ISBN" />
 
             <EditText
-                android:id="@+id/ISBNEditText"
+                android:id="@+id/ISBNEditText_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -83,7 +83,7 @@
             android:text="@string/add_comments" />
 
         <EditText
-            android:id="@+id/commentEditText"
+            android:id="@+id/commentEditText_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -121,20 +121,27 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_button"
+                android:textColor="#FF0000"
+                />
 
             <Button
-                android:id="@+id/addButton"
+                android:id="@+id/accept_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="@string/add_button"
+                android:text="@string/accept_button"
                 android:textColor="@color/fui_linkColor" />
 
             <Button
-                android:id="@+id/cancelButton"
+                android:id="@+id/cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/addButton"
+                android:layout_toStartOf="@id/accept_button"
                 android:text="@string/cancel_button"
                 android:textColor="@color/fui_linkColor" />
 

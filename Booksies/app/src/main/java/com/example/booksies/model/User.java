@@ -1,18 +1,31 @@
-package com.example.booksies;
+package com.example.booksies.model;
 
-import android.app.DownloadManager;
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 
-public abstract class User {
+/**
+ * This is the class that keep track of user object
+ */
+
+public class User {
 
     private String userid;
     private String username;
     private String email;
     private String phone;
     private ArrayList<Books> myBooks;
-    //private ArrayList<Requests> myRequests;
-
+    FirebaseFirestore db;
+    //DocumentReference docRef;
 
     public User(String userid, String username, String email, String phone, ArrayList<Books> myBooks) {
         this.userid = userid;
@@ -22,10 +35,11 @@ public abstract class User {
         this.myBooks = myBooks;
     }
 
-    public User(String userid, String username, String email) {
+    public User(String userid, String username, String email, String phone) {
         this.userid = userid;
         this.username = username;
         this.email = email;
+        this.phone = phone;
     }
 
     public String getUserid() {
