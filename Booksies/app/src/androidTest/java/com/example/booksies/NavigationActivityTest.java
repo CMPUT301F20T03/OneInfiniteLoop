@@ -52,6 +52,7 @@ public class NavigationActivityTest {
 
     }
 
+    // US 1.04.01
     @Test
     public void checkMyBooks(){
         solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
@@ -67,6 +68,7 @@ public class NavigationActivityTest {
         assertTrue(solo.waitForText("Stewart",1,2000));
     }
 
+    //US 1.05.01
     @Test
     public void checkFilter(){
         solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
