@@ -81,6 +81,8 @@ public class EditBookActivity extends AppCompatActivity {
     String imageUrl;
     String defaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/booksies-6aa46.appspot.com/o/images%2Fopen-book-silhouette.jpg?alt=media&token=34b3c0e2-0efc-4a25-aed5-86d9d2f0e230";
 
+    StorageReference photoToDeleteReference;
+    String photoToDelete;
 
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -186,6 +188,9 @@ public class EditBookActivity extends AppCompatActivity {
                             "https://firebasestorage.googleapis.com/v0/b/booksies-6aa46.appspot.com/o/images%2Fopen-book-silhouette.jpg?alt=media&token=34b3c0e2-0efc-4a25-aed5-86d9d2f0e230");
                 }
 
+                if(photoToDeleteReference!= null) {
+                    photoToDeleteReference.delete();
+                }
                 finish();
             }
         });
@@ -291,6 +296,7 @@ public class EditBookActivity extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     String imageUrl = data.getStringExtra("imageUrl");
                     if (imageUrl.equals("deleted")) {
+                        photoToDeleteReference = storage.child(mImageUri.getLastPathSegment());
                         mImageUri = null;
                         addPhotoButton.setVisibility(View.VISIBLE);
                         cameraImageView.setImageURI(null);
