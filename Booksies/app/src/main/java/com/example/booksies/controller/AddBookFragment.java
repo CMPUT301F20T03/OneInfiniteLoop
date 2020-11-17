@@ -80,7 +80,6 @@ public class AddBookFragment extends Fragment {
     Uri mImageUri;
     CollectionReference collectionReference;
     String downloadableUrl;
-    BottomNavigationView bottomNavigation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -136,6 +135,7 @@ public class AddBookFragment extends Fragment {
                 public void onClick(View view) {
                     Intent viewImageIntent = new Intent(getActivity(), ViewPhotoActivity.class);
                     viewImageIntent.putExtra("imageUrl", mImageUri.toString());
+                    viewImageIntent.putExtra("previousActivity", "AddBookFragment");
                     startActivityForResult(viewImageIntent, REQUEST_VIEW_IMAGE);
                 }
             });
@@ -214,7 +214,6 @@ public class AddBookFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("RequestCode", Integer.toString(requestCode));
         cameraImageView = mView.findViewById(R.id.cameraImageView);
         if (resultCode != Activity.RESULT_CANCELED) {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
@@ -234,7 +233,7 @@ public class AddBookFragment extends Fragment {
             } else {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     String imageUrl = data.getStringExtra("imageUrl");
-                    if (imageUrl.length() == 0) {
+                    if (imageUrl.equals("deleted")) {
                         mImageUri = null;
                         addPhotoButton.setVisibility(View.VISIBLE);
                         cameraImageView.setImageURI(null);
@@ -249,8 +248,6 @@ public class AddBookFragment extends Fragment {
      // Puts into a document called Books with fields:
      // title, author, isbn, comment, owner, status, and imageUrl
     private void addBookToFirestore(){
-        //final String currentUserId = mAuth.getCurrentUser().getUid();
-        //This is Temporary
         final String currentUserId = FirestoreHandler.getCurrentUserEmail();
 
         final String titleStr = titleEditText.getText().toString();
@@ -267,7 +264,6 @@ public class AddBookFragment extends Fragment {
             data.put("status", "AVAILABLE");
             data.put("comment", commentStr);
             data.put("owner", currentUserId);
-            data.put("id", myId);
         } else {
             Toast toast = Toast.makeText(getActivity(),
                     "Adding a book requires\n Title, Author and ISBN", Toast.LENGTH_LONG);
@@ -327,7 +323,7 @@ public class AddBookFragment extends Fragment {
                         }
                     });
         }
-        //Go back to whatever called this fragment
+        //Go back to home fragment
         View action = getActivity().findViewById(R.id.action_home);
         action.performClick();
 
