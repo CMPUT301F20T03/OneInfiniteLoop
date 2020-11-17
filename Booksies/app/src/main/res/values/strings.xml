@@ -42,6 +42,8 @@
     <string name="phone">Phone number</string>
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="booklover123">Booklover123</string>
+    <string name="edit_button">Edit</string>
+    <string name="accept_button">Accept</string>
 
     <string-array name="filter_items">
         <item>No Filter</item>

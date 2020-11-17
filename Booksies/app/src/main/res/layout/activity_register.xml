@@ -9,7 +9,7 @@
     android:layout_centerInParent="false"
     android:layout_centerHorizontal="false"
     android:layout_centerVertical="false"
-    android:background="#9EF34444"
+    android:background="@color/colorBackground"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".controller.MainActivity">
@@ -127,7 +127,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@color/colorAccent"
         android:fontFamily="monospace"
         android:text="@string/register" />
 

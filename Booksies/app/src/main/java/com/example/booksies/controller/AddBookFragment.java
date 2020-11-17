@@ -32,6 +32,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,6 +45,7 @@ import com.example.booksies.R;
 import com.example.booksies.model.FirestoreHandler;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -78,6 +80,7 @@ public class AddBookFragment extends Fragment {
     Uri mImageUri;
     CollectionReference collectionReference;
     String downloadableUrl;
+    BottomNavigationView bottomNavigation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -255,6 +258,8 @@ public class AddBookFragment extends Fragment {
         final String isbnStr = isbnEditText.getText().toString();
         String commentStr = commentsEditText.getText().toString();
         final HashMap<String, String> data = new HashMap<>();
+
+        String myId = collectionReference.document().getId();
         if (titleStr.length() > 0 && authorStr.length() > 0 && isbnStr.length() > 0) {
             data.put("title", titleStr);
             data.put("author", authorStr);
@@ -262,6 +267,7 @@ public class AddBookFragment extends Fragment {
             data.put("status", "AVAILABLE");
             data.put("comment", commentStr);
             data.put("owner", currentUserId);
+            data.put("id", myId);
         } else {
             Toast toast = Toast.makeText(getActivity(),
                     "Adding a book requires\n Title, Author and ISBN", Toast.LENGTH_LONG);
@@ -322,6 +328,10 @@ public class AddBookFragment extends Fragment {
                     });
         }
         //Go back to whatever called this fragment
-        getFragmentManager().popBackStack();
+        View action = getActivity().findViewById(R.id.action_home);
+        action.performClick();
+
+
     }
+
 }

@@ -18,6 +18,10 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
 
+/**
+ * US 3.01.01/3.02.01
+ */
+
 public class SearchActivityTest {
 
     private Solo solo;
