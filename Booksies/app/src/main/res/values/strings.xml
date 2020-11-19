@@ -54,6 +54,7 @@
     </string-array>
 
     <string-array name="req_filter_items">
+        <item>No Filter</item>
         <item>Requested</item>
         <item>Accepted</item>
         <item>Borrowed</item>

@@ -280,7 +280,7 @@ public class FirestoreHandler {
      */
 
     public void reqfilter(){
-        if(!filterString.equals("REQUESTED")){
+        if(!filterString.equals("NO FILTER")){
             filteredList.clear();
             for (Books book:booksList){
                 if ((book.getStatus().toString().toUpperCase()).equals(filterString)){
@@ -288,17 +288,14 @@ public class FirestoreHandler {
                 }
             }
             mAdapter = new RequestListAdapter(filteredList);
-            recyclerView.setAdapter(mAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setHasFixedSize(true);
 
         } else {
             mAdapter = new RequestListAdapter(booksList);
-            recyclerView.setAdapter(mAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setHasFixedSize(true);
 
         }
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
 
     }
 
@@ -475,7 +472,6 @@ public class FirestoreHandler {
 
                 });
         db.collection("Books").whereNotEqualTo("owner", getCurrentUserEmail())
-                .whereArrayContains("request",getCurrentUserEmail()+":"+userID)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
@@ -485,7 +481,6 @@ public class FirestoreHandler {
                             Log.w("error", "Listen failed.", e);
                             return;
                         }
-                        booksList.clear();
 
                         for (QueryDocumentSnapshot book : value) {
                             Books b = new Books(book.getString("isbn").toUpperCase(),
@@ -520,8 +515,10 @@ public class FirestoreHandler {
                             b.setImageUrl(book.getString("imageUrl"));
                             b.setOwner(book.getString("owner").split("@")[0]);
                             b.setDocID(book.getId());
+                            if(book.getString("borrowerID") != null) {
+                                booksList.add(b);
 
-                            booksList.add(b);
+                            }
 
                         }
                         reqfilter();
