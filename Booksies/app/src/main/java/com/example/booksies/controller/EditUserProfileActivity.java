@@ -96,7 +96,6 @@ public class EditUserProfileActivity extends AppCompatActivity {
             }
         });
     }
-
     //Go back to whatever opened this activity
     @Override
     public boolean onSupportNavigateUp() {

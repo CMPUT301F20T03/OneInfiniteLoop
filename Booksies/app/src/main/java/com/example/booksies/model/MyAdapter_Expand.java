@@ -1,14 +1,21 @@
 package com.example.booksies.model;
 
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booksies.R;
+import com.example.booksies.controller.HomeFragment;
+import com.example.booksies.controller.MapsActivity;
+import com.example.booksies.controller.NavigationActivity;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.nio.channels.FileLock;
@@ -77,6 +84,12 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
             @Override
             public void onClick(View v) {
                 acceptRequest(requestList.get(position),bookID);
+                //TODO move this onto the onclicklistener of the map button
+                AppCompatActivity currentActivity = (AppCompatActivity) v.getContext();
+                Intent intent = new Intent(currentActivity, MapsActivity.class);
+                intent.putExtra("bookId", bookID);
+                currentActivity.startActivity(intent);
+
             }
         });
 

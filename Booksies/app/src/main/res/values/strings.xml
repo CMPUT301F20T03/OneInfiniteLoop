@@ -55,6 +55,7 @@
     </string-array>
 
     <string-array name="req_filter_items">
+        <item>No Filter</item>
         <item>Requested</item>
         <item>Accepted</item>
         <item>Borrowed</item>
@@ -65,6 +66,7 @@
         <item>Author</item>
         <item>ISBN</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

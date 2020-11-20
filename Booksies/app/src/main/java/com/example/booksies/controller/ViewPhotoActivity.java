@@ -22,6 +22,7 @@ import com.example.booksies.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ViewPhotoActivity extends AppCompatActivity {
+    String imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +33,10 @@ public class ViewPhotoActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        final String imageUrl = getIntent().getStringExtra("imageUrl");
-
+        imageUrl = getIntent().getStringExtra("imageUrl");
         ImageView imageView = findViewById(R.id.imageView);
         Log.d("ImageUrl", imageUrl);
+
         Glide.with(ViewPhotoActivity.this)
                 .load(imageUrl)
                 .into(imageView);
@@ -46,7 +47,7 @@ public class ViewPhotoActivity extends AppCompatActivity {
                 switch(i) {
                     case DialogInterface.BUTTON_POSITIVE:
                         Intent intent = new Intent(ViewPhotoActivity.this, AddBookFragment.class);
-                        intent.putExtra("imageUrl", "");
+                        intent.putExtra("imageUrl", "deleted");
                         setResult(RESULT_OK, intent);
                         finish();
                         break;
@@ -75,6 +76,15 @@ public class ViewPhotoActivity extends AppCompatActivity {
     //Go back to whatever opened this activity
     @Override
     public boolean onSupportNavigateUp() {
+        final String previousActivity = getIntent().getStringExtra("previousActivity");
+        Intent intent;
+        if (previousActivity.equals("AddBookFragment")) {
+            intent = new Intent(ViewPhotoActivity.this, AddBookFragment.class);
+        }
+        else {
+            intent = new Intent(ViewPhotoActivity.this, EditBookActivity.class);
+        }
+        intent.putExtra("imageUrl", imageUrl);
         finish();
         return true;
     }

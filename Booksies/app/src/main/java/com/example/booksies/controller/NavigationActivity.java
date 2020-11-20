@@ -32,7 +32,6 @@ public class NavigationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-        setCurrentUserID();
         Log.d("EDITBOOK", "----------------------------------------EDIT BOOK----------------------------------------");
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.bottom_navigation); // handles switch for bottom navigation
