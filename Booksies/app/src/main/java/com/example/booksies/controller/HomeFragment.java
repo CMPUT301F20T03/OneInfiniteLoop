@@ -66,15 +66,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         searchView = (LinearLayout) view.findViewById(R.id.search_bar);
 
-//        linearLayout = view.findViewById(R.id.linear_layout);
-//        Log.d("SOME TAG", linearLayout + " --------------------------------------------");
-//        linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View view) {
-//                Log.d("SOME TAG", "No such document --------------------------------------------");
-//                return false;
-//            }
-//        });
         return view;
 
     }
