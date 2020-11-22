@@ -16,6 +16,7 @@ import android.view.View;
 
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.bumptech.glide.Glide;
 import com.example.booksies.controller.EditUserProfileActivity;
 import com.example.booksies.controller.NavigationActivity;
 import com.example.booksies.controller.ViewPhotoActivity;
@@ -149,7 +151,6 @@ public class NavigationActivityTest {
 
         solo.waitForActivity(Intent.ACTION_PICK);
     }
-
     @Test
     public void checkUserProfileFragment(){
         solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
