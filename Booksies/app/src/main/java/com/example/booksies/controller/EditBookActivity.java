@@ -195,6 +195,7 @@ public class EditBookActivity extends AppCompatActivity {
                     finish();
                 }
 
+                // if missing fields
                 else {
                     String string = "";
                     if (title.isEmpty()) {
