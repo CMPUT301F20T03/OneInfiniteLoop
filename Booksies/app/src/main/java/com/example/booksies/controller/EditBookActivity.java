@@ -109,7 +109,7 @@ public class EditBookActivity extends AppCompatActivity {
         title = mIntent.getStringExtra("title");
         author = mIntent.getStringExtra("author");
         isbn = mIntent.getStringExtra("isbn");
-        comments = mIntent.getStringExtra("comments");
+        comments = mIntent.getStringExtra("comment");
         imageUrl = mIntent.getStringExtra("imageURL");
 
         titleEditText.setText(title);
@@ -156,42 +156,63 @@ public class EditBookActivity extends AppCompatActivity {
                 author = authorEditText.getText().toString();
                 isbn = isbnEditText.getText().toString();
                 comments = commentsEditText.getText().toString();
-                documentReference.update("title", title);
-                documentReference.update("author", author);
-                documentReference.update("isbn", isbn);
-                documentReference.update("comment", comments);
+                if (!(title.isEmpty() || author.isEmpty() || isbn.isEmpty())) {
+                    documentReference.update("title", title);
+                    documentReference.update("author", author);
+                    documentReference.update("isbn", isbn);
+                    documentReference.update("comment", comments);
 
-                final HashMap<String, String> data = new HashMap<>();
-                //if new picture attached
-                if (mImageUri != null && mImageUri != Uri.parse(imageUrl)) {
-                      storage = storage.child("images/"
-                            + mImageUri.getLastPathSegment());
-                    UploadTask uploadTask = storage.putFile(mImageUri);
-                    //Waits for image to be uploaded to storage before adding book to Firestore
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    downloadableUrl = uri.toString();
-                                    documentReference.update("imageUrl", downloadableUrl);
-                                }
-                            });
-                        }
-                    });
+                    final HashMap<String, String> data = new HashMap<>();
+                    //if new picture attached
+                    if (mImageUri != null && mImageUri != Uri.parse(imageUrl)) {
+                        storage = storage.child("images/"
+                                + mImageUri.getLastPathSegment());
+                        UploadTask uploadTask = storage.putFile(mImageUri);
+                        //Waits for image to be uploaded to storage before adding book to Firestore
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        downloadableUrl = uri.toString();
+                                        documentReference.update("imageUrl", downloadableUrl);
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    //no picture attached make imageUrl the default book image from our Storage
+                    else {
+                        documentReference.update("imageUrl",
+                                "https://firebasestorage.googleapis.com/v0/b/booksies-6aa46.appspot.com/o/images%2Fopen-book-silhouette.jpg?alt=media&token=34b3c0e2-0efc-4a25-aed5-86d9d2f0e230");
+                    }
+
+                    if(photoToDeleteReference!= null) {
+                        photoToDeleteReference.delete();
+                    }
+                    finish();
                 }
 
-                //no picture attached make imageUrl the default book image from our Storage
                 else {
-                    documentReference.update("imageUrl",
-                            "https://firebasestorage.googleapis.com/v0/b/booksies-6aa46.appspot.com/o/images%2Fopen-book-silhouette.jpg?alt=media&token=34b3c0e2-0efc-4a25-aed5-86d9d2f0e230");
+                    String string = "";
+                    if (title.isEmpty()) {
+                        string += "Title, ";
+                    }
+                    if (author.isEmpty()){
+                        string += "Author, ";
+                    }
+                    if (isbn.isEmpty()) {
+                        string += "ISBN ";
+                    }
+                    string += "cannot be empty";
+                    Toast toast = Toast.makeText(getApplicationContext(), string, Toast.LENGTH_SHORT);
+                    toast.show();
                 }
 
-                if(photoToDeleteReference!= null) {
-                    photoToDeleteReference.delete();
-                }
-                finish();
+
+
             }
         });
 
