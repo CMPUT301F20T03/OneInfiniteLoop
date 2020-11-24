@@ -2,16 +2,24 @@ package com.example.booksies.controller;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.booksies.R;
+
 import static com.example.booksies.model.FirestoreHandler.setPickupLocation;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,19 +27,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.SetOptions;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 //Acknowledgements: https://developers.google.com/maps/documentation/android-sdk/start
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class SetLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private String bookId;
@@ -53,29 +56,39 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         bookId = getIntent().getStringExtra("bookId");
+        if (getIntent().hasExtra("lat")) {
+            lat = getIntent().getExtras().getDouble("lat");
+            lon = getIntent().getExtras().getDouble("lon");
+        }
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        //If the book already has a location set
+        if (getIntent().hasExtra("lat")) {
+            LatLng currentlySetLocation = new LatLng(lat, lon);
 
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(currentlySetLocation);
+            String address = getMarkerAddress(currentlySetLocation);
+            markerOptions.title(address);
+            mMap.addMarker(markerOptions);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentlySetLocation));
+        }
+        else {
+            LatLng albertaLatLon = new LatLng(53.9333,-116.5765);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(albertaLatLon));
+        }
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);
 
-                List<Address> addresses = null;
-                Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
-                try {
-                    //gets a single address from location
-                    addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                    String address = addresses.get(0).getAddressLine(0);
-                    //set title as address of location
-                    markerOptions.title(address);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String address = getMarkerAddress(latLng);
+                markerOptions.title(address);
                 mMap.clear();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 mMap.addMarker(markerOptions);
@@ -90,7 +103,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View view) {
                 setPickupLocation(bookId, lat, lon);
-                Toast toast = Toast.makeText(MapsActivity.this,
+                Toast toast = Toast.makeText(SetLocationActivity.this,
                         "Pickup location has been updated", Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -103,4 +116,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         finish();
         return true;
     }
+
+    private String getMarkerAddress(LatLng latLng) {
+        List<Address> addresses = null;
+        Geocoder geocoder = new Geocoder(SetLocationActivity.this, Locale.getDefault());
+        String address = null;
+        try {
+            //gets a single address from location
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            address = addresses.get(0).getAddressLine(0);
+            //set title as address of location
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return address;
+    }
+
 }

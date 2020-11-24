@@ -16,9 +16,11 @@ package com.example.booksies.controller;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -156,9 +158,14 @@ public class AddBookFragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo")) {
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Ensure that there's a camera activity to handle the intent
-                    if (getActivity().getApplicationContext().getPackageManager().hasSystemFeature(
-                            PackageManager.FEATURE_CAMERA)) {
+                    // Check camera permissions
+                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        Toast toast = Toast.makeText(getActivity(),
+                                "Allow camera permissions in app settings to use camera", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                    else{
                         // Create the File where the photo should go
                         File photoFile = null;
                         try {
@@ -177,9 +184,17 @@ public class AddBookFragment extends Fragment {
                 }
 
                 else if (options[item].equals("Upload From Gallery")) {
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto, REQUEST_IMAGE_UPLOAD);
+                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        Toast toast = Toast.makeText(getActivity(),
+                                "Allow storage permissions in app settings to use gallery", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                    else {
+                        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(pickPhoto, REQUEST_IMAGE_UPLOAD);
+                    }
                 }
 
                 else if (options[item].equals("Cancel")) {
