@@ -75,7 +75,6 @@ public class RegisterActivity extends AppCompatActivity {
                                         final HashMap<String, String> data = new HashMap<>();
                                         data.put("username", username);
                                         data.put("email", email);
-                                        data.put("password", pass);
                                         data.put("phone", phone);
                                         collectionReference
                                                 .document(user.getUid())

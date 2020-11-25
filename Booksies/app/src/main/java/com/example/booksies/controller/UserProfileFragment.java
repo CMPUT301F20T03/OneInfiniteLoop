@@ -97,7 +97,6 @@ public class UserProfileFragment extends Fragment {
                 Intent intent = new Intent(getActivity(),EditUserProfileActivity.class );
                 intent.putExtra("user",uName);
                 intent.putExtra("phone", uPhone);
-                intent.putExtra("password", uPass);
                 startActivity(intent);
             }
         });
@@ -112,23 +111,11 @@ public class UserProfileFragment extends Fragment {
                     return;
                 }
 
-                if (snapshot != null && snapshot.exists()) {
-                    uName = snapshot.getString("username");
-                    uPhone = snapshot.getString("phone");
-                    uPass = snapshot.getString("password");
-                    username.setText(uName);
-                    userPhone.setText(uPhone);
-                    userEmail.setText(user.getEmail());
-                    //Log.d("Updated data", "Current data: " + snapshot.getData());
-                } else {
-                    uName = snapshot.getString("username");
-                    uPhone = snapshot.getString("phone");
-                    uPass = snapshot.getString("password");
-                    username.setText(uName);
-                    userPhone.setText(uPhone);
-                    userEmail.setText(user.getEmail());
-                    //Log.d("No new data", "Current data: null");
-                }
+                uName = snapshot.getString("username");
+                uPhone = snapshot.getString("phone");
+                username.setText(uName);
+                userPhone.setText(uPhone);
+                userEmail.setText(user.getEmail());
             }
         });
 
