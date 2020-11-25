@@ -20,12 +20,16 @@ import com.example.booksies.R;
 
 import static com.example.booksies.model.FirestoreHandler.setPickupLocation;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
@@ -40,7 +44,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
     private String bookId;
     private double lat;
     private double lon;
-
+    private FusedLocationProviderClient fusedLocationProviderClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
             lat = getIntent().getExtras().getDouble("lat");
             lon = getIntent().getExtras().getDouble("lon");
         }
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SetLocationActivity.this);
 
     }
 
@@ -76,10 +81,23 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
             markerOptions.title(address);
             mMap.addMarker(markerOptions);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentlySetLocation));
-        }
-        else {
-            LatLng albertaLatLon = new LatLng(53.9333,-116.5765);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(albertaLatLon));
+        } else {
+            if (ActivityCompat.checkSelfPermission(SetLocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationProviderClient.getLastLocation()
+                        .addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null) {
+                                    LatLng currentLocation = new LatLng(location.getLatitude(),location.getLongitude());
+                                    mMap.addMarker(new MarkerOptions().position(currentLocation));
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                                }
+                            }
+                        });
+            }
+
+//            LatLng albertaLatLon = new LatLng(53.9333,-116.5765);
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(albertaLatLon));
         }
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
