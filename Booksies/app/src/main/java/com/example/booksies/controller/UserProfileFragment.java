@@ -1,14 +1,14 @@
 /*
  * UserProfileFragment inflates activity_user_profile.xml
  *
- * Implements US 02.01.01 and US 04.03.01
+ * Implements US 02.01.01 and US 04.03.01 and US 05.02.01
  *
- * This activity is currently missing US 04.03.01
+ * view user profile and well as notifications
  *
  * Acknowledgments
  * https://firebase.google.com/docs/firestore/query-data/get-data#java_2
  * https://firebase.google.com/docs/auth/android/manage-users
- *
+ * https://firebase.google.com/docs/firestore/query-data/listen
  */
 
 package com.example.booksies.controller;
@@ -53,12 +53,16 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+/**
+ * This Class handles the User Profiles as well as Notifications
+ */
 public class UserProfileFragment extends Fragment {
 
     TextView username;
@@ -68,7 +72,6 @@ public class UserProfileFragment extends Fragment {
     DocumentReference documentReference;
     String uName;
     String uPhone;
-    String uPass;
     ListView notificationList;
     ArrayAdapter<Notification> notificationAdapter;
     ArrayList<Notification> notificationDataList;
@@ -122,6 +125,7 @@ public class UserProfileFragment extends Fragment {
 
         notificationDataList = new ArrayList<>();
 
+
         db.collection("Books")
                 .whereEqualTo("owner", user.getEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -136,10 +140,13 @@ public class UserProfileFragment extends Fragment {
                         assert value != null;
                         for (QueryDocumentSnapshot doc : value) {
                             if (Objects.equals(doc.getString("status"), "REQUESTED")){
+                                ArrayList<String> requests = (ArrayList<String>) doc.get("request");
                                 String body = String.format("has requested %s", doc.getString("title"));
-                                Notification newRequestNotification = new Notification("Test", body);
-                                if (!notificationDataList.contains(newRequestNotification)){
-                                    notificationDataList.add(0, newRequestNotification);
+                                for (int counter = 0; counter < requests.size(); counter++){
+                                    Notification newRequestNotification = new Notification(requests.get(counter).split(":")[0], body);
+                                    if (!notificationDataList.contains(newRequestNotification)){
+                                        notificationDataList.add(0, newRequestNotification);
+                                    }
                                 }
                                 notificationAdapter = new NotificationAdapter(getContext(), notificationDataList);
 
@@ -152,41 +159,52 @@ public class UserProfileFragment extends Fragment {
 
 
         db.collection("Books")
-            .whereEqualTo("borrowerID", user.getEmail() + ":" + user.getUid())
-            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
-                                    @androidx.annotation.Nullable FirebaseFirestoreException error) {
-                    if (error != null) {
-                        Log.w("Reading Data Failed", "Listen failed.", error);
-                        return;
-                    }
+                .whereEqualTo("borrowerID", user.getEmail() + ":" + user.getUid())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
+                                        @androidx.annotation.Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.w("Reading Data Failed", "Listen failed.", error);
+                            return;
+                        }
 
-                    assert value != null;
-                    for (QueryDocumentSnapshot doc : value) {
+                        assert value != null;
+                        for (QueryDocumentSnapshot doc : value) {
 
-                        if (Objects.equals(doc.getString("status"),"ACCEPTED")){
-                            String body = String.format("has accepted your requested for %s", doc.getString("title"));
-                            Notification newAcceptNotification = new Notification(doc.getString("owner"), body);
-                            if (!notificationDataList.contains(newAcceptNotification)){
-                                notificationDataList.add(0,newAcceptNotification);
+                            if (Objects.equals(doc.getString("status"),"ACCEPTED")){
+                                String body = String.format("has accepted your requested for %s", doc.getString("title"));
+                                Notification newAcceptNotification = new Notification(doc.getString("owner"), body);
+                                if (!notificationDataList.contains(newAcceptNotification)){
+                                    notificationDataList.add(0,newAcceptNotification);
+                                }
+
+                                notificationAdapter = new NotificationAdapter(getContext(), notificationDataList);
+
+                                notificationList.setAdapter(notificationAdapter);
                             }
+                        }
+                        Log.d("Notifications", "accepted notifications");
+                    }
+                });
 
-                            notificationAdapter = new NotificationAdapter(getContext(), notificationDataList);
+        db.collection("Books")
+                .whereArrayContains("request", user.getEmail() + ";" + user.getUid())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
+                                        @androidx.annotation.Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.w("Reading Data Failed", "Listen failed.", error);
+                            return;
+                        }
 
-                            notificationList.setAdapter(notificationAdapter);
+                        assert value != null;
+                        for (QueryDocumentSnapshot doc : value){
+                            String body = String.format("has denied your requested for %s", doc.getString("title"));
                         }
                     }
-                    Log.d("Notifications", "accepted notifications");
-                }
-            });
-
-//        notificationAdapter = new NotificationAdapter(getContext(), notificationDataList);
-//
-//        notificationList.setAdapter(notificationAdapter);
-//        Log.d("notifications", "display notifications");
-
-
+                });
 
 
         return view;
@@ -194,4 +212,3 @@ public class UserProfileFragment extends Fragment {
 
 
 }
-//
