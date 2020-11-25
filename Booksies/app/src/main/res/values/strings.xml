@@ -3,7 +3,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="create_user">Create an User</string>
+    <string name="create_user">Create a User</string>
     <string name="register">Register</string>
     <string name="email">Email</string>
 
@@ -39,12 +39,12 @@
     <string name="user_email">Email: </string>
     <string name="user_notifications">Notifications</string>
     <string name="user_edit">Edit</string>
-    <string name="userprofilepicture">userProfilePicture</string>
     <string name="phone">Phone number</string>
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="booklover123">Booklover123</string>
     <string name="edit_button">Edit</string>
     <string name="accept_button">Accept</string>
+    <string name="profile_picture">profile_picture</string>
 
     <string-array name="filter_items">
         <item>No Filter</item>
@@ -55,6 +55,7 @@
     </string-array>
 
     <string-array name="req_filter_items">
+        <item>No Filter</item>
         <item>Requested</item>
         <item>Accepted</item>
         <item>Borrowed</item>
@@ -65,6 +66,7 @@
         <item>Author</item>
         <item>ISBN</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

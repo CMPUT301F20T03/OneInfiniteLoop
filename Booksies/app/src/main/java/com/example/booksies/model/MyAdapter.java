@@ -121,9 +121,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                                 docID.putString("title", book.getTitle());
                                 docID.putString("author", book.getAuthor());
                                 docID.putString("isbn", book.getISBN());
-                                docID.putString("comment", book.getComments());
+                                docID.putString("comment", documentSnapshot.getString("comment"));
                                 docID.putString("imageURL", book.getImageUrl());
-//                                Log.d("EDIT LOG: ", "---------- " + title + " " + author + " " + isbn + " " + comments + " ---------- ");
 
                                 Intent intent = new Intent(context.getApplicationContext(), EditBookActivity.class).putExtras(docID);
                                 context.startActivity(intent);
