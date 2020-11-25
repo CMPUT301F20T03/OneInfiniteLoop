@@ -58,7 +58,6 @@ public class EditUserProfileActivity extends AppCompatActivity {
 
         uName = getIntent().getStringExtra("user");
         uPhone = getIntent().getStringExtra("phone");
-        final String uPass = getIntent().getStringExtra("password");
         userName.setText(uName);
         userPhone.setText(uPhone);
 
@@ -73,26 +72,9 @@ public class EditUserProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 uName = userName.getText().toString();
                 uPhone = userPhone.getText().toString();
-                data.put("username",uName);
-                data.put("phone", uPhone);
-                data.put("password", uPass);
-                data.put("email", user.getEmail());
-                documentReference
-                        .set(data)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d("UpdateProfile", "Profile updated successfully");
-                                finish();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("FailUpdateProfile", "Profile update unsuccessfully");
-                            }
-                        });
-
+                documentReference.update("username", uName);
+                documentReference.update("phone",uPhone);
+                finish();
             }
         });
     }
