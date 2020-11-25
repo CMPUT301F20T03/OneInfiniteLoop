@@ -1,5 +1,10 @@
 /*
-
+* EditUserProfileActivity inflates activity_edit_profile.xml
+*
+* Implements US 02.02.01
+*
+* Acknowledgments
+*
  */
 
 package com.example.booksies.controller;
@@ -37,6 +42,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+/**
+ * This Class handles the Editing User Profiles
+ */
 public class EditUserProfileActivity extends AppCompatActivity {
 
     String uName;

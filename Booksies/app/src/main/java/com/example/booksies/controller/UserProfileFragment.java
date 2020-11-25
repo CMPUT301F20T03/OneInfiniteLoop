@@ -1,14 +1,14 @@
 /*
  * UserProfileFragment inflates activity_user_profile.xml
  *
- * Implements US 02.01.01 and US 04.03.01
+ * Implements US 02.01.01 and US 04.03.01 and US 05.02.01
  *
- * This activity is currently missing US 04.03.01
+ * view user profile and well as notifications
  *
  * Acknowledgments
  * https://firebase.google.com/docs/firestore/query-data/get-data#java_2
  * https://firebase.google.com/docs/auth/android/manage-users
- *
+ * https://firebase.google.com/docs/firestore/query-data/listen
  */
 
 package com.example.booksies.controller;
@@ -72,7 +72,6 @@ public class UserProfileFragment extends Fragment {
     DocumentReference documentReference;
     String uName;
     String uPhone;
-    String uPass;
     ListView notificationList;
     ArrayAdapter<Notification> notificationAdapter;
     ArrayList<Notification> notificationDataList;
