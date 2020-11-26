@@ -11,4 +11,4 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
       - name: Build the app
-        run: cd Booksies && ./gradlew build
+        run: cd Booksies && chmod +x ./gradlew && ./gradlew build
