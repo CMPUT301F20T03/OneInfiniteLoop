@@ -70,7 +70,7 @@ public class UserProfileFragment extends Fragment {
     TextView userEmail;
     FirebaseFirestore db;
     DocumentReference documentReference;
-    String uName;
+    String uEmail;
     String uPhone;
     ListView notificationList;
     ArrayAdapter<Notification> notificationAdapter;
@@ -98,7 +98,7 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),EditUserProfileActivity.class );
-                intent.putExtra("user",uName);
+                intent.putExtra("email",uEmail);
                 intent.putExtra("phone", uPhone);
                 startActivity(intent);
             }
@@ -114,11 +114,11 @@ public class UserProfileFragment extends Fragment {
                     return;
                 }
 
-                uName = snapshot.getString("username");
+                uEmail = snapshot.getString("email");
                 uPhone = snapshot.getString("phone");
-                username.setText(uName);
+                username.setText(user.getEmail().split("@gmail.com")[0]);
                 userPhone.setText(uPhone);
-                userEmail.setText(user.getEmail());
+                userEmail.setText(uEmail);
             }
         });
 

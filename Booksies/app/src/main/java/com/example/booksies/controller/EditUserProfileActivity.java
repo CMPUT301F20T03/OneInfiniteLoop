@@ -47,7 +47,7 @@ import java.util.HashMap;
  */
 public class EditUserProfileActivity extends AppCompatActivity {
 
-    String uName;
+    String uEmail;
     String uPhone;
     FirebaseFirestore db;
     DocumentReference documentReference;
@@ -57,16 +57,16 @@ public class EditUserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         final EditText userPhone = findViewById(R.id.phone_number_edit);
-        final EditText userName = findViewById(R.id.username_edit);
+        final EditText userEmail = findViewById(R.id.user_email_edit);
         Button ok = findViewById(R.id.ok_button);
 
         //Enable the back button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        uName = getIntent().getStringExtra("user");
+        uEmail = getIntent().getStringExtra("email");
         uPhone = getIntent().getStringExtra("phone");
-        userName.setText(uName);
+        userEmail.setText(uEmail);
         userPhone.setText(uPhone);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -78,9 +78,9 @@ public class EditUserProfileActivity extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uName = userName.getText().toString();
+                uEmail = userEmail.getText().toString();
                 uPhone = userPhone.getText().toString();
-                documentReference.update("username", uName);
+                documentReference.update("email", uEmail);
                 documentReference.update("phone",uPhone);
                 finish();
             }
