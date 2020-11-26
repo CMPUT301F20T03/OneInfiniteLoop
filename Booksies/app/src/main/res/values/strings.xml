@@ -3,7 +3,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="create_user">Create an User</string>
+    <string name="create_user">Create a User</string>
     <string name="register">Register</string>
     <string name="email">Email</string>
 
@@ -44,6 +44,7 @@
     <string name="booklover123">Booklover123</string>
     <string name="edit_button">Edit</string>
     <string name="accept_button">Accept</string>
+    <string name="profile_picture">profile_picture</string>
 
     <string-array name="filter_items">
         <item>No Filter</item>
@@ -65,6 +66,7 @@
         <item>Author</item>
         <item>ISBN</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

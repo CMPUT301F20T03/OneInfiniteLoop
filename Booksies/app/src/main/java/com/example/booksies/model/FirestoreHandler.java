@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +29,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
 
 /**
  * Firestore handler is a class designed to handle documents obtained from firebase.
@@ -532,5 +535,11 @@ public class FirestoreHandler {
 
     }
 
-
+    public static void setPickupLocation(String bookId, double lat, double lon) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, GeoPoint> data = new HashMap<>();
+        data.put("location", new GeoPoint(lat, lon));
+        db.collection("Books").document(bookId)
+                .set(data, SetOptions.merge());
+    }
 }
