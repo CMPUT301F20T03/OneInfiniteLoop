@@ -16,9 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * This class is used to get the books description, it works with the BookWebAPIHelper
- */
 public class AutofillBookDescription extends AsyncTask<String, Void, String> {
     private final String TAG = getClass().getSimpleName();
     private String ISBN;
@@ -27,13 +24,6 @@ public class AutofillBookDescription extends AsyncTask<String, Void, String> {
     private EditText author;
     private EditText description;
 
-    /**
-     * The constructor
-     * @param ISBN: the book's ISBN
-     * @param title: the book's title
-     * @param author: the book's author
-     * @param description: the book's description
-     */
     public AutofillBookDescription(String ISBN, EditText title, EditText author, EditText description, View mView) {
         this.ISBN = ISBN;
         this.title = title;
