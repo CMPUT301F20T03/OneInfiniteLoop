@@ -5,16 +5,17 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/username_edit"
+        android:id="@+id/user_email_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username" />
+        android:hint="@string/example_gmail_com" />
 
     <EditText
         android:id="@+id/phone_number_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cell Phone" />
+        android:inputType="phone"
+        android:hint="@string/fui_invalid_phone_number" />
 
     <Button
         android:id="@+id/ok_button"

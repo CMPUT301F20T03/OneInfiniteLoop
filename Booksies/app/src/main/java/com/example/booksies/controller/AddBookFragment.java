@@ -68,14 +68,10 @@ public class AddBookFragment extends Fragment {
     static final int REQUEST_VIEW_IMAGE = 3;
 
     View mView;
-    Button addButton;
-    Button cancelButton;
+    Button addButton, cancelButton;
     ImageButton addPhotoButton;
     ImageView cameraImageView;
-    EditText titleEditText;
-    EditText authorEditText;
-    EditText isbnEditText;
-    EditText commentsEditText;
+    EditText titleEditText, authorEditText, isbnEditText, commentsEditText;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     StorageReference storageReference;
@@ -300,19 +296,7 @@ public class AddBookFragment extends Fragment {
                             downloadableUrl = uri.toString();
                             data.put("imageUrl", downloadableUrl);
                             collectionReference
-                                    .add(data)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Log.d("BookAdd", "Book added successfully");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.d("BookAdd", "Failed to add book");
-                                        }
-                                    });
+                                    .add(data);
                         }
                     });
                 }
@@ -324,25 +308,10 @@ public class AddBookFragment extends Fragment {
             data.put("imageUrl",
                     "https://firebasestorage.googleapis.com/v0/b/booksies-6aa46.appspot.com/o/images%2Fopen-book-silhouette.jpg?alt=media&token=34b3c0e2-0efc-4a25-aed5-86d9d2f0e230");
             collectionReference
-                    .add(data)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d("BookAdd", "Book added successfully");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("BookAdd", "Failed to add book");
-                        }
-                    });
+                    .add(data);
         }
         //Go back to home fragment
         View action = getActivity().findViewById(R.id.action_home);
         action.performClick();
-
-
     }
-
 }

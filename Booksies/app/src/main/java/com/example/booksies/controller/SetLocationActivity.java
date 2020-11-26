@@ -81,6 +81,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
             markerOptions.title(address);
             mMap.addMarker(markerOptions);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentlySetLocation));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentlySetLocation, 15));
         } else {
             if (ActivityCompat.checkSelfPermission(SetLocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 fusedLocationProviderClient.getLastLocation()
@@ -89,15 +90,16 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
                             public void onSuccess(Location location) {
                                 if (location != null) {
                                     LatLng currentLocation = new LatLng(location.getLatitude(),location.getLongitude());
-                                    mMap.addMarker(new MarkerOptions().position(currentLocation));
+                                    String address = getMarkerAddress(currentLocation);
+                                    mMap.addMarker(new MarkerOptions().position(currentLocation).title(address));
                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+                                    lat = location.getLatitude();
+                                    lon = location.getLongitude();
                                 }
                             }
                         });
             }
-
-//            LatLng albertaLatLon = new LatLng(53.9333,-116.5765);
-//            mMap.moveCamera(CameraUpdateFactory.newLatLng(albertaLatLon));
         }
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
