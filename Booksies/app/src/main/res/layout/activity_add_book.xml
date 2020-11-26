@@ -69,10 +69,19 @@
 
             <EditText
                 android:id="@+id/ISBNEditText"
-                android:layout_width="match_parent"
+                android:layout_width="278dp"
                 android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/scanISBNButton"
+                android:layout_toEndOf="@id/textView3"
                 android:ems="10"
                 android:inputType="number" />
+
+            <ImageButton
+                android:id="@+id/scanISBNButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@android:drawable/ic_menu_camera" />
 
         </LinearLayout>
 

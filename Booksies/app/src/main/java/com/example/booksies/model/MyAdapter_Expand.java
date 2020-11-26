@@ -7,18 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booksies.R;
-import com.example.booksies.controller.HomeFragment;
-import com.example.booksies.controller.MapsActivity;
-import com.example.booksies.controller.NavigationActivity;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.example.booksies.controller.SetLocationActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.type.LatLng;
 
-import java.nio.channels.FileLock;
 import java.util.ArrayList;
 
 import static com.example.booksies.model.FirestoreHandler.acceptRequest;
@@ -86,8 +89,24 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
                 acceptRequest(requestList.get(position),bookID);
                 //TODO move this onto the onclicklistener of the map button
                 AppCompatActivity currentActivity = (AppCompatActivity) v.getContext();
-                Intent intent = new Intent(currentActivity, MapsActivity.class);
+                Intent intent = new Intent(currentActivity, SetLocationActivity.class);
                 intent.putExtra("bookId", bookID);
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference docRef = db.collection("Books").document(bookID);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot.exists()) {
+                            //If the book has a location already, then pass in the lat lng
+                            if (documentSnapshot.getGeoPoint("location") != null) {
+                                GeoPoint geopoint = documentSnapshot.getGeoPoint("location");
+                                intent.putExtra("lat", geopoint.getLatitude());
+                                intent.putExtra("lat", geopoint.getLongitude());
+                            }
+                        }
+                    }
+                });
                 currentActivity.startActivity(intent);
 
             }

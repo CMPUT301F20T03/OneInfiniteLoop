@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.EventListener;
 
 /**
+ * Class models a book object.
  * This is the class that keep track of user object
  */
 
@@ -27,6 +28,15 @@ public class User {
     FirebaseFirestore db;
     //DocumentReference docRef;
 
+
+    /**
+     * Constructor for Books class
+     * @param userid string
+     * @param username  string
+     * @param email string
+     * @param phone string
+     * @param myBooks ArrayList<Books>
+     */
     public User(String userid, String username, String email, String phone, ArrayList<Books> myBooks) {
         this.userid = userid;
         this.username = username;
@@ -35,6 +45,14 @@ public class User {
         this.myBooks = myBooks;
     }
 
+
+    /**
+     * Constructor for Books class
+     * @param userid string
+     * @param username  string
+     * @param email string
+     * @param phone string
+     */
     public User(String userid, String username, String email, String phone) {
         this.userid = userid;
         this.username = username;
@@ -42,34 +60,68 @@ public class User {
         this.phone = phone;
     }
 
+
+    /**
+     * get the userID
+     * @return document id
+     */
     public String getUserid() {
         return userid;
     }
 
+    /**
+     * set the userID
+     * @param userid document id
+     */
     public void setUserid(String userid) {
         this.userid = userid;
     }
 
+
+    /**
+     * get the username
+     * @return username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * set the username
+     * @param username string
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * get the email
+     * @return email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * set the email
+     * @param email string
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * get the list of my books
+     * @return list of my books
+     */
     public ArrayList<Books> getMyBooks() {
         return myBooks;
     }
 
+    /**
+     * set the list of my books
+     * @param myBooks ArrayList<Books>
+     */
     public void setMyBooks(ArrayList<Books> myBooks) {
         if (myBooks == null){
             this.myBooks = new ArrayList<Books>() ;
@@ -79,13 +131,20 @@ public class User {
 
     }
 
+    /**
+     * get the phone number
+     * @return phone number string
+     */
     public String getPhone() {
         return phone;
     }
 
+    /**
+     * set the phone number
+     * @param phone string
+     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    //public void sendNotification(ArrayList<Requests> myRequests)
 }

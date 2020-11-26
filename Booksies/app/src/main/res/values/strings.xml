@@ -44,6 +44,7 @@
     <string name="booklover123">Booklover123</string>
     <string name="edit_button">Edit</string>
     <string name="accept_button">Accept</string>
+    <string name="profile_picture">profile_picture</string>
 
     <string-array name="filter_items">
         <item>No Filter</item>
