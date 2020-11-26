@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        toastMessage("Successfully signed in as User: " + user.getEmail().toString());
+                                        toastMessage("Welcome back " + user.getEmail().split("@gmail.com")[0] + "!jacky");
                                         Intent intent = new Intent(MainActivity.this, NavigationActivity.class);
                                         setCurrentUserID();
 
