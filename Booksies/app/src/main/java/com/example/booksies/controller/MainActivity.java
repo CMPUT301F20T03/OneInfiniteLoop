@@ -60,7 +60,10 @@ public class MainActivity extends AppCompatActivity {
                 String userName= mUserName.getText().toString();
                 String pass = mPassword.getText().toString();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8354ebe4cf094131c5aacbde569b83dc029e57c9
                 if(!userName.equals("") && !pass.equals("")){
                     mAuth.signInWithEmailAndPassword(userName.concat("@gmail.com"), pass)
                             .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
