@@ -15,6 +15,9 @@ import com.example.booksies.controller.UserProfileFragment;
 
 import java.util.ArrayList;
 
+/**
+ * This class is a custom adapter for ListView
+ */
 public class NotificationAdapter extends ArrayAdapter<Notification> {
 
     private ArrayList<Notification> notifications;
