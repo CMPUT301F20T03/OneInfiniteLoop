@@ -100,6 +100,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
         holder.statusView.setText(bookList.get(position).getStatus().toString().toLowerCase());
         holder.ownerView.setText(bookList.get(position).getOwner());
 
+        // making owner name clickable
         holder.ownerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
