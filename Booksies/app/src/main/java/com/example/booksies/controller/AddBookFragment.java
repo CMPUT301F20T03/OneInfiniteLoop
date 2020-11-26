@@ -16,9 +16,11 @@ package com.example.booksies.controller;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -75,15 +77,18 @@ public class AddBookFragment extends Fragment {
     static final int REQUEST_VIEW_IMAGE = 3;
 
     View mView;
-    Button addButton;
-    Button cancelButton;
+    Button addButton, cancelButton;
     ImageButton addPhotoButton;
     ImageView cameraImageView;
+<<<<<<< HEAD
     ImageButton scanISBNButton;
     EditText titleEditText;
     EditText authorEditText;
     EditText isbnEditText;
     EditText commentsEditText;
+=======
+    EditText titleEditText, authorEditText, isbnEditText, commentsEditText;
+>>>>>>> 5cfa0e19ad51242f5420a8dbbaacabde2e11b2da
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     StorageReference storageReference;
@@ -176,9 +181,14 @@ public class AddBookFragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo")) {
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Ensure that there's a camera activity to handle the intent
-                    if (getActivity().getApplicationContext().getPackageManager().hasSystemFeature(
-                            PackageManager.FEATURE_CAMERA)) {
+                    // Check camera permissions
+                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        Toast toast = Toast.makeText(getActivity(),
+                                "Allow camera permissions in app settings to use camera", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                    else{
                         // Create the File where the photo should go
                         File photoFile = null;
                         try {
@@ -197,9 +207,17 @@ public class AddBookFragment extends Fragment {
                 }
 
                 else if (options[item].equals("Upload From Gallery")) {
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto, REQUEST_IMAGE_UPLOAD);
+                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        Toast toast = Toast.makeText(getActivity(),
+                                "Allow storage permissions in app settings to use gallery", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                    else {
+                        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(pickPhoto, REQUEST_IMAGE_UPLOAD);
+                    }
                 }
 
                 else if (options[item].equals("Cancel")) {
@@ -388,19 +406,7 @@ public class AddBookFragment extends Fragment {
                             downloadableUrl = uri.toString();
                             data.put("imageUrl", downloadableUrl);
                             collectionReference
-                                    .add(data)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Log.d("BookAdd", "Book added successfully");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.d("BookAdd", "Failed to add book");
-                                        }
-                                    });
+                                    .add(data);
                         }
                     });
                 }
@@ -412,25 +418,10 @@ public class AddBookFragment extends Fragment {
             data.put("imageUrl",
                     "https://firebasestorage.googleapis.com/v0/b/booksies-6aa46.appspot.com/o/images%2Fopen-book-silhouette.jpg?alt=media&token=34b3c0e2-0efc-4a25-aed5-86d9d2f0e230");
             collectionReference
-                    .add(data)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d("BookAdd", "Book added successfully");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("BookAdd", "Failed to add book");
-                        }
-                    });
+                    .add(data);
         }
         //Go back to home fragment
         View action = getActivity().findViewById(R.id.action_home);
         action.performClick();
-
-
     }
-
 }
