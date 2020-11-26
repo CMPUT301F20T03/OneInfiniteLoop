@@ -1,3 +1,4 @@
+![Build](https://github.com/CMPUT301F20T03/OneInfiniteLoop/workflows/Build/badge.svg)
 **CMPUT 301 Project**
 
 We have to design and implement an Android application to achieve the following goals:
