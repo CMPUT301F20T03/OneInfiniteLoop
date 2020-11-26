@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
                         && email.length() > 0
                         && phone.length() > 0)
                 {
-                    mAuth.createUserWithEmailAndPassword(email, pass)
+                    mAuth.createUserWithEmailAndPassword(username.concat("@gmail.com"), pass)
                             .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -73,42 +73,25 @@ public class RegisterActivity extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         //Add user to Users collection
                                         final HashMap<String, String> data = new HashMap<>();
-                                        data.put("username", username);
+                                        data.put("username", username.split("@gmail.com")[0]);
                                         data.put("email", email);
                                         data.put("phone", phone);
                                         collectionReference
                                                 .document(user.getUid())
-                                                .set(data)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                        Log.d("RegisterActivity", "User stored in database successfully");
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.d("RegisterActivity", "User could not be added");
-                                                    }
-                                                });
-
-                                        Log.d("RegisterActivity", "createUserWithEmail:success");
+                                                .set(data);
                                         Toast.makeText(RegisterActivity.this, "Authentication successful.",
                                                 Toast.LENGTH_SHORT).show();
                                         updateUI(user);
                                     } else {
-                                        // If sign in fails, display a message to the user.
-                                        Log.w("RegisterActivity", "createUserWithEmail:failure", task.getException());
-                                        Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                        Toast.makeText(RegisterActivity.this, "Username taken.",
                                                 Toast.LENGTH_SHORT).show();
-                                        updateUI(null);
                                     }
                                 }
                             });
 
                 }
                 else{
-                    Toast.makeText(RegisterActivity.this, "Enter valid email and password must be atleast 6 characters",
+                    Toast.makeText(RegisterActivity.this, "All fields must be filled in.\nPassword must be at least 6 characters",
                             Toast.LENGTH_SHORT).show();
 
                 }
