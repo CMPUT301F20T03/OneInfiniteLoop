@@ -3,7 +3,6 @@ name: Android Feature CI Unit
 on:
   push:
     branches:
-      - '*'
       - 'master'
   pull_request:
 
