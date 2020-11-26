@@ -56,8 +56,17 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -71,7 +80,15 @@ public class AddBookFragment extends Fragment {
     Button addButton, cancelButton;
     ImageButton addPhotoButton;
     ImageView cameraImageView;
+<<<<<<< HEAD
+    ImageButton scanISBNButton;
+    EditText titleEditText;
+    EditText authorEditText;
+    EditText isbnEditText;
+    EditText commentsEditText;
+=======
     EditText titleEditText, authorEditText, isbnEditText, commentsEditText;
+>>>>>>> 5cfa0e19ad51242f5420a8dbbaacabde2e11b2da
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     StorageReference storageReference;
@@ -92,12 +109,22 @@ public class AddBookFragment extends Fragment {
         authorEditText = mView.findViewById(R.id.authorEditText);
         isbnEditText = mView.findViewById(R.id.ISBNEditText);
         commentsEditText = mView.findViewById(R.id.commentEditText);
+        scanISBNButton = mView.findViewById(R.id.scanISBNButton);
 
         //initialize Firestore and storage variables
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("Books");
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+
+        //Button to add photo leads to a dialog to choose how to upload image
+        scanISBNButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scanOnClick(getActivity());
+            }
+        });
 
         //Button to add photo leads to a dialog to choose how to upload image
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -221,6 +248,79 @@ public class AddBookFragment extends Fragment {
         return image;
     }
 
+    public void scanOnClick(Context context) {
+        Intent intent = new Intent(context, ScanActivity.class);
+        startActivityForResult(intent, ScanActivity.SCAN);
+    }
+
+    public static String getBookInfo(String ISBN, View mView){
+        HttpURLConnection httpURLConnection = null;
+        BufferedReader bufferedReader = null;
+        String bookDescriptionJSON = null;
+
+        try {
+
+            Uri uri = Uri.parse("https://www.googleapis.com/books/v1/volumes?").buildUpon()
+                    .appendQueryParameter("q", "=isbn:" + ISBN)
+                    .appendQueryParameter("printType", "books").build();
+
+            URL url = new URL(uri.toString());
+
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.connect();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            StringBuffer stringBuffer = new StringBuffer();
+
+            if (inputStream == null) return null;
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null){
+                stringBuffer.append(line + "\n");
+            }
+            if (stringBuffer.length() == 0) return null;
+
+            bookDescriptionJSON = stringBuffer.toString();
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            if (httpURLConnection != null) httpURLConnection.disconnect();
+
+            if (bufferedReader!=null){
+                try{
+                    bufferedReader.close();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            try {
+                JSONObject jsonObject = new JSONObject(bookDescriptionJSON);
+                JSONArray jsonArray = jsonObject.getJSONArray("items");
+                JSONObject volumeInfo = jsonArray.getJSONObject(0).getJSONObject("volumeInfo");
+
+                EditText titleEditText = mView.findViewById(R.id.titleEditText);
+                EditText authorEditText = mView.findViewById(R.id.authorEditText);
+                EditText commentsEditText = mView.findViewById(R.id.commentEditText);
+
+                titleEditText.setText(volumeInfo.getString("title"));
+                authorEditText.setText(volumeInfo.getJSONArray("authors").getString(0));
+                commentsEditText.setText(volumeInfo.getString("description"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return bookDescriptionJSON;
+        }
+
+    }
+
     //Gets data from camera intent or from gallery and sets the image into imageView in AddBookFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -241,7 +341,17 @@ public class AddBookFragment extends Fragment {
                     addPhotoButton.setVisibility(View.GONE);
                     cameraImageView.setVisibility(View.VISIBLE);
                 }
-            } else {
+            }
+            else if(requestCode == ScanActivity.SCAN) {
+                // if successful
+                // get the scanned ISBN
+                String ISBN = data.getStringExtra("ISBN");
+                isbnEditText.setText(ISBN);
+                new AutofillBookDescription(ISBN, titleEditText, authorEditText, commentsEditText, mView).execute(ISBN);
+//                new AutofillBookDescription(ISBN, mView);
+//                getBookInfo(ISBN, mView);
+            }
+            else {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     String imageUrl = data.getStringExtra("imageUrl");
                     if (imageUrl.equals("deleted")) {
