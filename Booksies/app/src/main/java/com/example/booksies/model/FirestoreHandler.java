@@ -528,7 +528,7 @@ public class FirestoreHandler {
                             b.setImageUrl(book.getString("imageUrl"));
                             b.setOwner(book.getString("owner").split("@")[0]);
                             b.setDocID(book.getId());
-                            if(book.getString("borrowerID") != null) {
+                            if(book.get("borrowerID") != null) {
                                 booksList.add(b);
 
                             }
