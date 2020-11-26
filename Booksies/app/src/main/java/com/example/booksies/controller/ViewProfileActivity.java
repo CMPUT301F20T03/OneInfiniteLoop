@@ -44,13 +44,13 @@ public class ViewProfileActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        userEmail = getIntent().getStringExtra("email");
-        emailView.setText(userEmail);
+        username = getIntent().getStringExtra("username");
+        usernameView.setText(username);
 
 
         db = FirebaseFirestore.getInstance();
         db.collection("Users")
-                .whereEqualTo("email", userEmail)
+                .whereEqualTo("username", username)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -60,9 +60,9 @@ public class ViewProfileActivity extends AppCompatActivity {
                             assert querySnapshot != null;
                             DocumentSnapshot document = querySnapshot.getDocuments().get(0);
 
-                            username = document.getString("username");
+                            userEmail = document.getString("email");
                             phone = document.getString("phone");
-                            usernameView.setText(username);
+                            emailView.setText(userEmail);
                             phoneView.setText(phone);
                         } else {
                             Log.d("Query Snapshot", "Error getting documents: ", task.getException());

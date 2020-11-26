@@ -72,6 +72,7 @@ public class UserProfileFragment extends Fragment {
     DocumentReference documentReference;
     String uEmail;
     String uPhone;
+    String uName;
     ListView notificationList;
     ArrayAdapter<Notification> notificationAdapter;
     ArrayList<Notification> notificationDataList;
@@ -116,7 +117,8 @@ public class UserProfileFragment extends Fragment {
 
                 uEmail = snapshot.getString("email");
                 uPhone = snapshot.getString("phone");
-                username.setText(user.getEmail().split("@gmail.com")[0]);
+                uName = snapshot.getString("username");
+                username.setText(uName);
                 userPhone.setText(uPhone);
                 userEmail.setText(uEmail);
             }
@@ -189,7 +191,7 @@ public class UserProfileFragment extends Fragment {
                 });
 
         db.collection("Books")
-                .whereArrayContains("request", user.getEmail() + ";" + user.getUid())
+                .whereArrayContains("request", user.getEmail() + ":" + user.getUid())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,

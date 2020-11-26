@@ -2,6 +2,7 @@ package com.example.booksies.model;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.booksies.R;
 
+import com.example.booksies.controller.ViewProfileActivity;
 import com.google.firebase.storage.FirebaseStorage;
 
 
@@ -97,6 +99,15 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
         holder.isbnView.setText(bookList.get(position).getISBN());
         holder.statusView.setText(bookList.get(position).getStatus().toString().toLowerCase());
         holder.ownerView.setText(bookList.get(position).getOwner());
+
+        holder.ownerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ViewProfileActivity.class);
+                intent.putExtra("username", bookList.get(position).getOwner());
+                context.startActivity(intent);
+            }
+        });
 
 
         Glide.with(context)

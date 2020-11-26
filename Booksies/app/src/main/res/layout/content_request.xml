@@ -121,7 +121,8 @@
                 android:padding="1dp"
                 android:text="Person"
                 android:textColor="#000"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                android:clickable="true"/>
 
         </LinearLayout>
 

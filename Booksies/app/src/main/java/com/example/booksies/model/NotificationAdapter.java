@@ -50,7 +50,7 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ViewProfileActivity.class);
-                intent.putExtra("email", notification.getTitle());
+                intent.putExtra("username", notification.getTitle());
                 context.startActivity(intent);
             }
 

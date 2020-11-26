@@ -14,6 +14,7 @@ import com.example.booksies.R;
 import com.example.booksies.controller.HomeFragment;
 import com.example.booksies.controller.MapsActivity;
 import com.example.booksies.controller.NavigationActivity;
+import com.example.booksies.controller.ViewProfileActivity;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -79,6 +80,15 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.request.setText(requestList.get(position).split(":")[0]);
+        holder.reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppCompatActivity currentActivity = (AppCompatActivity) view.getContext();
+                Intent intent = new Intent(currentActivity, ViewProfileActivity.class);
+                intent.putExtra("username", requestList.get(position).split(":")[0]);
+                currentActivity.startActivity(intent);
+            }
+        });
 
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override
