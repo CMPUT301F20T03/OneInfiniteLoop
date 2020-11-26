@@ -382,7 +382,7 @@ public class FirestoreHandler {
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Books").document(bookID).update("borrowerID",FieldValue.delete());
-        String requests=getCurrentUserEmail()+":"+userID;
+        String requests=getCurrentUserEmail();
         db.collection("Books").document(bookID).update("request", FieldValue.arrayUnion(requests));
 
     }
@@ -419,7 +419,7 @@ public class FirestoreHandler {
         db = FirebaseFirestore.getInstance();
 
         db.collection("Books").whereNotEqualTo("owner", getCurrentUserEmail())
-                .whereArrayContains("request",getCurrentUserEmail()+":"+userID)
+                .whereArrayContains("request",getCurrentUserEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
