@@ -1,6 +1,9 @@
 package com.example.booksies.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.booksies.R;
@@ -55,45 +59,49 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String email= rEmail.getText().toString();
-                final String username = rUsername.getText().toString();
-                final String pass = rPassword.getText().toString();
-                final String phone = rPhone.getText().toString();
-                if(email.contains("@")
-                        && !(pass.length()<6)
-                        && email.length() > 0
-                        && phone.length() > 0)
-                {
-                    mAuth.createUserWithEmailAndPassword(username.concat("@gmail.com"), pass)
-                            .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        FirebaseUser user = mAuth.getCurrentUser();
-                                        // Sign in success, update UI with the signed-in user's information
-                                        //Add user to Users collection
-                                        final HashMap<String, String> data = new HashMap<>();
-                                        data.put("username", username.split("@gmail.com")[0]);
-                                        data.put("email", email);
-                                        data.put("phone", phone);
-                                        collectionReference
-                                                .document(user.getUid())
-                                                .set(data);
-                                        Toast.makeText(RegisterActivity.this, "Authentication successful.",
-                                                Toast.LENGTH_SHORT).show();
-                                        updateUI(user);
-                                    } else {
-                                        Toast.makeText(RegisterActivity.this, "Username taken.",
-                                                Toast.LENGTH_SHORT).show();
+                if(isNetworkConnected()) {
+                    final String email = rEmail.getText().toString();
+                    final String username = rUsername.getText().toString();
+                    final String pass = rPassword.getText().toString();
+                    final String phone = rPhone.getText().toString();
+                    if (email.contains("@")
+                            && !(pass.length() < 6)
+                            && email.length() > 0
+                            && phone.length() > 0) {
+                        mAuth.createUserWithEmailAndPassword(username.concat("@gmail.com"), pass)
+                                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            FirebaseUser user = mAuth.getCurrentUser();
+                                            // Sign in success, update UI with the signed-in user's information
+                                            //Add user to Users collection
+                                            final HashMap<String, String> data = new HashMap<>();
+                                            data.put("username", username.split("@gmail.com")[0]);
+                                            data.put("email", email);
+                                            data.put("phone", phone);
+                                            collectionReference
+                                                    .document(user.getUid())
+                                                    .set(data);
+                                            Toast.makeText(RegisterActivity.this, "Authentication successful.",
+                                                    Toast.LENGTH_SHORT).show();
+                                            updateUI(user);
+                                        } else {
+                                            Toast.makeText(RegisterActivity.this, "Username taken.",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
+                                });
 
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "All fields must be filled in.\nPassword must be at least 6 characters",
+                                Toast.LENGTH_SHORT).show();
+
+                    }
                 }
                 else{
-                    Toast.makeText(RegisterActivity.this, "All fields must be filled in.\nPassword must be at least 6 characters",
+                    Toast.makeText(RegisterActivity.this, "Internet connection required",
                             Toast.LENGTH_SHORT).show();
-
                 }
             }
         });
@@ -103,5 +111,10 @@ public class RegisterActivity extends AppCompatActivity {
         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         startActivity(intent);
 
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }
