@@ -44,6 +44,7 @@
 
         <activity android:name=".controller.EditUserProfileActivity" />
         <activity android:name=".controller.EditBookActivity" />
+        <activity android:name=".controller.ViewProfileActivity" />
         <activity
             android:name=".controller.SearchActivity"
             android:parentActivityName=".controller.NavigationActivity" />

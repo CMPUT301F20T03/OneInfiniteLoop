@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 String email= mEmail.getText().toString();
                 String pass = mPassword.getText().toString();
 
-                //email = "sazimi@ualberta.ca";pass="123456";
+                email = "sazimi@ualberta.ca";pass="123456";
                 //email = "architsiby@gmail.com";pass="123456";
 
                 if(!email.equals("") && !pass.equals("")){
