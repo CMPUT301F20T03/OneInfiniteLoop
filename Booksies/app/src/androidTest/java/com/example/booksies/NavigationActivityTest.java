@@ -169,8 +169,8 @@ public class NavigationActivityTest {
         solo.clickOnText("Edit");
 
         solo.waitForActivity(EditUserProfileActivity.class);
-        solo.clearEditText((EditText) solo.getCurrentActivity().findViewById(R.id.username_edit));
-        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.username_edit), "UI Test username edit");
+        solo.clearEditText((EditText) solo.getCurrentActivity().findViewById(R.id.user_email_edit));
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.user_email_edit), "UI Test username edit");
         solo.clearEditText((EditText) solo.getCurrentActivity().findViewById(R.id.phone_number_edit));
         solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.phone_number_edit), "UI Test phone edit");
         solo.clickOnText("Ok");
