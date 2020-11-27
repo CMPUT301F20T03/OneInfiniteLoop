@@ -119,7 +119,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         holder.titleView.setText(bookList.get(position).getTitle().toUpperCase());
         holder.authorView.setText(bookList.get(position).getAuthor().toUpperCase());
         holder.isbnView.setText(bookList.get(position).getISBN().toUpperCase());
-        holder.statusView.setText(bookList.get(position).getStatus().toString().toLowerCase());
+        holder.statusView.setText("AVAILABLE");
         holder.ownerView.setText(bookList.get(position).getOwner());
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
