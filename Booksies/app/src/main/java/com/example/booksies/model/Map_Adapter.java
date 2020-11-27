@@ -108,13 +108,15 @@ class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
                             if (documentSnapshot.getGeoPoint("location") != null) {
                                 GeoPoint geopoint = documentSnapshot.getGeoPoint("location");
                                 intent.putExtra("lat", geopoint.getLatitude());
-                                intent.putExtra("lat", geopoint.getLongitude());
+                                intent.putExtra("lon", geopoint.getLongitude());
+                                currentActivity.startActivity(intent);
+                            }
+                            else {
+                                currentActivity.startActivity(intent);
                             }
                         }
                     }
                 });
-                currentActivity.startActivity(intent);
-
             }
         });
 
