@@ -98,27 +98,6 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
             @Override
             public void onClick(View v) {
                 acceptRequest(requestList.get(position),bookID);
-                //TODO move this onto the onclicklistener of the map button
-                AppCompatActivity currentActivity = (AppCompatActivity) v.getContext();
-                Intent intent = new Intent(currentActivity, SetLocationActivity.class);
-                intent.putExtra("bookId", bookID);
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                DocumentReference docRef = db.collection("Books").document(bookID);
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        if (documentSnapshot.exists()) {
-                            //If the book has a location already, then pass in the lat lng
-                            if (documentSnapshot.getGeoPoint("location") != null) {
-                                GeoPoint geopoint = documentSnapshot.getGeoPoint("location");
-                                intent.putExtra("lat", geopoint.getLatitude());
-                                intent.putExtra("lat", geopoint.getLongitude());
-                            }
-                        }
-                    }
-                });
-                currentActivity.startActivity(intent);
 
             }
         });

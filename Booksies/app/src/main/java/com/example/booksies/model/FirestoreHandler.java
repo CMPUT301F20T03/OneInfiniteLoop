@@ -119,8 +119,18 @@ public class FirestoreHandler {
                             {
                                 b.setBookRequests(new ArrayList<String>());
                             }
+
+                            if(book.get("borrowerID") != null){
+                                b.setBorrower((ArrayList<String>)book.get("borrowerID"));
+                            }
+                            else
+                            {
+                                b.setBorrower(new ArrayList<String>());
+                            }
+
                             b.setImageUrl(book.getString("imageUrl"));
                             b.setOwner(book.getString("owner").split("@")[0]);
+
                             b.setDocID(book.getId());
 
                             booksList.add(b);
@@ -382,7 +392,7 @@ public class FirestoreHandler {
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Books").document(bookID).update("borrowerID",FieldValue.delete());
-        String requests=getCurrentUserEmail()+":"+userID;
+        String requests=getCurrentUserEmail();
         db.collection("Books").document(bookID).update("request", FieldValue.arrayUnion(requests));
 
     }
@@ -395,7 +405,7 @@ public class FirestoreHandler {
     public static void acceptRequest(String requestor, String bookID){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Books").document(bookID).update("request",FieldValue.delete());
-        db.collection("Books").document(bookID).update("borrowerID",requestor);
+        db.collection("Books").document(bookID).update("borrowerID", FieldValue.arrayUnion(requestor));
         db.collection("Books").document(bookID).update("status","ACCEPTED");
 
     }
@@ -419,7 +429,7 @@ public class FirestoreHandler {
         db = FirebaseFirestore.getInstance();
 
         db.collection("Books").whereNotEqualTo("owner", getCurrentUserEmail())
-                .whereArrayContains("request",getCurrentUserEmail()+":"+userID)
+                .whereArrayContains("request",getCurrentUserEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
@@ -518,7 +528,7 @@ public class FirestoreHandler {
                             b.setImageUrl(book.getString("imageUrl"));
                             b.setOwner(book.getString("owner").split("@")[0]);
                             b.setDocID(book.getId());
-                            if(book.getString("borrowerID") != null) {
+                            if(book.get("borrowerID") != null) {
                                 booksList.add(b);
 
                             }
