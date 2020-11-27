@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booksies.R;
 import com.example.booksies.controller.SetLocationActivity;
+import com.example.booksies.controller.ViewProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 
 import static com.example.booksies.model.FirestoreHandler.acceptRequest;
 import static com.example.booksies.model.FirestoreHandler.rejectRequest;
+
 
 /**
  * This class is a custom adapter for RecyclerView
@@ -81,7 +83,16 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.request.setText(requestList.get(position).split(":")[0]);
+        holder.request.setText(requestList.get(position).split("@gmail.com")[0]);
+        holder.request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppCompatActivity currentActivity = (AppCompatActivity) view.getContext();
+                Intent intent = new Intent(currentActivity, ViewProfileActivity.class);
+                intent.putExtra("username", requestList.get(position).split("@gmail.com")[0]);
+                currentActivity.startActivity(intent);
+            }
+        });
 
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override

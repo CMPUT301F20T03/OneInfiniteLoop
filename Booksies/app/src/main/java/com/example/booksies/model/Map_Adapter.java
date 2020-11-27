@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booksies.R;
 import com.example.booksies.controller.SetLocationActivity;
+import com.example.booksies.controller.ViewProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -79,7 +80,16 @@ class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.borrower.setText(requestList.get(position).split(":")[0]);
+        holder.borrower.setText(requestList.get(position).split("@gmail.com")[0]);
+        holder.borrower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppCompatActivity currentAcitvity = (AppCompatActivity) view.getContext();
+                Intent intent = new Intent(currentAcitvity, ViewProfileActivity.class);
+                intent.putExtra("username", requestList.get(position).split("@gmail.com")[0]);
+                currentAcitvity.startActivity(intent);
+            }
+        });
 
         holder.map.setOnClickListener(new View.OnClickListener() {
             @Override

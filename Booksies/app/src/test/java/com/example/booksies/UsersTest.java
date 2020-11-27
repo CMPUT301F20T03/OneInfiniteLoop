@@ -1,5 +1,7 @@
 package com.example.booksies;
 
+import android.util.Log;
+
 import com.example.booksies.model.User;
 
 import org.junit.Test;
@@ -29,7 +31,7 @@ public class UsersTest {
         User testUser = new User(userid, username, email, phone);
         String testUsername = "bkagbjkdagb";
         assertEquals(testUser.getUsername(), username);
-        testUser.setUserid(testUsername);
+        testUser.setUsername(testUsername);
         assertEquals(testUser.getUsername(), testUsername);
     }
 
@@ -38,7 +40,7 @@ public class UsersTest {
         User testUser = new User(userid, username, email, phone);
         String testEmail = "sladfbuibvb@gmail.com";
         assertEquals(testUser.getEmail(), email);
-        testUser.setUserid(testEmail);
+        testUser.setEmail(testEmail);
         assertEquals(testUser.getEmail(), testEmail);
     }
 
@@ -47,7 +49,7 @@ public class UsersTest {
         User testUser = new User(userid, username, email, phone);
         String testPhone = "12345643145311";
         assertEquals(testUser.getPhone(), phone);
-        testUser.setUserid(testPhone);
+        testUser.setPhone(testPhone);
         assertEquals(testUser.getPhone(), testPhone);
     }
 
