@@ -80,12 +80,8 @@ public class AddBookFragment extends Fragment {
     Button addButton, cancelButton;
     ImageButton addPhotoButton;
     ImageView cameraImageView;
-
     ImageButton scanISBNButton;
-    EditText titleEditText;
-    EditText authorEditText;
-    EditText isbnEditText;
-    EditText commentsEditText;
+    EditText titleEditText, authorEditText, isbnEditText, commentsEditText;
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
