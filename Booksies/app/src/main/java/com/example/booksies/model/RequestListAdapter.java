@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.service.controls.actions.FloatAction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -26,7 +28,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.booksies.R;
 
+import com.example.booksies.controller.MainActivity;
 import com.example.booksies.controller.SetLocationActivity;
+import com.example.booksies.controller.ViewMapsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -120,10 +124,10 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             @Override
             public void onClick(View v) {
                 AppCompatActivity currentActivity = (AppCompatActivity) v.getContext();
-                Intent intent = new Intent(currentActivity, SetLocationActivity.class);
-                intent.putExtra("bookId", bookList.get(position).getDocID());
+                Intent intent = new Intent(currentActivity, ViewMapsActivity.class);
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 DocumentReference docRef = db.collection("Books").document(bookList.get(position).getDocID());
+
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -133,12 +137,15 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
                             if (documentSnapshot.getGeoPoint("location") != null) {
                                 GeoPoint geopoint = documentSnapshot.getGeoPoint("location");
                                 intent.putExtra("lat", geopoint.getLatitude());
-                                intent.putExtra("lat", geopoint.getLongitude());
+                                intent.putExtra("lon", geopoint.getLongitude());
+                                currentActivity.startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(currentActivity,"Borrower has not set location yet",Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
                 });
-                currentActivity.startActivity(intent);
             }
         });
 
