@@ -1,4 +1,4 @@
-package com.example.booksies.model;
+package com.example.booksies.model.adapters;
 
 
 import android.content.Intent;
@@ -21,12 +21,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.type.LatLng;
 
 import java.util.ArrayList;
-
-import static com.example.booksies.model.FirestoreHandler.acceptRequest;
-import static com.example.booksies.model.FirestoreHandler.rejectRequest;
 
 /**
  * This class is a custom adapter for RecyclerView
@@ -108,13 +104,15 @@ class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
                             if (documentSnapshot.getGeoPoint("location") != null) {
                                 GeoPoint geopoint = documentSnapshot.getGeoPoint("location");
                                 intent.putExtra("lat", geopoint.getLatitude());
-                                intent.putExtra("lat", geopoint.getLongitude());
+                                intent.putExtra("lon", geopoint.getLongitude());
+                                currentActivity.startActivity(intent);
+                            }
+                            else {
+                                currentActivity.startActivity(intent);
                             }
                         }
                     }
                 });
-                currentActivity.startActivity(intent);
-
             }
         });
 
