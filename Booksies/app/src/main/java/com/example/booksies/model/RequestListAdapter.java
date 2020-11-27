@@ -26,6 +26,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.booksies.R;
 
+
+import com.example.booksies.controller.ViewProfileActivity;
 import com.example.booksies.controller.SetLocationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -111,6 +113,16 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
         holder.isbnView.setText(bookList.get(position).getISBN());
         holder.statusView.setText(bookList.get(position).getStatus().toString().toLowerCase());
         holder.ownerView.setText(bookList.get(position).getOwner());
+
+        // making owner name clickable
+        holder.ownerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ViewProfileActivity.class);
+                intent.putExtra("username", bookList.get(position).getOwner());
+                context.startActivity(intent);
+            }
+        });
 
 
         Glide.with(context)

@@ -3,6 +3,7 @@ package com.example.booksies.model;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +33,7 @@ import com.example.booksies.controller.HomeFragment;
 import com.example.booksies.controller.MainActivity;
 import com.example.booksies.controller.NavigationActivity;
 import com.example.booksies.controller.SearchActivity;
+import com.example.booksies.controller.ViewProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -121,6 +124,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         holder.isbnView.setText(bookList.get(position).getISBN().toUpperCase());
         holder.statusView.setText("AVAILABLE");
         holder.ownerView.setText(bookList.get(position).getOwner());
+        holder.ownerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppCompatActivity currentAcitiviy = (AppCompatActivity) view.getContext();
+                Intent intent = new Intent(currentAcitiviy, ViewProfileActivity.class);
+                intent.putExtra("username", bookList.get(position).getOwner());
+                currentAcitiviy.startActivity(intent);
+            }
+        });
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
