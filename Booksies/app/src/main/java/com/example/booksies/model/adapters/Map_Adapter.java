@@ -1,4 +1,4 @@
-package com.example.booksies.model;
+package com.example.booksies.model.adapters;
 
 
 import android.content.Intent;
@@ -21,12 +21,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.type.LatLng;
 
 import java.util.ArrayList;
-
-import static com.example.booksies.model.FirestoreHandler.acceptRequest;
-import static com.example.booksies.model.FirestoreHandler.rejectRequest;
 
 /**
  * This class is a custom adapter for RecyclerView
