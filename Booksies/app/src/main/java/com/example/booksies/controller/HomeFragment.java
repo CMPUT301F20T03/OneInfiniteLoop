@@ -1,30 +1,22 @@
 package com.example.booksies.controller;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.Spinner;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booksies.model.Books;
 import com.example.booksies.model.FirestoreHandler;
-import com.example.booksies.model.MyAdapter;
 import com.example.booksies.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -66,15 +58,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         searchView = (LinearLayout) view.findViewById(R.id.search_bar);
 
-//        linearLayout = view.findViewById(R.id.linear_layout);
-//        Log.d("SOME TAG", linearLayout + " --------------------------------------------");
-//        linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View view) {
-//                Log.d("SOME TAG", "No such document --------------------------------------------");
-//                return false;
-//            }
-//        });
         return view;
 
     }

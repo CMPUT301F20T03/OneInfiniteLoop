@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     //UI references
-    private EditText mEmail,mPassword;
+    private EditText mUserName,mPassword;
     private Button btnSignIn,btnRegister;
 
     public boolean permissionsAccepted;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Initialize UI refs
-        mEmail = (EditText) findViewById(R.id.username);
+        mUserName = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
         btnSignIn = (Button) findViewById(R.id.login);
         btnRegister = (Button) findViewById(R.id.create_user);
@@ -57,37 +59,37 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email= mEmail.getText().toString();
-                String pass = mPassword.getText().toString();
+                if (isNetworkConnected()) {
+                    String userName = mUserName.getText().toString();
+                    String pass = mPassword.getText().toString();
 
-//                email = "sazimi@ualberta.ca";pass="123456";
+                    if (!userName.equals("") && !pass.equals("")) {
+                        mAuth.signInWithEmailAndPassword(userName.concat("@gmail.com"), pass)
+                                .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            // Sign in success, update UI with the signed-in user's information
+                                            FirebaseUser user = mAuth.getCurrentUser();
+                                            toastMessage("Welcome back " + user.getEmail().split("@gmail.com")[0] + "!");
+                                            Intent intent = new Intent(MainActivity.this, NavigationActivity.class);
+                                            setCurrentUserID();
 
-                if(!email.equals("") && !pass.equals("")){
-                    mAuth.signInWithEmailAndPassword(email, pass)
-                            .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        Log.d(TAG, "signInWithEmail:success");
-                                        FirebaseUser user = mAuth.getCurrentUser();
-                                        toastMessage("Successfully signed in as User: " + user.getEmail().toString());
-                                        Intent intent = new Intent(MainActivity.this, NavigationActivity.class);
-
-                                        startActivity(intent);
-                                    } else {
-                                        // If sign in fails, display a message to the user.
-                                        Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                        Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                                        updateUI(null);
+                                            startActivity(intent);
+                                        } else {
+                                            // If sign in fails, display a message to the user.
+                                            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                            updateUI(null);
+                                        }
                                     }
-
-                                    // ...
-                                }
-                            });
+                                });
+                    } else {
+                        toastMessage("You didn't fill in the all the fields!");
+                    }
                 }
                 else{
-                    toastMessage("You didn't fill in the all the fields!");
+                    Toast.makeText(MainActivity.this, "Internet connection required.", Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
@@ -156,6 +158,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser currentUser) {
- 
+
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }

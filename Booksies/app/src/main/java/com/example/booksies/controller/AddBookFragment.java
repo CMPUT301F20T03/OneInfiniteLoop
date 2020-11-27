@@ -16,9 +16,11 @@ package com.example.booksies.controller;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,8 +56,17 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -66,21 +77,18 @@ public class AddBookFragment extends Fragment {
     static final int REQUEST_VIEW_IMAGE = 3;
 
     View mView;
-    Button addButton;
-    Button cancelButton;
+    Button addButton, cancelButton;
     ImageButton addPhotoButton;
     ImageView cameraImageView;
-    EditText titleEditText;
-    EditText authorEditText;
-    EditText isbnEditText;
-    EditText commentsEditText;
+    ImageButton scanISBNButton;
+    EditText titleEditText, authorEditText, isbnEditText, commentsEditText;
+
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     StorageReference storageReference;
     Uri mImageUri;
     CollectionReference collectionReference;
     String downloadableUrl;
-    BottomNavigationView bottomNavigation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,12 +103,22 @@ public class AddBookFragment extends Fragment {
         authorEditText = mView.findViewById(R.id.authorEditText);
         isbnEditText = mView.findViewById(R.id.ISBNEditText);
         commentsEditText = mView.findViewById(R.id.commentEditText);
+        scanISBNButton = mView.findViewById(R.id.scanISBNButton);
 
         //initialize Firestore and storage variables
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("Books");
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+
+        //Button to add photo leads to a dialog to choose how to upload image
+        scanISBNButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scanOnClick(getActivity());
+            }
+        });
 
         //Button to add photo leads to a dialog to choose how to upload image
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +154,7 @@ public class AddBookFragment extends Fragment {
                 public void onClick(View view) {
                     Intent viewImageIntent = new Intent(getActivity(), ViewPhotoActivity.class);
                     viewImageIntent.putExtra("imageUrl", mImageUri.toString());
+                    viewImageIntent.putExtra("previousActivity", "AddBookFragment");
                     startActivityForResult(viewImageIntent, REQUEST_VIEW_IMAGE);
                 }
             });
@@ -156,9 +175,14 @@ public class AddBookFragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo")) {
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Ensure that there's a camera activity to handle the intent
-                    if (getActivity().getApplicationContext().getPackageManager().hasSystemFeature(
-                            PackageManager.FEATURE_CAMERA)) {
+                    // Check camera permissions
+                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        Toast toast = Toast.makeText(getActivity(),
+                                "Allow camera permissions in app settings to use camera", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                    else{
                         // Create the File where the photo should go
                         File photoFile = null;
                         try {
@@ -177,9 +201,17 @@ public class AddBookFragment extends Fragment {
                 }
 
                 else if (options[item].equals("Upload From Gallery")) {
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto, REQUEST_IMAGE_UPLOAD);
+                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        Toast toast = Toast.makeText(getActivity(),
+                                "Allow storage permissions in app settings to use gallery", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                    else {
+                        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(pickPhoto, REQUEST_IMAGE_UPLOAD);
+                    }
                 }
 
                 else if (options[item].equals("Cancel")) {
@@ -210,11 +242,83 @@ public class AddBookFragment extends Fragment {
         return image;
     }
 
+    public void scanOnClick(Context context) {
+        Intent intent = new Intent(context, ScanActivity.class);
+        startActivityForResult(intent, ScanActivity.SCAN);
+    }
+
+    public static String getBookInfo(String ISBN, View mView){
+        HttpURLConnection httpURLConnection = null;
+        BufferedReader bufferedReader = null;
+        String bookDescriptionJSON = null;
+
+        try {
+
+            Uri uri = Uri.parse("https://www.googleapis.com/books/v1/volumes?").buildUpon()
+                    .appendQueryParameter("q", "=isbn:" + ISBN)
+                    .appendQueryParameter("printType", "books").build();
+
+            URL url = new URL(uri.toString());
+
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.connect();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            StringBuffer stringBuffer = new StringBuffer();
+
+            if (inputStream == null) return null;
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null){
+                stringBuffer.append(line + "\n");
+            }
+            if (stringBuffer.length() == 0) return null;
+
+            bookDescriptionJSON = stringBuffer.toString();
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            if (httpURLConnection != null) httpURLConnection.disconnect();
+
+            if (bufferedReader!=null){
+                try{
+                    bufferedReader.close();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            try {
+                JSONObject jsonObject = new JSONObject(bookDescriptionJSON);
+                JSONArray jsonArray = jsonObject.getJSONArray("items");
+                JSONObject volumeInfo = jsonArray.getJSONObject(0).getJSONObject("volumeInfo");
+
+                EditText titleEditText = mView.findViewById(R.id.titleEditText);
+                EditText authorEditText = mView.findViewById(R.id.authorEditText);
+                EditText commentsEditText = mView.findViewById(R.id.commentEditText);
+
+                titleEditText.setText(volumeInfo.getString("title"));
+                authorEditText.setText(volumeInfo.getJSONArray("authors").getString(0));
+                commentsEditText.setText(volumeInfo.getString("description"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return bookDescriptionJSON;
+        }
+
+    }
+
     //Gets data from camera intent or from gallery and sets the image into imageView in AddBookFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("RequestCode", Integer.toString(requestCode));
         cameraImageView = mView.findViewById(R.id.cameraImageView);
         if (resultCode != Activity.RESULT_CANCELED) {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
@@ -231,10 +335,21 @@ public class AddBookFragment extends Fragment {
                     addPhotoButton.setVisibility(View.GONE);
                     cameraImageView.setVisibility(View.VISIBLE);
                 }
-            } else {
+            }
+            else if(requestCode == ScanActivity.SCAN) {
+                // if successful
+                // get the scanned ISBN
+                String ISBN = data.getStringExtra("ISBN");
+                isbnEditText.setText(ISBN);
+                new AutofillBookDescription(ISBN, titleEditText, authorEditText, commentsEditText, mView).execute(ISBN);
+//                new AutofillBookDescription(ISBN, mView);
+//                getBookInfo(ISBN, mView);
+            }
+            else {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     String imageUrl = data.getStringExtra("imageUrl");
-                    if (imageUrl.length() == 0) {
+                    if (imageUrl.equals("deleted")) {
+                        mImageUri = null;
                         addPhotoButton.setVisibility(View.VISIBLE);
                         cameraImageView.setImageURI(null);
                         cameraImageView.setVisibility(View.GONE);
@@ -248,8 +363,6 @@ public class AddBookFragment extends Fragment {
      // Puts into a document called Books with fields:
      // title, author, isbn, comment, owner, status, and imageUrl
     private void addBookToFirestore(){
-        //final String currentUserId = mAuth.getCurrentUser().getUid();
-        //This is Temporary
         final String currentUserId = FirestoreHandler.getCurrentUserEmail();
 
         final String titleStr = titleEditText.getText().toString();
@@ -266,7 +379,6 @@ public class AddBookFragment extends Fragment {
             data.put("status", "AVAILABLE");
             data.put("comment", commentStr);
             data.put("owner", currentUserId);
-            data.put("id", myId);
         } else {
             Toast toast = Toast.makeText(getActivity(),
                     "Adding a book requires\n Title, Author and ISBN", Toast.LENGTH_LONG);
@@ -288,19 +400,7 @@ public class AddBookFragment extends Fragment {
                             downloadableUrl = uri.toString();
                             data.put("imageUrl", downloadableUrl);
                             collectionReference
-                                    .add(data)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Log.d("BookAdd", "Book added successfully");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.d("BookAdd", "Failed to add book");
-                                        }
-                                    });
+                                    .add(data);
                         }
                     });
                 }
@@ -312,25 +412,10 @@ public class AddBookFragment extends Fragment {
             data.put("imageUrl",
                     "https://firebasestorage.googleapis.com/v0/b/booksies-6aa46.appspot.com/o/images%2Fopen-book-silhouette.jpg?alt=media&token=34b3c0e2-0efc-4a25-aed5-86d9d2f0e230");
             collectionReference
-                    .add(data)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d("BookAdd", "Book added successfully");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("BookAdd", "Failed to add book");
-                        }
-                    });
+                    .add(data);
         }
-        //Go back to whatever called this fragment
+        //Go back to home fragment
         View action = getActivity().findViewById(R.id.action_home);
         action.performClick();
-
-
     }
-
 }

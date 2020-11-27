@@ -1,5 +1,10 @@
 /*
-
+* EditUserProfileActivity inflates activity_edit_profile.xml
+*
+* Implements US 02.02.01
+*
+* Acknowledgments
+*
  */
 
 package com.example.booksies.controller;
@@ -37,9 +42,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+/**
+ * This Class handles the Editing User Profiles
+ */
 public class EditUserProfileActivity extends AppCompatActivity {
 
-    String uName;
+    String uEmail;
     String uPhone;
     FirebaseFirestore db;
     DocumentReference documentReference;
@@ -49,17 +57,16 @@ public class EditUserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         final EditText userPhone = findViewById(R.id.phone_number_edit);
-        final EditText userName = findViewById(R.id.username_edit);
+        final EditText userEmail = findViewById(R.id.user_email_edit);
         Button ok = findViewById(R.id.ok_button);
 
         //Enable the back button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        uName = getIntent().getStringExtra("user");
+        uEmail = getIntent().getStringExtra("email");
         uPhone = getIntent().getStringExtra("phone");
-        final String uPass = getIntent().getStringExtra("password");
-        userName.setText(uName);
+        userEmail.setText(uEmail);
         userPhone.setText(uPhone);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -71,32 +78,14 @@ public class EditUserProfileActivity extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uName = userName.getText().toString();
+                uEmail = userEmail.getText().toString();
                 uPhone = userPhone.getText().toString();
-                data.put("username",uName);
-                data.put("phone", uPhone);
-                data.put("password", uPass);
-                data.put("email", user.getEmail());
-                documentReference
-                        .set(data)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d("UpdateProfile", "Profile updated successfully");
-                                finish();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("FailUpdateProfile", "Profile update unsuccessfully");
-                            }
-                        });
-
+                documentReference.update("email", uEmail);
+                documentReference.update("phone",uPhone);
+                finish();
             }
         });
     }
-
     //Go back to whatever opened this activity
     @Override
     public boolean onSupportNavigateUp() {

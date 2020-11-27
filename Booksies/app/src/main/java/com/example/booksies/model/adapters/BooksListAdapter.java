@@ -1,4 +1,4 @@
-package com.example.booksies.model;
+package com.example.booksies.model.adapters;
 
 
 import android.content.Context;
@@ -28,9 +28,8 @@ import com.bumptech.glide.Glide;
 
 import com.example.booksies.R;
 
-import com.example.booksies.controller.AddBookFragment;
 import com.example.booksies.controller.EditBookActivity;
-import com.example.booksies.controller.MainActivity;
+import com.example.booksies.model.Books;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,7 +47,7 @@ import java.util.ArrayList;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.MyViewHolder> {
     public ArrayList<Books> bookList;
     //public static ArrayList<Boolean> expandable;
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -88,10 +87,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             isbnView = v.findViewById(R.id.book_isbn);
             statusView = v.findViewById(R.id.book_status);
             expand = v.findViewById(R.id.expandable_layout);
-            r_view = (RecyclerView) v.findViewById(R.id.expand_rlist);
+            r_view = v.findViewById(R.id.expand_rlist);
             r_view.setLayoutManager(new LinearLayoutManager(v.getContext()));
 
-            imageView = (ImageView) v.findViewById(R.id.book_image);
+            imageView = v.findViewById(R.id.book_image);
             linearLayout = v.findViewById(R.id.linear_layout);
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -121,9 +120,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                                 docID.putString("title", book.getTitle());
                                 docID.putString("author", book.getAuthor());
                                 docID.putString("isbn", book.getISBN());
-                                docID.putString("comment", book.getComments());
+                                docID.putString("comment", documentSnapshot.getString("comment"));
                                 docID.putString("imageURL", book.getImageUrl());
-//                                Log.d("EDIT LOG: ", "---------- " + title + " " + author + " " + isbn + " " + comments + " ---------- ");
 
                                 Intent intent = new Intent(context.getApplicationContext(), EditBookActivity.class).putExtras(docID);
                                 context.startActivity(intent);
@@ -158,14 +156,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 //    }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<Books> bookList) {
+    public BooksListAdapter(ArrayList<Books> bookList) {
         this.bookList = bookList;
 
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BooksListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.content_home, parent, false);
@@ -197,13 +195,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         {
             holder.expand.setVisibility(View.VISIBLE);
         }
-
-        holder.mAdapter = new MyAdapter_Expand(bookList.get(position).getBookRequests(),bookList.get(position).getDocID());
-        holder.r_view.setAdapter(holder.mAdapter);
-        holder.r_view.setItemAnimator(new DefaultItemAnimator());
-        holder.r_view.setHasFixedSize(true);
-
-
+        if(bookList.get(position).getStatus().toString().toUpperCase().equals("REQUESTED")) {
+            holder.mAdapter = new BooksListAdapter_Expand(bookList.get(position).getBookRequests(), bookList.get(position).getDocID());
+            holder.r_view.setAdapter(holder.mAdapter);
+            holder.r_view.setItemAnimator(new DefaultItemAnimator());
+            holder.r_view.setHasFixedSize(true);
+        }
+        else
+        {
+            holder.mAdapter = new Map_Adapter(bookList.get(position).getBorrower(),bookList.get(position).getDocID());
+            holder.r_view.setAdapter(holder.mAdapter);
+            holder.r_view.setItemAnimator(new DefaultItemAnimator());
+            holder.r_view.setHasFixedSize(true);
+        }
 
     }
 

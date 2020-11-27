@@ -31,26 +31,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_marginBottom="16dp">
 
         <TextView
-            android:id="@+id/emailTextView"
+            android:id="@+id/usernameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
-            android:text="@string/user_email"
+            android:text="@string/username"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/emailEditText"
+            android:id="@+id/usernameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:digits="0,1,2,3,4,5,6,7,8,9,qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM,_,-"
             android:ems="10"
-            android:fontFamily="sans-serif-condensed-medium"
-            android:hint="@string/example_gmail_com"
-            android:inputType="textEmailAddress"
-            android:textAlignment="center" />
+            android:hint="@string/booklover123"
+            android:inputType="text" />
     </LinearLayout>
 
     <LinearLayout
@@ -80,25 +79,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginBottom="16dp">
 
         <TextView
-            android:id="@+id/usernameTextView"
+            android:id="@+id/emailTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
-            android:text="@string/username"
+            android:text="@string/user_email"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/usernameEditText"
+            android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:ems="10"
-            android:hint="@string/booklover123"
-            android:inputType="textPersonName" />
+            android:fontFamily="sans-serif-condensed-medium"
+            android:hint="@string/example_gmail_com"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center" />
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
