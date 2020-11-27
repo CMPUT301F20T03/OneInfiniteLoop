@@ -82,6 +82,7 @@ public class AddBookFragment extends Fragment {
     ImageView cameraImageView;
     ImageButton scanISBNButton;
     EditText titleEditText, authorEditText, isbnEditText, commentsEditText;
+
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     StorageReference storageReference;

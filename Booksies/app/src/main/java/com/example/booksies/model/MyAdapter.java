@@ -88,10 +88,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             isbnView = v.findViewById(R.id.book_isbn);
             statusView = v.findViewById(R.id.book_status);
             expand = v.findViewById(R.id.expandable_layout);
-            r_view = (RecyclerView) v.findViewById(R.id.expand_rlist);
+            r_view = v.findViewById(R.id.expand_rlist);
             r_view.setLayoutManager(new LinearLayoutManager(v.getContext()));
 
-            imageView = (ImageView) v.findViewById(R.id.book_image);
+            imageView = v.findViewById(R.id.book_image);
             linearLayout = v.findViewById(R.id.linear_layout);
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -196,13 +196,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         {
             holder.expand.setVisibility(View.VISIBLE);
         }
-
-        holder.mAdapter = new MyAdapter_Expand(bookList.get(position).getBookRequests(),bookList.get(position).getDocID());
-        holder.r_view.setAdapter(holder.mAdapter);
-        holder.r_view.setItemAnimator(new DefaultItemAnimator());
-        holder.r_view.setHasFixedSize(true);
-
-
+        if(bookList.get(position).getStatus().toString().toUpperCase().equals("REQUESTED")) {
+            holder.mAdapter = new MyAdapter_Expand(bookList.get(position).getBookRequests(), bookList.get(position).getDocID());
+            holder.r_view.setAdapter(holder.mAdapter);
+            holder.r_view.setItemAnimator(new DefaultItemAnimator());
+            holder.r_view.setHasFixedSize(true);
+        }
+        else
+        {
+            holder.mAdapter = new Map_Adapter(bookList.get(position).getBorrower(),bookList.get(position).getDocID());
+            holder.r_view.setAdapter(holder.mAdapter);
+            holder.r_view.setItemAnimator(new DefaultItemAnimator());
+            holder.r_view.setHasFixedSize(true);
+        }
 
     }
 

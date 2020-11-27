@@ -18,6 +18,7 @@ public class Books {
     private String imageUrl;
     private String comments;
     private String docID;
+    private ArrayList<String> borrower;
 
     private ArrayList<String> bookRequests;
 
@@ -192,5 +193,13 @@ public class Books {
      */
     public void setBookRequests(ArrayList<String> bookRequests) {
         this.bookRequests = bookRequests;
+    }
+
+    public ArrayList<String> getBorrower() {
+        return borrower;
+    }
+
+    public void setBorrower(ArrayList<String> borrower) {
+        this.borrower = borrower;
     }
 }
