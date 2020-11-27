@@ -127,9 +127,8 @@ public class UserProfileFragment extends Fragment {
 
         notificationDataList = new ArrayList<>();
 
-
         db.collection("Books")
-                .whereEqualTo("owner", uName + "@gmail.com")
+                .whereEqualTo("owner", user.getEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
@@ -145,7 +144,7 @@ public class UserProfileFragment extends Fragment {
                                 ArrayList<String> requests = (ArrayList<String>) doc.get("request");
                                 String body = String.format("has requested %s", doc.getString("title"));
                                 for (int counter = 0; counter < requests.size(); counter++){
-                                    Notification newRequestNotification = new Notification(requests.get(counter).split(":")[0], body);
+                                    Notification newRequestNotification = new Notification(requests.get(counter).split("@")[0], body);
                                     if (!notificationDataList.contains(newRequestNotification)){
                                         notificationDataList.add(0, newRequestNotification);
                                     }
@@ -155,13 +154,12 @@ public class UserProfileFragment extends Fragment {
                                 notificationList.setAdapter(notificationAdapter);
                             }
                         }
-                        Log.d("Notifications", "request notifications");
                     }
                 });
 
 
         db.collection("Books")
-                .whereEqualTo("borrowerID", uName + ":" + user.getUid())
+                .whereArrayContains("borrowerID", user.getEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
@@ -173,22 +171,22 @@ public class UserProfileFragment extends Fragment {
 
                         assert value != null;
                         for (QueryDocumentSnapshot doc : value) {
-
                             if (Objects.equals(doc.getString("status"),"ACCEPTED")){
                                 ArrayList<String> borrow = (ArrayList<String>) doc.get("borrowerID");
-
                                 String body = String.format("has accepted your requested for %s", doc.getString("title"));
-                                Notification newAcceptNotification = new Notification(doc.getString("owner"), body);
-                                if (!notificationDataList.contains(newAcceptNotification)){
-                                    notificationDataList.add(0,newAcceptNotification);
+                                for (int counter = 0; counter < borrow.size(); counter++){
+                                    Notification newAcceptNotification = new Notification(doc.getString("owner").split("@")[0], body);
+                                    if (!notificationDataList.contains(newAcceptNotification)){
+                                        notificationDataList.add(0,newAcceptNotification);
+                                    }
                                 }
+
 
                                 notificationAdapter = new NotificationAdapter(getContext(), notificationDataList);
 
                                 notificationList.setAdapter(notificationAdapter);
                             }
                         }
-                        Log.d("Notifications", "accepted notifications");
                     }
                 });
 

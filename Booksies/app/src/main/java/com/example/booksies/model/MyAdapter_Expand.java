@@ -83,13 +83,13 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.request.setText(requestList.get(position).split(":")[0]);
-        holder.reject.setOnClickListener(new View.OnClickListener() {
+        holder.request.setText(requestList.get(position).split("@gmail.com")[0]);
+        holder.request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AppCompatActivity currentActivity = (AppCompatActivity) view.getContext();
                 Intent intent = new Intent(currentActivity, ViewProfileActivity.class);
-                intent.putExtra("username", requestList.get(position).split(":")[0]);
+                intent.putExtra("username", requestList.get(position).split("@gmail.com")[0]);
                 currentActivity.startActivity(intent);
             }
         });
