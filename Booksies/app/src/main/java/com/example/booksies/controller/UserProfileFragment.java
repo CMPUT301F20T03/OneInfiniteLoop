@@ -129,7 +129,7 @@ public class UserProfileFragment extends Fragment {
 
 
         db.collection("Books")
-                .whereEqualTo("owner", user.getEmail())
+                .whereEqualTo("owner", uName + "@gmail.com")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
@@ -161,7 +161,7 @@ public class UserProfileFragment extends Fragment {
 
 
         db.collection("Books")
-                .whereEqualTo("borrowerID", user.getEmail() + ":" + user.getUid())
+                .whereEqualTo("borrowerID", uName + ":" + user.getUid())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
@@ -175,6 +175,8 @@ public class UserProfileFragment extends Fragment {
                         for (QueryDocumentSnapshot doc : value) {
 
                             if (Objects.equals(doc.getString("status"),"ACCEPTED")){
+                                ArrayList<String> borrow = (ArrayList<String>) doc.get("borrowerID");
+
                                 String body = String.format("has accepted your requested for %s", doc.getString("title"));
                                 Notification newAcceptNotification = new Notification(doc.getString("owner"), body);
                                 if (!notificationDataList.contains(newAcceptNotification)){
