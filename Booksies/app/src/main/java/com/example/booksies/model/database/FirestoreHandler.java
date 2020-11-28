@@ -481,6 +481,7 @@ public class FirestoreHandler {
 
                 });
         db.collection("Books").whereNotEqualTo("owner", getCurrentUserEmail())
+                .whereArrayContains("borrowerID",getCurrentUserEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
