@@ -1,4 +1,4 @@
-package com.example.booksies.model;
+package com.example.booksies.model.books;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.example.booksies.R;
 import com.example.booksies.controller.ViewProfileActivity;
+import com.example.booksies.model.notification.Notification;
 
 import java.util.ArrayList;
 

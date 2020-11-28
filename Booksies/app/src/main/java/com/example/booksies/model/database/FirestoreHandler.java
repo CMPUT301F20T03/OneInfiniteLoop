@@ -1,4 +1,4 @@
-package com.example.booksies.model;
+package com.example.booksies.model.database;
 
 import android.util.Log;
 
@@ -14,7 +14,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.booksies.model.adapters.RequestListAdapter;
+import com.example.booksies.model.adapters.SearchAdapter;
 import com.example.booksies.model.adapters.BooksListAdapter;
+import com.example.booksies.model.books.Books;
+import com.example.booksies.model.books.book_status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

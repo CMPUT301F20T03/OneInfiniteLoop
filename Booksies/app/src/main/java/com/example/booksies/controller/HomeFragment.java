@@ -15,8 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.booksies.model.Books;
-import com.example.booksies.model.FirestoreHandler;
+import com.example.booksies.model.books.Books;
+import com.example.booksies.model.database.FirestoreHandler;
 import com.example.booksies.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 

@@ -1,12 +1,8 @@
 package com.example.booksies;
 
-import android.util.Log;
-
-import com.example.booksies.model.User;
+import com.example.booksies.model.user.User;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 

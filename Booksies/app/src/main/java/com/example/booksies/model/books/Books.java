@@ -1,7 +1,6 @@
-package com.example.booksies.model;
+package com.example.booksies.model.books;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**

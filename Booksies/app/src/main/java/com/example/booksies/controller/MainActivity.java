@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
-import static com.example.booksies.model.FirestoreHandler.setCurrentUserID;
+import static com.example.booksies.model.database.FirestoreHandler.setCurrentUserID;
 
 
 public class MainActivity extends AppCompatActivity {

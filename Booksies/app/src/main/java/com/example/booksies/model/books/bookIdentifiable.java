@@ -1,4 +1,4 @@
-package com.example.booksies.model;
+package com.example.booksies.model.books;
 
 import java.util.ArrayList;
 

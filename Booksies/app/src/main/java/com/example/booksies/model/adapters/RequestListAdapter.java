@@ -1,38 +1,26 @@
-package com.example.booksies.model;
+package com.example.booksies.model.adapters;
 
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
-import android.service.controls.actions.FloatAction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import com.bumptech.glide.request.RequestOptions;
 import com.example.booksies.R;
 
-import com.example.booksies.controller.MainActivity;
-
 import com.example.booksies.controller.ViewProfileActivity;
-import com.example.booksies.controller.SetLocationActivity;
 import com.example.booksies.controller.ViewMapsActivity;
+import com.example.booksies.model.books.Books;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -43,9 +31,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 /**

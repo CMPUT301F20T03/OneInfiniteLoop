@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
 
-import com.example.booksies.model.FirestoreHandler;
+import com.example.booksies.model.database.FirestoreHandler;
 import com.example.booksies.R;
 
 /**
