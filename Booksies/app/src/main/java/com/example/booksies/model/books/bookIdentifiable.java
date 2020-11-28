@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Every book class must implement interface to be identifiable
  */
 
-public interface Identifiable {
+public interface bookIdentifiable {
 
     String getISBN();
 

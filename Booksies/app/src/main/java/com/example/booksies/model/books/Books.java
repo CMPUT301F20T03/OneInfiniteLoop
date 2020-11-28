@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Class models a book object.
  * This class keeps track of the attributes of a book object
  */
-public class Books implements Identifiable {
+public class Books implements bookIdentifiable {
     private String title;
     private String author;
     private String ISBN;
