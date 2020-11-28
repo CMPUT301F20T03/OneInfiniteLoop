@@ -127,13 +127,14 @@
                 />
 
             <TextView
+                android:id="@+id/owner_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/owner_user_name"
-                android:text="owner"
-                android:textSize="17sp"
+                android:clickable="true"
                 android:padding="1dp"
+                android:text="owner"
                 android:textColor="#000"
+                android:textSize="17sp"
 
                 />
 

@@ -1,7 +1,5 @@
-package com.example.booksies.model;
+package com.example.booksies.model.database;
 
-import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,23 +12,21 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import com.example.booksies.model.adapters.RequestListAdapter;
+import com.example.booksies.model.adapters.SearchAdapter;
+import com.example.booksies.model.adapters.BooksListAdapter;
+import com.example.booksies.model.books.Books;
+import com.example.booksies.model.books.book_status;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -273,13 +269,13 @@ public class FirestoreHandler {
                     filteredList.add(book);
                 }
             }
-            mAdapter = new MyAdapter(filteredList);
+            mAdapter = new BooksListAdapter(filteredList);
             recyclerView.setAdapter(mAdapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setHasFixedSize(true);
 
         } else {
-            mAdapter = new MyAdapter(booksList);
+            mAdapter = new BooksListAdapter(booksList);
             recyclerView.setAdapter(mAdapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setHasFixedSize(true);

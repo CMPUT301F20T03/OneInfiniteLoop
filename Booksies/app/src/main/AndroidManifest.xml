@@ -48,6 +48,7 @@
 
         <activity android:name=".controller.EditUserProfileActivity" />
         <activity android:name=".controller.EditBookActivity" />
+        <activity android:name=".controller.ViewProfileActivity" />
         <activity
             android:name=".controller.SearchActivity"
             android:parentActivityName=".controller.NavigationActivity" />
@@ -55,15 +56,6 @@
             android:name=".controller.SetLocationActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".controller.ViewPhotoActivity" />
-        <activity
-            android:name=".model.BooksActivity"
-            android:parentActivityName=".controller.MainActivity">
-
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controller.MainActivity" />
-        </activity>
         <activity
             android:name=".controller.NavigationActivity"
             android:exported="true" />

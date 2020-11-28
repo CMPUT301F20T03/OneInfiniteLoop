@@ -1,24 +1,16 @@
-package com.example.booksies.model;
+package com.example.booksies.model.user;
 
-import android.util.Log;
-
-import androidx.annotation.Nullable;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.example.booksies.model.books.Books;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 
 /**
  * Class models a book object.
  * This is the class that keep track of user object
  */
 
-public class User {
+public class User implements userIdentifiable {
 
     private String userid;
     private String username;
@@ -58,6 +50,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.phone = phone;
+        this.myBooks = null;
     }
 
 

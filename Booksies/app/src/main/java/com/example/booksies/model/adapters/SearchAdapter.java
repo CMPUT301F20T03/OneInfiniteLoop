@@ -1,53 +1,28 @@
-package com.example.booksies.model;
+package com.example.booksies.model.adapters;
 
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.media.Image;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
-import com.bumptech.glide.request.RequestOptions;
 import com.example.booksies.R;
 
-import com.example.booksies.controller.HomeFragment;
-import com.example.booksies.controller.MainActivity;
-import com.example.booksies.controller.NavigationActivity;
-import com.example.booksies.controller.SearchActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.storage.FirebaseStorage;
+import com.example.booksies.controller.ViewProfileActivity;
+import com.example.booksies.model.books.Books;
 
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import static com.example.booksies.model.FirestoreHandler.addRequest;
-import static com.example.booksies.model.FirestoreHandler.getCurrentUserEmail;
+import static com.example.booksies.model.database.FirestoreHandler.addRequest;
 
 
 /**
@@ -119,8 +94,17 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         holder.titleView.setText(bookList.get(position).getTitle().toUpperCase());
         holder.authorView.setText(bookList.get(position).getAuthor().toUpperCase());
         holder.isbnView.setText(bookList.get(position).getISBN().toUpperCase());
-        holder.statusView.setText(bookList.get(position).getStatus().toString().toLowerCase());
+        holder.statusView.setText("AVAILABLE");
         holder.ownerView.setText(bookList.get(position).getOwner());
+        holder.ownerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppCompatActivity currentAcitiviy = (AppCompatActivity) view.getContext();
+                Intent intent = new Intent(currentAcitiviy, ViewProfileActivity.class);
+                intent.putExtra("username", bookList.get(position).getOwner());
+                currentAcitiviy.startActivity(intent);
+            }
+        });
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override

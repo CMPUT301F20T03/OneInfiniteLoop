@@ -1,4 +1,4 @@
-package com.example.booksies.model;
+package com.example.booksies.model.adapters;
 
 
 import android.content.Intent;
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booksies.R;
 import com.example.booksies.controller.SetLocationActivity;
+import com.example.booksies.controller.ViewProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,12 +21,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.type.LatLng;
 
 import java.util.ArrayList;
-
-import static com.example.booksies.model.FirestoreHandler.acceptRequest;
-import static com.example.booksies.model.FirestoreHandler.rejectRequest;
 
 /**
  * This class is a custom adapter for RecyclerView
@@ -34,7 +31,7 @@ import static com.example.booksies.model.FirestoreHandler.rejectRequest;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
+public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
     public ArrayList<String> requestList;
     public String bookID;
     //public static ArrayList<Boolean> expandable;
@@ -79,7 +76,16 @@ class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.borrower.setText(requestList.get(position).split(":")[0]);
+        holder.borrower.setText(requestList.get(position).split("@gmail.com")[0]);
+        holder.borrower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppCompatActivity currentAcitvity = (AppCompatActivity) view.getContext();
+                Intent intent = new Intent(currentAcitvity, ViewProfileActivity.class);
+                intent.putExtra("username", requestList.get(position).split("@gmail.com")[0]);
+                currentAcitvity.startActivity(intent);
+            }
+        });
 
         holder.map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,13 +104,15 @@ class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
                             if (documentSnapshot.getGeoPoint("location") != null) {
                                 GeoPoint geopoint = documentSnapshot.getGeoPoint("location");
                                 intent.putExtra("lat", geopoint.getLatitude());
-                                intent.putExtra("lat", geopoint.getLongitude());
+                                intent.putExtra("lon", geopoint.getLongitude());
+                                currentActivity.startActivity(intent);
+                            }
+                            else {
+                                currentActivity.startActivity(intent);
                             }
                         }
                     }
                 });
-                currentActivity.startActivity(intent);
-
             }
         });
 

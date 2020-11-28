@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -8,16 +9,19 @@
     android:layout_marginTop="6dp"
     android:background="@drawable/notification_border">
 
-    <TextView
+    <Button
         android:id="@+id/notification_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="197dp"
+        android:layout_height="22dp"
         android:layout_marginTop="3dp"
         android:layout_weight="1"
+        android:background="#00000000"
         android:text="Username"
         android:textColor="#000000"
+        android:gravity="left|center_vertical"
         android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:id="@+id/notification_body"
