@@ -139,7 +139,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
                                 currentActivity.startActivity(intent);
                             }
                             else {
-                                Toast.makeText(currentActivity,"Borrower has not set location yet",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(currentActivity,"Owner has not set location yet",Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
