@@ -1,4 +1,4 @@
-package com.example.booksies.model;
+package com.example.booksies.model.books;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Every book class must implement interface to be identifiable
  */
 
-public interface Identifiable {
+public interface bookIdentifiable {
 
     String getISBN();
 

@@ -15,8 +15,6 @@ import com.example.booksies.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import static com.example.booksies.model.FirestoreHandler.setCurrentUserID;
-
 /**
  * This Class handles the Home view
  */

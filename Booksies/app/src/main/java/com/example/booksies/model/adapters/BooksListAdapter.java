@@ -29,7 +29,7 @@ import com.bumptech.glide.Glide;
 import com.example.booksies.R;
 
 import com.example.booksies.controller.EditBookActivity;
-import com.example.booksies.model.Books;
+import com.example.booksies.model.books.Books;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;

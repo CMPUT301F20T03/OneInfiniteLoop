@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.booksies.model.FirestoreHandler;
+import com.example.booksies.model.database.FirestoreHandler;
 import com.example.booksies.R;
 
 public class RequestListFragment extends Fragment {

@@ -1,8 +1,8 @@
-package com.example.booksies.model;
+package com.example.booksies.model.notification;
 /**
  * Configure a notification
  */
-public class Notification {
+public class Notification implements notifiable {
     public String title;
     public String body;
 

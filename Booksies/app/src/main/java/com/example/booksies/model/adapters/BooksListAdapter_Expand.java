@@ -16,8 +16,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-import static com.example.booksies.model.FirestoreHandler.acceptRequest;
-import static com.example.booksies.model.FirestoreHandler.rejectRequest;
+import static com.example.booksies.model.database.FirestoreHandler.acceptRequest;
+import static com.example.booksies.model.database.FirestoreHandler.rejectRequest;
 
 
 /**

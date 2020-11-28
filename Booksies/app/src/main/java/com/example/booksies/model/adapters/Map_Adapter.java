@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
+public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
     public ArrayList<String> requestList;
     public String bookID;
     //public static ArrayList<Boolean> expandable;
