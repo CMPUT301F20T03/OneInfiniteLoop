@@ -8,10 +8,12 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.booksies.controller.MainActivity;
 import com.example.booksies.controller.NavigationActivity;
 import com.example.booksies.controller.SearchActivity;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,27 +28,44 @@ public class SearchActivityTest {
 
     private Solo solo;
     @Rule
-    public ActivityTestRule<NavigationActivity> rule =
-            new ActivityTestRule<NavigationActivity>(NavigationActivity.class, true, true);
+    public ActivityTestRule<MainActivity> rule =
+            new ActivityTestRule<MainActivity>(MainActivity.class, true, true);
 
-    public IntentsTestRule<NavigationActivity> intentsRule = new IntentsTestRule<>(NavigationActivity.class);
+    public IntentsTestRule<MainActivity> intentsRule = new IntentsTestRule<>(MainActivity.class);
 
 
     @Before
     public void setUp(){
+
+
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+
+        assertTrue(solo.waitForText("Username", 1, 2000 ));
+        assertTrue(solo.waitForText("Password", 1, 2000 ));
+        solo.assertCurrentActivity("Wrong activity", MainActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.username), "test");
+        solo.enterText((EditText) solo.getView(R.id.password), "123456");
+        solo.clickOnText("Login");
 
     }
 
     @Test
     public void testSearch(){
         solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+        assertTrue(solo.waitForText("Find books ...", 1, 2000 ));
         solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.search_bar));
         solo.assertCurrentActivity("Wrong activity", SearchActivity.class);
-        solo.enterText(0, "Sir Arthur");
-        assertTrue(solo.waitForText("SHERLOCK HOLMES",1,3000));
+        solo.enterText(0, "Delirium");
+        assertTrue(solo.waitForText("LAUREN OLIVER",1,3000));
 
 
     }
+
+    @After
+    public void TearDown(){
+
+    }
+
+
 
 }
