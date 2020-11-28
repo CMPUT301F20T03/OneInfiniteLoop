@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.booksies.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,7 +34,20 @@ public class NavigationActivity extends AppCompatActivity {
         Log.d("EDITBOOK", "----------------------------------------EDIT BOOK----------------------------------------");
         BottomNavigationView bottomNavigationView =
                 (BottomNavigationView) findViewById(R.id.bottom_navigation); // handles switch for bottom navigation
-        HomeFragment frag =new HomeFragment();
+
+        Fragment frag;
+        if(getIntent().getStringExtra("request")!= null)
+        {
+            frag = new RequestListFragment();
+
+        }
+        else
+        {
+            frag =new HomeFragment();
+
+        }
+
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,frag).addToBackStack(null).commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
