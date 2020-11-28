@@ -96,7 +96,8 @@ public class TranscationTest {
         solo.assertCurrentActivity("Wrong activity", SearchActivity.class);
         solo.enterText(0, "UI Test LendBook");
         assertTrue(solo.waitForText("UI Test LendAuthor".toUpperCase(),1,3000));
-        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.search_layout));
+        solo.clickOnText("UI Test LendAuthor".toUpperCase());
+        //solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.search_layout));
         assertTrue(solo.waitForText("Yes",1,5000));
         solo.clickOnText("Yes");
         solo.goBack();
