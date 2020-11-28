@@ -4,15 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,8 +16,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.booksies.R;
-import com.example.booksies.model.Books;
-import com.example.booksies.model.book_status;
+import com.example.booksies.model.books.Books;
+import com.example.booksies.model.books.book_status;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,8 +28,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.example.booksies.model.FirestoreHandler;
+import com.example.booksies.model.database.FirestoreHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
+
+import java.util.ArrayList;
 
 /**
  * ScanFragment opens activity_scan_books layout which is linked to the Scanner Button in Navigation tab.
@@ -192,7 +190,7 @@ public class ScanFragment extends Fragment {
                                             String email = user.getEmail();
 
                                             String borrower2 = email;
-                                            String borrower1 = book.getString("borrowerID");
+                                            String borrower1 = ((ArrayList<String>)book.get("borrowerID")).get(0);
 
                                             if ((book.getString("status").toUpperCase()).equals("ACCEPTED")
                                                     & buttonClickVal.equals("lendBook") & b.getOwner().equals(email)

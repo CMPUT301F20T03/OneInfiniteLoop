@@ -8,8 +8,8 @@
 
 package com.example.booksies;
 
-import com.example.booksies.model.Books;
-import com.example.booksies.model.book_status;
+import com.example.booksies.model.books.Books;
+import com.example.booksies.model.books.book_status;
 
 import org.junit.Test;
 

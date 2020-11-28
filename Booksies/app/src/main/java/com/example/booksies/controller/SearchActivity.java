@@ -5,22 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.SearchView;
 
-import com.example.booksies.model.Books;
-import com.example.booksies.model.FirestoreHandler;
-import com.example.booksies.model.MyAdapter;
+import com.example.booksies.model.database.FirestoreHandler;
 import com.example.booksies.R;
-import com.example.booksies.model.book_status;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * This Class handles searchView and is responsible for querying and returning requested strings

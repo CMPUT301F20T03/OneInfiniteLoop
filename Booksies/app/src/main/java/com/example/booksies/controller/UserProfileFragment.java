@@ -13,49 +13,35 @@
 
 package com.example.booksies.controller;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booksies.R;
-import com.example.booksies.model.FirestoreHandler;
-import com.example.booksies.model.Notification;
-import com.example.booksies.model.NotificationAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.booksies.model.notification.Notification;
+import com.example.booksies.model.books.NotificationAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -72,6 +58,7 @@ public class UserProfileFragment extends Fragment {
     DocumentReference documentReference;
     String uEmail;
     String uPhone;
+    String uName;
     ListView notificationList;
     ArrayAdapter<Notification> notificationAdapter;
     ArrayList<Notification> notificationDataList;
@@ -116,7 +103,8 @@ public class UserProfileFragment extends Fragment {
 
                 uEmail = snapshot.getString("email");
                 uPhone = snapshot.getString("phone");
-                username.setText(user.getEmail().split("@gmail.com")[0]);
+                uName = snapshot.getString("username");
+                username.setText(uName);
                 userPhone.setText(uPhone);
                 userEmail.setText(uEmail);
             }
@@ -124,7 +112,6 @@ public class UserProfileFragment extends Fragment {
 
 
         notificationDataList = new ArrayList<>();
-
 
         db.collection("Books")
                 .whereEqualTo("owner", user.getEmail())
@@ -143,7 +130,7 @@ public class UserProfileFragment extends Fragment {
                                 ArrayList<String> requests = (ArrayList<String>) doc.get("request");
                                 String body = String.format("has requested %s", doc.getString("title"));
                                 for (int counter = 0; counter < requests.size(); counter++){
-                                    Notification newRequestNotification = new Notification(requests.get(counter).split(":")[0], body);
+                                    Notification newRequestNotification = new Notification(requests.get(counter).split("@")[0], body);
                                     if (!notificationDataList.contains(newRequestNotification)){
                                         notificationDataList.add(0, newRequestNotification);
                                     }
@@ -153,13 +140,12 @@ public class UserProfileFragment extends Fragment {
                                 notificationList.setAdapter(notificationAdapter);
                             }
                         }
-                        Log.d("Notifications", "request notifications");
                     }
                 });
 
 
         db.collection("Books")
-                .whereEqualTo("borrowerID", user.getEmail() + ":" + user.getUid())
+                .whereArrayContains("borrowerID", user.getEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
@@ -171,25 +157,27 @@ public class UserProfileFragment extends Fragment {
 
                         assert value != null;
                         for (QueryDocumentSnapshot doc : value) {
-
                             if (Objects.equals(doc.getString("status"),"ACCEPTED")){
+                                ArrayList<String> borrow = (ArrayList<String>) doc.get("borrowerID");
                                 String body = String.format("has accepted your requested for %s", doc.getString("title"));
-                                Notification newAcceptNotification = new Notification(doc.getString("owner"), body);
-                                if (!notificationDataList.contains(newAcceptNotification)){
-                                    notificationDataList.add(0,newAcceptNotification);
+                                for (int counter = 0; counter < borrow.size(); counter++){
+                                    Notification newAcceptNotification = new Notification(doc.getString("owner").split("@")[0], body);
+                                    if (!notificationDataList.contains(newAcceptNotification)){
+                                        notificationDataList.add(0,newAcceptNotification);
+                                    }
                                 }
+
 
                                 notificationAdapter = new NotificationAdapter(getContext(), notificationDataList);
 
                                 notificationList.setAdapter(notificationAdapter);
                             }
                         }
-                        Log.d("Notifications", "accepted notifications");
                     }
                 });
 
         db.collection("Books")
-                .whereArrayContains("request", user.getEmail() + ";" + user.getUid())
+                .whereArrayContains("request", user.getEmail() + ":" + user.getUid())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,

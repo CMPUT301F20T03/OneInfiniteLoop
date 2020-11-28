@@ -1,4 +1,4 @@
-package com.example.booksies.model;
+package com.example.booksies.model.adapters;
 
 
 import android.content.Intent;
@@ -7,25 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booksies.R;
-import com.example.booksies.controller.SetLocationActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.booksies.controller.ViewProfileActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
-import com.google.type.LatLng;
 
 import java.util.ArrayList;
 
-import static com.example.booksies.model.FirestoreHandler.acceptRequest;
-import static com.example.booksies.model.FirestoreHandler.rejectRequest;
+import static com.example.booksies.model.database.FirestoreHandler.acceptRequest;
+import static com.example.booksies.model.database.FirestoreHandler.rejectRequest;
+
 
 /**
  * This class is a custom adapter for RecyclerView
@@ -34,7 +27,7 @@ import static com.example.booksies.model.FirestoreHandler.rejectRequest;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolder> {
+class BooksListAdapter_Expand extends RecyclerView.Adapter<BooksListAdapter_Expand.MyViewHolder> {
     public ArrayList<String> requestList;
     public String bookID;
     //public static ArrayList<Boolean> expandable;
@@ -60,14 +53,14 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter_Expand(ArrayList<String> requestList, String bookID) {
+    public BooksListAdapter_Expand(ArrayList<String> requestList, String bookID) {
         this.requestList = requestList;
         this.bookID = bookID;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter_Expand.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BooksListAdapter_Expand.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.content_home_expand, parent, false);
@@ -81,7 +74,16 @@ class MyAdapter_Expand extends RecyclerView.Adapter<MyAdapter_Expand.MyViewHolde
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.request.setText(requestList.get(position).split(":")[0]);
+        holder.request.setText(requestList.get(position).split("@gmail.com")[0]);
+        holder.request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppCompatActivity currentActivity = (AppCompatActivity) view.getContext();
+                Intent intent = new Intent(currentActivity, ViewProfileActivity.class);
+                intent.putExtra("username", requestList.get(position).split("@gmail.com")[0]);
+                currentActivity.startActivity(intent);
+            }
+        });
 
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override

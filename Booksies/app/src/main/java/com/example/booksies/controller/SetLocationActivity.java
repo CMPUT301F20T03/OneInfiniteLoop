@@ -3,14 +3,12 @@ package com.example.booksies.controller;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.booksies.R;
 
-import static com.example.booksies.model.FirestoreHandler.setPickupLocation;
+import static com.example.booksies.model.database.FirestoreHandler.setPickupLocation;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -29,7 +27,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
@@ -42,9 +39,13 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
 
     private GoogleMap mMap;
     private String bookId;
+    // set lat lon to initially be impossible coordinates so location can't be saved without setting
+    // a marker first
     private double lat;
     private double lon;
+    private boolean markerPlaced = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,13 +90,9 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
                             @Override
                             public void onSuccess(Location location) {
                                 if (location != null) {
-                                    LatLng currentLocation = new LatLng(location.getLatitude(),location.getLongitude());
-                                    String address = getMarkerAddress(currentLocation);
-                                    mMap.addMarker(new MarkerOptions().position(currentLocation).title(address));
+                                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
                                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
-                                    lat = location.getLatitude();
-                                    lon = location.getLongitude();
                                 }
                             }
                         });
@@ -108,10 +105,13 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
                 markerOptions.position(latLng);
 
                 String address = getMarkerAddress(latLng);
-                markerOptions.title(address);
+                if (address != null) {
+                    markerOptions.title(address);
+                }
                 mMap.clear();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 mMap.addMarker(markerOptions);
+                markerPlaced = true;
                 lat = latLng.latitude;
                 lon = latLng.longitude;
             }
@@ -122,10 +122,16 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setPickupLocation(bookId, lat, lon);
-                Toast toast = Toast.makeText(SetLocationActivity.this,
-                        "Pickup location has been updated", Toast.LENGTH_SHORT);
-                toast.show();
+                if (markerPlaced) {
+                    setPickupLocation(bookId, lat, lon);
+                    Toast toast = Toast.makeText(SetLocationActivity.this,
+                            "Pickup location has been updated", Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(SetLocationActivity.this,
+                            "Place a marker first", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
     }
@@ -141,15 +147,16 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(SetLocationActivity.this, Locale.getDefault());
         String address = null;
+        //gets a single address from location
         try {
-            //gets a single address from location
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            address = addresses.get(0).getAddressLine(0);
-            //set title as address of location
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (addresses.size() > 0) {
+            address = addresses.get(0).getAddressLine(0);
+        }
         return address;
     }
-
 }
+

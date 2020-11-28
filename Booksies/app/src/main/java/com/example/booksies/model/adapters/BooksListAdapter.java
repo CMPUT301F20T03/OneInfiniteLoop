@@ -1,4 +1,4 @@
-package com.example.booksies.model;
+package com.example.booksies.model.adapters;
 
 
 import android.content.Context;
@@ -28,9 +28,8 @@ import com.bumptech.glide.Glide;
 
 import com.example.booksies.R;
 
-import com.example.booksies.controller.AddBookFragment;
 import com.example.booksies.controller.EditBookActivity;
-import com.example.booksies.controller.MainActivity;
+import com.example.booksies.model.books.Books;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,7 +47,7 @@ import java.util.ArrayList;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.MyViewHolder> {
     public ArrayList<Books> bookList;
     //public static ArrayList<Boolean> expandable;
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -157,14 +156,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 //    }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<Books> bookList) {
+    public BooksListAdapter(ArrayList<Books> bookList) {
         this.bookList = bookList;
 
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BooksListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.content_home, parent, false);
@@ -197,7 +196,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             holder.expand.setVisibility(View.VISIBLE);
         }
         if(bookList.get(position).getStatus().toString().toUpperCase().equals("REQUESTED")) {
-            holder.mAdapter = new MyAdapter_Expand(bookList.get(position).getBookRequests(), bookList.get(position).getDocID());
+            holder.mAdapter = new BooksListAdapter_Expand(bookList.get(position).getBookRequests(), bookList.get(position).getDocID());
             holder.r_view.setAdapter(holder.mAdapter);
             holder.r_view.setItemAnimator(new DefaultItemAnimator());
             holder.r_view.setHasFixedSize(true);

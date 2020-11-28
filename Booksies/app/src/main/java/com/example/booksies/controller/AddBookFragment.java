@@ -13,9 +13,7 @@
 
 package com.example.booksies.controller;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -26,15 +24,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,13 +38,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.booksies.R;
-import com.example.booksies.model.FirestoreHandler;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.example.booksies.model.database.FirestoreHandler;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -82,6 +73,7 @@ public class AddBookFragment extends Fragment {
     ImageView cameraImageView;
     ImageButton scanISBNButton;
     EditText titleEditText, authorEditText, isbnEditText, commentsEditText;
+
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     StorageReference storageReference;
