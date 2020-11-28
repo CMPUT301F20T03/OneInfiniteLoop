@@ -39,8 +39,6 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
 
     private GoogleMap mMap;
     private String bookId;
-    // set lat lon to initially be impossible coordinates so location can't be saved without setting
-    // a marker first
     private double lat;
     private double lon;
     private boolean markerPlaced = false;
