@@ -108,17 +108,18 @@ public class FirestoreHandler {
 
                             ArrayList<String> requestList = (ArrayList<String>)book.get("request");
 
-                            if(requestList != null && requestList.size() != 0){
+                            if(requestList != null ){
                                 b.setBookRequests((ArrayList<String>)book.get("request"));
                                 db.collection("Books").document(book.getId()).update("status","REQUESTED");
                                 b.setStatus(book_status.REQUESTED);
 
-                            }
-                            else
-                            {
-                                db.collection("Books").document(book.getId()).update("status","AVAILABLE");
-                                b.setStatus(book_status.AVAILABLE);
-                                b.setBookRequests(new ArrayList<String>());
+                                if(requestList.size() == 0)
+                                {
+                                    db.collection("Books").document(book.getId()).update("status","AVAILABLE");
+                                    b.setStatus(book_status.AVAILABLE);
+                                    b.setBookRequests(new ArrayList<String>());
+                                }
+
                             }
 
                             if(book.get("borrowerID") != null){
