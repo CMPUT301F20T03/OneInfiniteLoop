@@ -31,6 +31,8 @@ import com.google.firebase.storage.StorageReference;
 import com.example.booksies.model.database.FirestoreHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
 
+import java.util.ArrayList;
+
 /**
  * ScanFragment opens activity_scan_books layout which is linked to the Scanner Button in Navigation tab.
  * ScanFragment handles all the buttons related to this layout and it handles functions related
@@ -188,7 +190,7 @@ public class ScanFragment extends Fragment {
                                             String email = user.getEmail();
 
                                             String borrower2 = email;
-                                            String borrower1 = book.getString("borrowerID");
+                                            String borrower1 = ((ArrayList<String>)book.get("borrowerID")).get(0);
 
                                             if ((book.getString("status").toUpperCase()).equals("ACCEPTED")
                                                     & buttonClickVal.equals("lendBook") & b.getOwner().equals(email)
