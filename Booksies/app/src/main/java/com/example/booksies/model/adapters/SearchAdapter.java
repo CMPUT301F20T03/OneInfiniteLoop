@@ -1,14 +1,18 @@
 package com.example.booksies.model.adapters;
 
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booksies.R;
 
+import com.example.booksies.controller.MainActivity;
+import com.example.booksies.controller.NavigationActivity;
+import com.example.booksies.controller.SearchActivity;
 import com.example.booksies.controller.ViewProfileActivity;
 import com.example.booksies.model.books.Books;
 
@@ -36,6 +43,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     public ArrayList<Books> bookList;
     //public static ArrayList<Boolean> expandable;
     Context context;
+    final int[] i = {0};
 
 
     // Provide a reference to the views for each data item
@@ -51,6 +59,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
 
         public LinearLayout linearLayout;
         public RecyclerView.Adapter mAdapter;
+        public Button req_button;
 
 
         public MyViewHolder(View v) {
@@ -62,6 +71,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             statusView = v.findViewById(R.id.book_status);
             ownerView = v.findViewById(R.id.owner_user_name);
             linearLayout = v.findViewById(R.id.search_layout);
+            req_button = v.findViewById(R.id.req_button);
 
 
 
@@ -79,6 +89,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     @Override
     public SearchAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
+
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.search_list_content, parent, false);
 
@@ -91,6 +102,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+
         holder.titleView.setText(bookList.get(position).getTitle().toUpperCase());
         holder.authorView.setText(bookList.get(position).getAuthor().toUpperCase());
         holder.isbnView.setText(bookList.get(position).getISBN().toUpperCase());
@@ -99,36 +111,26 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         holder.ownerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppCompatActivity currentAcitiviy = (AppCompatActivity) view.getContext();
-                Intent intent = new Intent(currentAcitiviy, ViewProfileActivity.class);
+                AppCompatActivity currentActivity = (AppCompatActivity) view.getContext();
+                Intent intent = new Intent(currentActivity, ViewProfileActivity.class);
                 intent.putExtra("username", bookList.get(position).getOwner());
-                currentAcitiviy.startActivity(intent);
+                currentActivity.startActivity(intent);
             }
         });
 
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+        holder.req_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                //Yes button clicked
-                                addRequest(bookList.get(position).getDocID());
+                addRequest(bookList.get(position).getDocID());
+                String bookName = bookList.get(position).getTitle();
+                bookName+=" has been REQUESTED";
+                Toast.makeText(v.getContext(),bookName, Toast.LENGTH_SHORT).show();
 
-                                break;
+                AppCompatActivity currentActivity = (AppCompatActivity) v.getContext();
+                Intent intent = new Intent(currentActivity, NavigationActivity.class);
+                intent.putExtra("request", "r");
+                currentActivity.startActivity(intent);
 
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //No button clicked
-                                break;
-                        }
-                    }
-                };
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Do you want to REQUEST this book?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
             }
         });
 

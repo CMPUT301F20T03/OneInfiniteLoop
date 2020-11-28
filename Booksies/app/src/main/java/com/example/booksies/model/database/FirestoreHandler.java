@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -105,7 +106,9 @@ public class FirestoreHandler {
 
                             }
 
-                            if(book.get("request") != null){
+                            ArrayList<String> requestList = (ArrayList<String>)book.get("request");
+
+                            if(requestList != null && requestList.size() != 0){
                                 b.setBookRequests((ArrayList<String>)book.get("request"));
                                 db.collection("Books").document(book.getId()).update("status","REQUESTED");
                                 b.setStatus(book_status.REQUESTED);
@@ -113,6 +116,8 @@ public class FirestoreHandler {
                             }
                             else
                             {
+                                db.collection("Books").document(book.getId()).update("status","AVAILABLE");
+                                b.setStatus(book_status.AVAILABLE);
                                 b.setBookRequests(new ArrayList<String>());
                             }
 
