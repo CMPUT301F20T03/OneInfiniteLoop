@@ -120,9 +120,9 @@ public class NavigationActivity extends AppCompatActivity {
                     }
                 });
 
-        notificationDataList = new ArrayList<>();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        db = FirebaseFirestore.getInstance();
+        //notificationDataList = new ArrayList<>();
+        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //db = FirebaseFirestore.getInstance();
 //        db.collection("Books")
 //                .whereEqualTo("owner", user.getEmail())
 //                .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -155,46 +155,41 @@ public class NavigationActivity extends AppCompatActivity {
 //                    }
 //                });
 
-        db.collection("Books")
-                .whereEqualTo("owner", user.getEmail())
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w("Snapshot", "listen:error", e);
-                            return;
-                        }
-
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            switch (dc.getType()) {
-                                case ADDED:
-                                    Log.d("Notification", "New city: " + dc.getDocument().getData());
-                                    break;
-                                case MODIFIED:
-                                    ArrayList<String> requests = (ArrayList<String>) dc.getDocument().get("request");
-                                    String title = requests.get(requests.size()-1).split("@")[0];
-                                    String body = String.format("has requested %s", dc.getDocument().getString("title"));
-                                    notificationDataList.add(0, new Notification(title, body));
-                                    notification(title, body);
-                                    Log.d("Notification", "Modified city: " + dc.getDocument().getData());
-                                    break;
-                                case REMOVED:
-                                    Log.d("Notification", "Removed city: " + dc.getDocument().getData());
-                                    break;
-                            }
-                        }
-
-                    }
-                });
-
-
-
-
-
-
-
+//        db.collection("Books")
+//                .whereEqualTo("owner", user.getEmail())
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                    @RequiresApi(api = Build.VERSION_CODES.O)
+//                    @Override
+//                    public void onEvent(@Nullable QuerySnapshot snapshots,
+//                                        @Nullable FirebaseFirestoreException e) {
+//                        if (e != null) {
+//                            Log.w("Snapshot", "listen:error", e);
+//                            return;
+//                        }
+//
+//                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+//                            switch (dc.getType()) {
+//                                case ADDED:
+//                                    Log.d("Notification", "New city: " + dc.getDocument().getData());
+//                                    break;
+//                                case MODIFIED:
+//                                    ArrayList<String> requests = (ArrayList<String>) dc.getDocument().get("request");
+//                                    if (requests.size() > 0){
+//                                        String title = requests.get(requests.size()-1).split("@")[0];
+//                                        String body = String.format("has requested %s", dc.getDocument().getString("title"));
+//                                        notificationDataList.add(0, new Notification(title, body));
+//                                        notification(title, body);
+//                                    }
+//                                    Log.d("Notification", "Modified city: " + dc.getDocument().getData());
+//                                    break;
+//                                case REMOVED:
+//                                    Log.d("Notification", "Removed city: " + dc.getDocument().getData());
+//                                    break;
+//                            }
+//                        }
+//
+//                    }
+//                });
 
     }
 
