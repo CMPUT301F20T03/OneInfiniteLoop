@@ -28,7 +28,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.booksies.R;
 import com.example.booksies.model.notification.Notification;
-import com.example.booksies.model.books.NotificationAdapter;
+import com.example.booksies.model.adapters.NotificationAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

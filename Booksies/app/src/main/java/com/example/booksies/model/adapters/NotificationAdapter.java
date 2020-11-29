@@ -1,4 +1,4 @@
-package com.example.booksies.model.books;
+package com.example.booksies.model.adapters;
 
 import android.content.Context;
 import android.content.Intent;

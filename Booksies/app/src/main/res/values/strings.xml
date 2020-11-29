@@ -68,6 +68,10 @@
     </string-array>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_view_maps">Map</string>
+    <string name="no_search_results_found">No search results found</string>
+    <string name="my_books">My Books</string>
+    <string name="find_books">Find books ...</string>
+    <string name="requests">Requests</string>
 
 
 </resources>
