@@ -22,6 +22,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import javax.annotation.Nullable;
 
+/**
+ * This class allows one to view a profile of a user that was clicked
+ */
 public class ViewProfileActivity extends AppCompatActivity {
     String userEmail;
     String username;

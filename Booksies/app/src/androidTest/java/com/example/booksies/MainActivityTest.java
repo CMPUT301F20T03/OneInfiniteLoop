@@ -17,6 +17,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * US 02.01.01
+ */
 public class MainActivityTest {
     private Solo solo;
     @Rule

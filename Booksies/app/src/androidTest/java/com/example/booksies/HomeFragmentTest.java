@@ -20,6 +20,9 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
+/**
+ * US 01.04.01 / US 01.05.01
+ */
 public class HomeFragmentTest {
     private Solo solo;
     @Rule
@@ -92,8 +95,9 @@ public class HomeFragmentTest {
     public void TearDown(){
         solo.waitForText("Title",1,2000);
 
-        solo.clickLongOnScreen(240,800,3000);
+        solo.clickLongOnText("UI TEST BOOK");
         solo.clickOnView(solo.getCurrentActivity().findViewById((R.id.delete_button)));
+        solo.clickOnView(solo.getView(android.R.id.button1));
 
 
     }

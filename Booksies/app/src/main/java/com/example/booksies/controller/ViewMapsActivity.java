@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-/*
+/**
  * This class allows the borrower to view the pickup location which was set by the books owner
  */
 public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
