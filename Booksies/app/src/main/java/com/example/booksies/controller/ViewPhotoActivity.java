@@ -1,6 +1,7 @@
 /*
 * This activity gets the imageUrl from the extras in the intent and loads the image onto a full
 * screen image view
+* implements US 08.02.01 and US 08.03.01
  */
 
 
@@ -33,10 +34,11 @@ public class ViewPhotoActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        //Gets imageUrl either from addBookFragment or EditBookActivity
         imageUrl = getIntent().getStringExtra("imageUrl");
         ImageView imageView = findViewById(R.id.imageView);
-        Log.d("ImageUrl", imageUrl);
 
+        //Load image onto imageview using the imageUrl passed in
         Glide.with(ViewPhotoActivity.this)
                 .load(imageUrl)
                 .into(imageView);
@@ -46,6 +48,7 @@ public class ViewPhotoActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch(i) {
                     case DialogInterface.BUTTON_POSITIVE:
+                        //let calling activity know that image was deleted
                         Intent intent = new Intent(ViewPhotoActivity.this, AddBookFragment.class);
                         intent.putExtra("imageUrl", "deleted");
                         setResult(RESULT_OK, intent);
@@ -59,6 +62,7 @@ public class ViewPhotoActivity extends AppCompatActivity {
             }
         };
 
+        //Click listener for delete button that opens up a alert dialog
         FloatingActionButton deleteButton = findViewById(R.id.deleteFloatingActionButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
