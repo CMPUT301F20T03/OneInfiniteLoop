@@ -12,7 +12,7 @@
         android:layout_weight="2"
         android:padding="16dp"
         android:text="Borrower"
-        android:textColor="#a9a9a9"
+        android:textColor="@color/textColor"
         android:textSize="18sp"
         android:textStyle="bold"
         android:clickable="true"/>

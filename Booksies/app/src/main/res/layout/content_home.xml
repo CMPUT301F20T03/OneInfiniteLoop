@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:padding="1dp"
         android:text="Title"
-        android:textColor="#000"
+        android:textColor="@color/textColor"
         android:textSize="22sp"
         android:textStyle="bold" />
 
@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:padding="1dp"
             android:text="Book"
-            android:textColor="#000"
+            android:textColor="@color/textColor"
             android:textSize="17sp" />
 
 
@@ -45,7 +45,7 @@
             android:paddingEnd="20dp"
             android:text="Book Status"
             android:textAllCaps="true"
-            android:textColor="#030304"
+            android:textColor="@color/textColor"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:text="Author"
-                android:textColor="#000"
+                android:textColor="@color/textColor"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:text="Book"
-                android:textColor="#000"
+                android:textColor="@color/textColor"
                 android:textSize="17sp" />
 
             <TextView
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:text="ISBN"
-                android:textColor="#000"
+                android:textColor="@color/textColor"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:text="Book"
-                android:textColor="#000"
+                android:textColor="@color/textColor"
                 android:textSize="17sp" />
 
         </LinearLayout>
