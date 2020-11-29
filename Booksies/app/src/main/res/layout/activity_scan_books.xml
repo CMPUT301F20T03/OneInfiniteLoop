@@ -12,12 +12,17 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:text="Scan"
-            android:textSize="25sp" />
+            android:textSize="24sp"
+            android:textColor="@color/textColor"
+            android:textStyle="bold|italic"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="0dp"/>
 
         <Button
             android:id="@+id/getBookDescription"
@@ -26,6 +31,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"
+            android:background="@color/buttonColor"
+            android:textColor="@color/buttonTextColor"
             android:text="Get Book Description" />
 
         <Button
@@ -35,6 +42,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"
+            android:background="@color/buttonColor"
+            android:textColor="@color/buttonTextColor"
             android:text="Borrow a Book" />
 
         <Button
@@ -44,6 +53,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"
+            android:background="@color/buttonColor"
+            android:textColor="@color/buttonTextColor"
             android:text="Return a Book" />
 
         <Button
@@ -52,7 +63,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:background="@color/buttonColor"
             android:layout_marginTop="20dp"
+            android:textColor="@color/buttonTextColor"
             android:text="Lend your Book" />
 
         <Button
@@ -62,6 +75,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"
+            android:background="@color/buttonColor"
+            android:textColor="@color/buttonTextColor"
             android:text="Accept Book Return" />
 
     </LinearLayout>

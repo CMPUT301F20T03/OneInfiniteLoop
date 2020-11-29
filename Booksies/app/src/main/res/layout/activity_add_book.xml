@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:textColor="@color/textColor"
                 android:text="@string/add_title" />
 
             <EditText
@@ -30,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@color/textColor"
                 android:inputType="textPersonName" />
         </LinearLayout>
 
@@ -43,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:textColor="@color/textColor"
                 android:text="@string/add_author" />
 
             <EditText
@@ -50,6 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@color/textColor"
                 android:inputType="textPersonName" />
         </LinearLayout>
 
@@ -63,7 +67,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_marginEnd="16dp"
-
+                android:textColor="@color/textColor"
                 android:layout_height="wrap_content"
                 android:text="@string/add_ISBN" />
 
@@ -75,6 +79,7 @@
                 android:layout_toEndOf="@id/textView3"
                 android:layout_weight="1"
                 android:ems="10"
+                android:textColor="@color/textColor"
                 android:inputType="number" />
 
             <ImageButton
@@ -90,6 +95,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
             android:text="@string/add_comments" />
 
         <EditText
@@ -99,12 +105,14 @@
             android:layout_marginBottom="16dp"
             android:layout_weight="3"
             android:ems="10"
+            android:textColor="@color/textColor"
             android:inputType="textMultiLine" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
             android:text="@string/add_photo" />
 
         <FrameLayout

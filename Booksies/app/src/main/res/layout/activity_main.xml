@@ -7,35 +7,16 @@
     android:background="@color/colorBackground"
     tools:context=".controller.MainActivity">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif-smallcaps"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.455" />
-
     <Button
         android:id="@+id/login"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="456dp"
-        android:background="@color/colorAccent"
+        android:background="@color/buttonColor"
         android:fontFamily="monospace"
         android:text="@string/login"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="288dp"
         android:ems="10"
+        android:textColor="@color/textColor"
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="@string/username"
         android:inputType="textPersonName"
@@ -62,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:ems="10"
+        android:textColor="@color/textColor"
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="@string/password"
         android:inputType="textPersonName|textPassword"
@@ -87,6 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/textColor"
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -97,7 +81,19 @@
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        android:textColor="@color/textColor"
         app:srcCompat="@mipmap/ic_book_logo_cropped_foreground" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="330dp"
+        android:layout_height="230dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/textColor"
+        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/ic_booksies_curved_foreground" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

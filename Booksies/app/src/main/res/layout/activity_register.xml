@@ -26,6 +26,7 @@
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textSize="50sp"
+        android:textColor="@color/textColor"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -40,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:text="@string/username"
+            android:textColor="@color/textColor"
             android:textSize="18sp" />
 
         <EditText
@@ -49,6 +51,7 @@
             android:digits="0,1,2,3,4,5,6,7,8,9,qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM,_,-"
             android:ems="10"
             android:hint="@string/booklover123"
+            android:textColor="@color/textColor"
             android:inputType="text" />
     </LinearLayout>
 
@@ -64,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:text="@string/password"
+            android:textColor="@color/textColor"
             android:textSize="18sp" />
 
         <EditText
@@ -71,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/textColor"
             android:fontFamily="sans-serif-condensed-medium"
             android:inputType="textPersonName|textPassword"
             android:textAlignment="center" />
@@ -87,6 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:text="@string/user_email"
+            android:textColor="@color/textColor"
             android:textSize="18sp" />
 
         <EditText
@@ -95,6 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:ems="10"
+            android:textColor="@color/textColor"
             android:fontFamily="sans-serif-condensed-medium"
             android:hint="@string/example_gmail_com"
             android:inputType="textEmailAddress"
@@ -114,6 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:text="@string/phone"
+            android:textColor="@color/textColor"
             android:textSize="18sp" />
 
         <EditText
@@ -121,6 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/textColor"
             android:inputType="phone" />
     </LinearLayout>
 
@@ -131,6 +140,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@color/colorAccent"
         android:fontFamily="monospace"
+        android:textColor="@color/textColor"
         android:text="@string/register" />
 
 </LinearLayout>

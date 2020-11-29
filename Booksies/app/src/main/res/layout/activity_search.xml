@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_bar"
+        android:textColor="@color/textColor"
         android:queryHint="Search by Title, Author or ISBN"
         ></SearchView>
 
@@ -22,6 +23,7 @@
         android:layout_height="wrap_content"
         android:padding="30sp"
         android:textSize="23sp"
+        android:textColor="@color/textColor"
         android:text="@string/no_search_results_found" />
 
 

@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="@string/requests"
         android:textSize="24sp"
+        android:textColor="@color/textColor"
         android:textStyle="bold|italic"
         android:padding="10dp"/>
 
@@ -28,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Filter by"
+            android:textColor="@color/textColor"
             android:textSize="17sp" />
 
         <Spinner
@@ -41,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Sort by"
+            android:textColor="@color/textColor"
             android:textSize="17sp" />
 
         <Spinner
