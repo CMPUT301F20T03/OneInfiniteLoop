@@ -34,7 +34,8 @@ import java.util.List;
 import java.util.Locale;
 
 //Acknowledgements: https://developers.google.com/maps/documentation/android-sdk/start
-
+// This class allows a user to place a marker on a map
+// implements US 09.01.01
 public class SetLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -58,6 +59,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //Retrieve the lat and lon passed in from maps adapter
         bookId = getIntent().getStringExtra("bookId");
         if (getIntent().hasExtra("lat")) {
             lat = getIntent().getExtras().getDouble("lat");
@@ -70,7 +72,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        //If the book already has a location set
+        //If the book already has a location set place a marker on that location and zoom in
         if (getIntent().hasExtra("lat")) {
             LatLng currentlySetLocation = new LatLng(lat, lon);
 
@@ -81,7 +83,9 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
             mMap.addMarker(markerOptions);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentlySetLocation));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentlySetLocation, 15));
-        } else {
+        }
+        else {
+            //if owner has location enabled, place marker on last location
             if (ActivityCompat.checkSelfPermission(SetLocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 fusedLocationProviderClient.getLastLocation()
                         .addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -103,6 +107,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
                 markerOptions.position(latLng);
 
                 String address = getMarkerAddress(latLng);
+                //if there is a valid address associated with marker
                 if (address != null) {
                     markerOptions.title(address);
                 }
@@ -121,6 +126,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 if (markerPlaced) {
+                    //Firestore handler method that adds geopoint as a field in database
                     setPickupLocation(bookId, lat, lon);
                     Toast toast = Toast.makeText(SetLocationActivity.this,
                             "Pickup location has been updated", Toast.LENGTH_SHORT);
@@ -151,6 +157,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //makes sure there's an address otherwise address will be null
         if (addresses.size() > 0) {
             address = addresses.get(0).getAddressLine(0);
         }

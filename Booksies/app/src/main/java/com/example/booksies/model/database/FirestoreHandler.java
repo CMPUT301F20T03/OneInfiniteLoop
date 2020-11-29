@@ -123,6 +123,11 @@ public class FirestoreHandler {
                                 }
 
                             }
+                            else
+                            {
+                                b.setBookRequests(new ArrayList<String>());
+
+                            }
 
                             if(book.get("borrowerID") != null){
                                 b.setBorrower((ArrayList<String>)book.get("borrowerID"));
@@ -464,17 +469,7 @@ public class FirestoreHandler {
 
                             }
 
-                            if(book.get("request") != null){
-                                b.setBookRequests((ArrayList<String>)book.get("request"));
-                                db.collection("Books").document(book.getId()).update("status","REQUESTED");
-                                b.setStatus(book_status.REQUESTED);
 
-                            }
-                            else
-                            {
-                                b.setBookRequests(new ArrayList<String>());
-
-                            }
                             b.setImageUrl(book.getString("imageUrl"));
                             b.setOwner(book.getString("owner").split("@")[0]);
                             b.setDocID(book.getId());
@@ -519,17 +514,6 @@ public class FirestoreHandler {
 
                             }
 
-                            if(book.get("request") != null){
-                                b.setBookRequests((ArrayList<String>)book.get("request"));
-                                db.collection("Books").document(book.getId()).update("status","REQUESTED");
-                                b.setStatus(book_status.REQUESTED);
-
-                            }
-                            else
-                            {
-                                b.setBookRequests(new ArrayList<String>());
-
-                            }
                             b.setImageUrl(book.getString("imageUrl"));
                             b.setOwner(book.getString("owner").split("@")[0]);
                             b.setDocID(book.getId());
