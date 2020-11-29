@@ -1,6 +1,10 @@
 package com.example.booksies.model.database;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +18,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.booksies.R;
+import com.example.booksies.controller.MainActivity;
 import com.example.booksies.model.adapters.RequestListAdapter;
 import com.example.booksies.model.adapters.SearchAdapter;
 import com.example.booksies.model.adapters.BooksListAdapter;
@@ -55,6 +61,8 @@ public class FirestoreHandler {
     private String sortString = "Title";
     private String query;
     static String userID;
+    private Context context = null;
+    private TextView noResults = null;
 
     /**
      * Constructor of FirestoreHandler.
@@ -170,6 +178,7 @@ public class FirestoreHandler {
      */
 
     public void handleSearch(String s){
+
         db = FirebaseFirestore.getInstance();
         String owner = getCurrentUserEmail();
         query = s.toLowerCase();
@@ -181,6 +190,7 @@ public class FirestoreHandler {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         searchList.clear();
+
                         for (QueryDocumentSnapshot book : task.getResult()) {
                             if (!book.getString("owner").equals(owner)){
                                 Books b = new Books(book.getString("isbn").toUpperCase(),
@@ -221,6 +231,27 @@ public class FirestoreHandler {
                             }
 
                         }
+                        try{
+                            if(searchList.isEmpty()){
+                                noResults.setVisibility(View.VISIBLE);
+                            } else {
+                                noResults.setVisibility(View.GONE);
+
+                            }
+
+                        }catch(Exception e){
+
+                            toastMessage("An Issue occured");
+
+
+                        }
+
+                        if(searchList.isEmpty()){
+
+
+                        } else {
+
+                        }
                     } else {
                         Log.d("error", "Error getting documents: ", task.getException());
                     }
@@ -235,6 +266,20 @@ public class FirestoreHandler {
         recyclerView.setHasFixedSize(true);
 
     }
+    private void toastMessage(String message) {
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void setContext(Context context){
+        this.context = context;
+    }
+
+    public void setNoResults(TextView view){
+        this.noResults = view;
+    }
+
+
 
     /**
      * Sets filter criteria string

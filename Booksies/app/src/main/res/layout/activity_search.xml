@@ -7,12 +7,22 @@
     android:orientation="vertical">
 
 
+
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_bar"
         android:queryHint="Search by Title, Author or ISBN"
         ></SearchView>
+
+
+    <TextView
+        android:id="@+id/no_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="30sp"
+        android:textSize="23sp"
+        android:text="@string/no_search_results_found" />
 
 
     <androidx.recyclerview.widget.RecyclerView
