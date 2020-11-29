@@ -40,6 +40,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * This Class allows the user to edit or delete a book from the database
+ */
 public class EditBookActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_IMAGE_UPLOAD = 2;
@@ -106,6 +109,27 @@ public class EditBookActivity extends AppCompatActivity {
         authorEditText.setText(author);
         isbnEditText.setText(isbn);
         commentsEditText.setText(comments);
+
+        // are you sure you want to delete the book
+        final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch(i) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //let calling activity know that image was deleted
+                        Intent intent = new Intent(EditBookActivity.this, HomeFragment.class);
+                        setResult(RESULT_OK, intent);
+                        documentReference.delete();
+                        finish();
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        dialogInterface.dismiss();
+                        break;
+                }
+                setResult(RESULT_OK);
+            }
+        };
+
         //if there was a photo attached
         if(!imageUrl.equals(defaultImageUrl)) {
             mImageUri = Uri.parse(imageUrl);
@@ -132,6 +156,7 @@ public class EditBookActivity extends AppCompatActivity {
             }
         });
 
+        // cancels the editing
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,13 +164,16 @@ public class EditBookActivity extends AppCompatActivity {
             }
         });
 
+        // accepts the editing
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // editable fields
                 title = titleEditText.getText().toString();
                 author = authorEditText.getText().toString();
                 isbn = isbnEditText.getText().toString();
                 comments = commentsEditText.getText().toString();
+                // if none of the 3 mandatory fields are left blank
                 if (!(title.isEmpty() || author.isEmpty() || isbn.isEmpty())) {
                     documentReference.update("title", title);
                     documentReference.update("author", author);
@@ -201,20 +229,23 @@ public class EditBookActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), string, Toast.LENGTH_SHORT);
                     toast.show();
                 }
-
-
-
             }
         });
 
+        //
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                documentReference.delete();
-                finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditBookActivity.this);
+                builder
+                        .setMessage("Are you sure you want to delete " + title + "?")
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();
             }
-        });
 
+
+        });
     }
 
     // Dialog for choosing between upload or take photo
@@ -330,5 +361,4 @@ public class EditBookActivity extends AppCompatActivity {
             }
         }
     }
-
 }

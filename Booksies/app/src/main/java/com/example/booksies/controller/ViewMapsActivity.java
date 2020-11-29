@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+/*
+ * This class allows the borrower to view the pickup location which was set by the books owner
+ */
 public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -62,6 +65,7 @@ public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCal
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pickup_marker, 15));
     }
 
+    // gets the address of the point
     private String getMarkerAddress(LatLng latLng) {
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(ViewMapsActivity.this, Locale.getDefault());
