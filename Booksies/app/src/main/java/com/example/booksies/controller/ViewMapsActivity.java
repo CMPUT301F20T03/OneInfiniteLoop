@@ -65,6 +65,7 @@ public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCal
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pickup_marker, 15));
     }
 
+    // gets the address of the point
     private String getMarkerAddress(LatLng latLng) {
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(ViewMapsActivity.this, Locale.getDefault());
