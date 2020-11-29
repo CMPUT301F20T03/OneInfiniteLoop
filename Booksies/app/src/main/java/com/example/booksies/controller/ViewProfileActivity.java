@@ -1,5 +1,5 @@
 /*
- * UserProfileFragment inflates activity_view_profile.xml
+ * ViewProfileFragment inflates activity_view_profile.xml
  *
  * Implements US 02.03.01
  *
