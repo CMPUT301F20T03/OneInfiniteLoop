@@ -60,6 +60,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
         public TextView ownerView;
         public ImageView imageView;
         public FloatingActionButton map2;
+        public FloatingActionButton delete_req;
 
 
         public MyViewHolder(View v) {
@@ -72,6 +73,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             ownerView = v.findViewById(R.id.owner);
             imageView = (ImageView) v.findViewById(R.id.book_image);
             map2 = v.findViewById(R.id.map2);
+            delete_req = v.findViewById(R.id.delete_req);
 
         }
     }
@@ -146,6 +148,8 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
                 });
             }
         });
+
+
 
 
 

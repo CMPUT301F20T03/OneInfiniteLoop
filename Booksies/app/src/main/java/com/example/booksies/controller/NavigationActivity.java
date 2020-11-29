@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -39,6 +40,8 @@ public class NavigationActivity extends AppCompatActivity {
         if(getIntent().getStringExtra("request")!= null)
         {
             frag = new RequestListFragment();
+            View action = findViewById(R.id.action_request);
+            action.performClick();
 
         }
         else
