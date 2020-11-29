@@ -8,6 +8,7 @@
         android:id="@+id/user_email_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
         android:hint="@string/example_gmail_com" />
 
     <EditText
@@ -15,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="phone"
+        android:textColor="@color/textColor"
         android:hint="@string/fui_invalid_phone_number" />
 
     <Button

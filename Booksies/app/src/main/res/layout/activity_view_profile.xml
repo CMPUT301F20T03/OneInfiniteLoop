@@ -19,6 +19,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/username"
         android:textAlignment="center"
+        android:textColor="@color/textColor"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <LinearLayout
@@ -35,13 +36,14 @@
             android:layout_marginStart="20dp"
             android:layout_weight="1"
             android:text="@string/user_cellphone"
-            android:textColor="#000000" />
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/view_phone_number_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
+            android:textColor="@color/textColor"
             android:layout_weight="4" />
 
     </LinearLayout>
@@ -59,14 +61,15 @@
             android:layout_marginStart="20dp"
             android:layout_weight="1"
             android:text="@string/user_email"
-            android:textColor="#000000" />
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/view_email_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:layout_weight="4" />
+            android:layout_weight="4"
+            android:textColor="@color/textColor"/>
 
     </LinearLayout>
 
