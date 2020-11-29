@@ -51,19 +51,55 @@ public class SearchActivityTest {
 
     @Test
     public void testSearch(){
+        solo.waitForActivity(NavigationActivity.class);
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.action_add_book));
+        assertTrue(solo.waitForText("Title", 1, 2000));
+        assertTrue(solo.waitForText("Author", 1, 2000));
+        assertTrue(solo.waitForText("ISBN", 1, 2000));
+        assertTrue(solo.waitForText("Comments", 1, 2000));
+        assertTrue(solo.waitForText("Add Photo", 1, 2000));
+
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.titleEditText), "UI Test SearchBook");
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.authorEditText), "UI Test SearchAuthor");
+        solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.ISBNEditText), "12345678901234");
+        solo.clickOnView(solo.getCurrentActivity().findViewById((R.id.addButton)));
+
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+        solo.clickOnText("Logout");
+        assertTrue(solo.waitForText("Username", 1, 2000 ));
+        assertTrue(solo.waitForText("Password", 1, 2000 ));
+        solo.assertCurrentActivity("Wrong activity", MainActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.username), "testusername");
+        solo.enterText((EditText) solo.getView(R.id.password), "123456");
+        solo.clickOnText("Login");
+        solo.waitForActivity(NavigationActivity.class);
         solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
         assertTrue(solo.waitForText("Find books ...", 1, 2000 ));
         solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.search_bar));
         solo.assertCurrentActivity("Wrong activity", SearchActivity.class);
-        solo.enterText(0, "Delirium");
-        assertTrue(solo.waitForText("LAUREN OLIVER",1,3000));
-
-
+        solo.enterText(0, "UI Test SearchBook");
+        assertTrue(solo.waitForText("UI Test SearchAuthor".toUpperCase(),1,3000));
+        solo.goBack();
+        solo.waitForActivity(NavigationActivity.class);
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+        solo.clickOnText("Logout");
     }
 
     @After
     public void TearDown(){
+        assertTrue(solo.waitForText("Username", 1, 2000 ));
+        assertTrue(solo.waitForText("Password", 1, 2000 ));
+        solo.assertCurrentActivity("Wrong activity", MainActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.username), "test");
+        solo.enterText((EditText) solo.getView(R.id.password), "123456");
+        solo.clickOnText("Login");
+        solo.waitForActivity(NavigationActivity.class);
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+        solo.waitForText("Title",1,2000);
 
+        solo.clickLongOnScreen(240,800,3000);
+        solo.clickOnView(solo.getCurrentActivity().findViewById((R.id.delete_button)));
     }
 
 

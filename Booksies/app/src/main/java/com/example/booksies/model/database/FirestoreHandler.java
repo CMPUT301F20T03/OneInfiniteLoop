@@ -534,6 +534,12 @@ public class FirestoreHandler {
 
     }
 
+    /**
+     * handles adding a location of a book to firestore
+     * @param bookId id of the book
+     * @param lat latitude to set for the location
+     * @param lon longitude to set for the location
+     */
     public static void setPickupLocation(String bookId, double lat, double lon) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, GeoPoint> data = new HashMap<>();
