@@ -10,6 +10,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,14 +34,17 @@ import java.util.List;
 import java.util.Locale;
 
 //Acknowledgements: https://developers.google.com/maps/documentation/android-sdk/start
-
+// This class allows a user to place a marker on a map
+// implements US 09.01.01
 public class SetLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private String bookId;
     private double lat;
     private double lon;
+    private boolean markerPlaced = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +59,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //Retrieve the lat and lon passed in from maps adapter
         bookId = getIntent().getStringExtra("bookId");
         if (getIntent().hasExtra("lat")) {
             lat = getIntent().getExtras().getDouble("lat");
@@ -67,7 +72,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        //If the book already has a location set
+        //If the book already has a location set place a marker on that location and zoom in
         if (getIntent().hasExtra("lat")) {
             LatLng currentlySetLocation = new LatLng(lat, lon);
 
@@ -78,20 +83,18 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
             mMap.addMarker(markerOptions);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentlySetLocation));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentlySetLocation, 15));
-        } else {
+        }
+        else {
+            //if owner has location enabled, place marker on last location
             if (ActivityCompat.checkSelfPermission(SetLocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 fusedLocationProviderClient.getLastLocation()
                         .addOnSuccessListener(new OnSuccessListener<Location>() {
                             @Override
                             public void onSuccess(Location location) {
                                 if (location != null) {
-                                    LatLng currentLocation = new LatLng(location.getLatitude(),location.getLongitude());
-                                    String address = getMarkerAddress(currentLocation);
-                                    mMap.addMarker(new MarkerOptions().position(currentLocation).title(address));
+                                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
                                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
-                                    lat = location.getLatitude();
-                                    lon = location.getLongitude();
                                 }
                             }
                         });
@@ -104,10 +107,14 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
                 markerOptions.position(latLng);
 
                 String address = getMarkerAddress(latLng);
-                markerOptions.title(address);
+                //if there is a valid address associated with marker
+                if (address != null) {
+                    markerOptions.title(address);
+                }
                 mMap.clear();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 mMap.addMarker(markerOptions);
+                markerPlaced = true;
                 lat = latLng.latitude;
                 lon = latLng.longitude;
             }
@@ -118,10 +125,17 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setPickupLocation(bookId, lat, lon);
-                Toast toast = Toast.makeText(SetLocationActivity.this,
-                        "Pickup location has been updated", Toast.LENGTH_SHORT);
-                toast.show();
+                if (markerPlaced) {
+                    //Firestore handler method that adds geopoint as a field in database
+                    setPickupLocation(bookId, lat, lon);
+                    Toast toast = Toast.makeText(SetLocationActivity.this,
+                            "Pickup location has been updated", Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(SetLocationActivity.this,
+                            "Place a marker first", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
     }
@@ -137,15 +151,17 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(SetLocationActivity.this, Locale.getDefault());
         String address = null;
+        //gets a single address from location
         try {
-            //gets a single address from location
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            address = addresses.get(0).getAddressLine(0);
-            //set title as address of location
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //makes sure there's an address otherwise address will be null
+        if (addresses.size() > 0) {
+            address = addresses.get(0).getAddressLine(0);
+        }
         return address;
     }
-
 }
+

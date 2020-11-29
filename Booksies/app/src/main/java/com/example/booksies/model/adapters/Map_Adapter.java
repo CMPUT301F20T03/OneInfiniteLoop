@@ -80,10 +80,10 @@ public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> 
         holder.borrower.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppCompatActivity currentAcitvity = (AppCompatActivity) view.getContext();
-                Intent intent = new Intent(currentAcitvity, ViewProfileActivity.class);
+                AppCompatActivity currentActivity = (AppCompatActivity) view.getContext();
+                Intent intent = new Intent(currentActivity, ViewProfileActivity.class);
                 intent.putExtra("username", requestList.get(position).split("@gmail.com")[0]);
-                currentAcitvity.startActivity(intent);
+                currentActivity.startActivity(intent);
             }
         });
 
@@ -105,11 +105,8 @@ public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> 
                                 GeoPoint geopoint = documentSnapshot.getGeoPoint("location");
                                 intent.putExtra("lat", geopoint.getLatitude());
                                 intent.putExtra("lon", geopoint.getLongitude());
-                                currentActivity.startActivity(intent);
                             }
-                            else {
-                                currentActivity.startActivity(intent);
-                            }
+                            currentActivity.startActivity(intent);
                         }
                     }
                 });

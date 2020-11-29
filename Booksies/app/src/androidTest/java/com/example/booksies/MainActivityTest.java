@@ -37,7 +37,7 @@ public class MainActivityTest {
         solo.clickOnText("Login");
         solo.waitForText("You didn't fill in the all the fields!",
                 1, 2000);
-        solo.enterText((EditText) solo.getView(R.id.username), "jzhuang@ualberta.ca");
+        solo.enterText((EditText) solo.getView(R.id.username), "test");
         solo.enterText((EditText) solo.getView(R.id.password), "123456");
 
         solo.clickOnText("Login");
@@ -50,7 +50,7 @@ public class MainActivityTest {
     @Test
     public void registerAccountTest() {
         solo.assertCurrentActivity("Wrong activity", MainActivity.class);
-        solo.clickOnText("Create an User");
+        solo.clickOnText("Create a User");
 
         solo.waitForActivity(RegisterActivity.class);
         solo.assertCurrentActivity("Wrong activity", RegisterActivity.class);
@@ -62,7 +62,15 @@ public class MainActivityTest {
 
         solo.clickOnText("Register");
 
-        solo.waitForActivity(MainActivity.class);
-        solo.assertCurrentActivity("Wrong activity", MainActivity.class);
+        if(solo.waitForActivity(MainActivity.class, 3000)){
+            solo.assertCurrentActivity("Wrong activity", MainActivity.class);
+
+        } else {
+            solo.assertCurrentActivity("Wrong activity", RegisterActivity.class);
+            solo.waitForText("Username taken.",
+                    1, 2000);
+
+        }
+
     }
 }

@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -113,15 +114,27 @@ public class FirestoreHandler {
 
                             }
 
-                            if(book.get("request") != null){
-                                b.setBookRequests((ArrayList<String>)book.get("request"));
-                                db.collection("Books").document(book.getId()).update("status","REQUESTED");
-                                b.setStatus(book_status.REQUESTED);
+                            ArrayList<String> requestList = (ArrayList<String>)book.get("request");
+
+                            if(requestList != null ){
+                                if(requestList.size() != 0) {
+                                    b.setBookRequests((ArrayList<String>) book.get("request"));
+                                    db.collection("Books").document(book.getId()).update("status", "REQUESTED");
+                                    b.setStatus(book_status.REQUESTED);
+                                }
+
+                                else
+                                {
+                                    db.collection("Books").document(book.getId()).update("status","AVAILABLE");
+                                    b.setStatus(book_status.AVAILABLE);
+                                    b.setBookRequests(new ArrayList<String>());
+                                }
 
                             }
                             else
                             {
                                 b.setBookRequests(new ArrayList<String>());
+
                             }
 
                             if(book.get("borrowerID") != null){
@@ -435,6 +448,7 @@ public class FirestoreHandler {
         db.collection("Books").document(bookID).update("borrowerID",FieldValue.delete());
         String requests=getCurrentUserEmail();
         db.collection("Books").document(bookID).update("request", FieldValue.arrayUnion(requests));
+        db.collection("Books").document(bookID).update("status","REQUESTED");
 
     }
 
@@ -501,17 +515,7 @@ public class FirestoreHandler {
 
                             }
 
-                            if(book.get("request") != null){
-                                b.setBookRequests((ArrayList<String>)book.get("request"));
-                                db.collection("Books").document(book.getId()).update("status","REQUESTED");
-                                b.setStatus(book_status.REQUESTED);
 
-                            }
-                            else
-                            {
-                                b.setBookRequests(new ArrayList<String>());
-
-                            }
                             b.setImageUrl(book.getString("imageUrl"));
                             b.setOwner(book.getString("owner").split("@")[0]);
                             b.setDocID(book.getId());
@@ -526,6 +530,7 @@ public class FirestoreHandler {
 
                 });
         db.collection("Books").whereNotEqualTo("owner", getCurrentUserEmail())
+                .whereArrayContains("borrowerID",getCurrentUserEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
@@ -555,17 +560,6 @@ public class FirestoreHandler {
 
                             }
 
-                            if(book.get("request") != null){
-                                b.setBookRequests((ArrayList<String>)book.get("request"));
-                                db.collection("Books").document(book.getId()).update("status","REQUESTED");
-                                b.setStatus(book_status.REQUESTED);
-
-                            }
-                            else
-                            {
-                                b.setBookRequests(new ArrayList<String>());
-
-                            }
                             b.setImageUrl(book.getString("imageUrl"));
                             b.setOwner(book.getString("owner").split("@")[0]);
                             b.setDocID(book.getId());

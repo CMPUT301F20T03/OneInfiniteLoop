@@ -1,5 +1,7 @@
 package com.example.booksies.controller;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
@@ -22,54 +24,39 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class ViewMapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    Intent mIntent;
-    String documentID;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_maps);
+
+        //Enable the back button
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mIntent = getIntent();
-        double latitude = mIntent.getExtras().getDouble("lat");
-        double longitude = mIntent.getExtras().getDouble("lon");
-//        String bookID = mIntent.getStringExtra("bookID");
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        double latitude = getIntent().getExtras().getDouble("lat");
+        double longitude = getIntent().getExtras().getDouble("lon");
 
-
-
-
-
-        Log.d("LOCATION", "---------------- " + latitude + " " + longitude);
-
-
-        // Add a user marker and move the camera
+        // Add marker on pickup location and move the camera
         LatLng pickup_marker = new LatLng(latitude, longitude);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(pickup_marker);
         String address = getMarkerAddress(pickup_marker);
-        markerOptions.title(address);
+        if (address != null) {
+            markerOptions.title(address);
+        }
         mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(pickup_marker));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pickup_marker, 15));
@@ -79,14 +66,23 @@ public class ViewMapsActivity extends FragmentActivity implements OnMapReadyCall
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(ViewMapsActivity.this, Locale.getDefault());
         String address = null;
+        //gets a single address from location
         try {
-            //gets a single address from location
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            address = addresses.get(0).getAddressLine(0);
-            //set title as address of location
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (addresses.size() > 0) {
+            address = addresses.get(0).getAddressLine(0);
+        }
         return address;
     }
+
+    //Go back to whatever opened this activity
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
 }

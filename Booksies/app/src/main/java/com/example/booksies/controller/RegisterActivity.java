@@ -1,3 +1,9 @@
+/*
+* This activity allows a user to create an account for the app
+* implements US 02.01.01
+*
+ */
+
 package com.example.booksies.controller;
 
 import android.content.Context;
@@ -64,6 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
                     final String username = rUsername.getText().toString();
                     final String pass = rPassword.getText().toString();
                     final String phone = rPhone.getText().toString();
+                    //Makes sure fields are filled in
                     if (email.contains("@")
                             && !(pass.length() < 6)
                             && email.length() > 0
@@ -106,13 +113,13 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
+    //Goes to login activity
     private void updateUI(FirebaseUser user) {
         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         startActivity(intent);
 
     }
-
+    //Checks if user is connected to internet
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
