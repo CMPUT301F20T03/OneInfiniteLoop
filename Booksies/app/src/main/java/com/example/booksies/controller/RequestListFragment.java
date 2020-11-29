@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.booksies.model.database.FirestoreHandler;
 import com.example.booksies.R;
 
+/**
+ * This class is a recycler view that shows the requests on a book
+ */
 public class RequestListFragment extends Fragment {
 
 

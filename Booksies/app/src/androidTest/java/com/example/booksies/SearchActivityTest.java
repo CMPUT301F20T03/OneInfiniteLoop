@@ -98,8 +98,11 @@ public class SearchActivityTest {
         solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
         solo.waitForText("Title",1,2000);
 
-        solo.clickLongOnScreen(240,800,3000);
+        solo.clickLongOnText("UI TEST SEARCHBOOK");
         solo.clickOnView(solo.getCurrentActivity().findViewById((R.id.delete_button)));
+        solo.clickOnView(solo.getView(android.R.id.button1));
+
+
     }
 
 

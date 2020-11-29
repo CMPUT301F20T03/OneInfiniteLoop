@@ -34,8 +34,10 @@ import java.util.List;
 import java.util.Locale;
 
 //Acknowledgements: https://developers.google.com/maps/documentation/android-sdk/start
-// This class allows a user to place a marker on a map
-// implements US 09.01.01
+/**
+ * This class allows a user to place a marker on a map
+  */
+
 public class SetLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

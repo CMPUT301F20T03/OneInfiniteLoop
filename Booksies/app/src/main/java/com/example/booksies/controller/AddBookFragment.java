@@ -3,8 +3,6 @@
 *
 * Implements US 01.01.01, 08.01.01, and 08.03.01
 *
-* Only things missing in this activity is being able to delete attached image
-*
 * Acknowledgments
 * https://developer.android.com/training/camera/photobasics
 * https://medium.com/@hasangi/capture-image-or-choose-from-gallery-photos-implementation-for-android-a5ca59bc6883
@@ -62,6 +60,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * This class allows the user to add a book and attach images
+ */
 public class AddBookFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_IMAGE_UPLOAD = 2;

@@ -22,6 +22,9 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
+/**
+ * US 01.01.01/
+ */
 public class AddBookFragmentTest {
     private Solo solo;
     @Rule
@@ -69,8 +72,9 @@ public class AddBookFragmentTest {
 
         solo.waitForText("Title",1,2000);
 
-        solo.clickLongOnScreen(240,800,3000);
+        solo.clickLongOnText("UI TEST BOOK");
         solo.clickOnView(solo.getCurrentActivity().findViewById((R.id.delete_button)));
+        solo.clickOnView(solo.getView(android.R.id.button1));
 
     }
 
