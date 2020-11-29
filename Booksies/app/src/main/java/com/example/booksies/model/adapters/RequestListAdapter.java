@@ -1,6 +1,7 @@
 package com.example.booksies.model.adapters;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -26,12 +27,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 
 
 import java.util.ArrayList;
+
+import static com.example.booksies.model.database.FirestoreHandler.getCurrentUserEmail;
 
 
 /**
@@ -149,9 +153,20 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             }
         });
 
-
-
-
+        if(!bookList.get(position).getStatus().toString().toUpperCase().equals("REQUESTED"))
+        {
+            holder.delete_req.setVisibility(View.GONE);
+        }
+        holder.delete_req.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("Books").document(bookList.get(position).getDocID()).update("request",FieldValue.arrayRemove(getCurrentUserEmail()));
+                Activity activity = (Activity) v.getContext();
+                View action = activity.findViewById(R.id.action_request);
+                action.performClick();
+            }
+        });
 
     }
 

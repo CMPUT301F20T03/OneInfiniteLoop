@@ -403,6 +403,7 @@ public class FirestoreHandler {
         db.collection("Books").document(bookID).update("borrowerID",FieldValue.delete());
         String requests=getCurrentUserEmail();
         db.collection("Books").document(bookID).update("request", FieldValue.arrayUnion(requests));
+        db.collection("Books").document(bookID).update("status","REQUESTED");
 
     }
 
