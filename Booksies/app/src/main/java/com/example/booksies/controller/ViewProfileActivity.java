@@ -50,7 +50,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         db.collection("Users")
-                .whereEqualTo("username", username)
+                .whereEqualTo("lowusername", username)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
