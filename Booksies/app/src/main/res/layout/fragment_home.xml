@@ -8,13 +8,14 @@
     android:orientation="vertical">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/search_bar"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:background="@drawable/custom_border_search"
+        android:layout_margin="5dp">
         <ImageView
             android:id="@+id/search_icon"
             android:layout_width="wrap_content"
@@ -29,9 +30,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Find books ..."
+            android:text="@string/find_books"
             android:layout_marginLeft="5dp"/>
     </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+
+        android:textSize="23dp"
+        android:text="@string/my_books"
+        android:textStyle="bold|italic"
+        />
+
 
 
     <LinearLayout

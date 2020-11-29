@@ -25,7 +25,9 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import static com.example.booksies.model.database.FirestoreHandler.setCurrentUserID;
 
-
+/*
+ * This class is the main activity which is the login screen
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";

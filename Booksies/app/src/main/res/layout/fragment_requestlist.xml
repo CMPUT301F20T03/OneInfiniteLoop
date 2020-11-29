@@ -9,10 +9,9 @@
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Requests"
-        android:textAllCaps="true"
+        android:text="@string/requests"
         android:textSize="24sp"
-        android:textStyle="bold"
+        android:textStyle="bold|italic"
         android:padding="10dp"/>
 
     <LinearLayout
