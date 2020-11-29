@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.booksies.model.database.FirestoreHandler;
 import com.example.booksies.R;
@@ -18,6 +19,7 @@ public class SearchActivity extends AppCompatActivity {
 
     SearchView searchView;
     RecyclerView searchRecyclerView;
+    TextView noResult;
     private RecyclerView.LayoutManager layoutManager;
 
     /**
@@ -30,8 +32,11 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         searchView = (SearchView) findViewById(R.id.search_bar);
+
         searchView.onActionViewExpanded();
         searchRecyclerView =(RecyclerView) findViewById(R.id.search_list);
+        noResult = (TextView) findViewById(R.id.no_result);
+        noResult.setVisibility(View.GONE);
         assert searchRecyclerView != null;
         layoutManager = new LinearLayoutManager(this);
         searchRecyclerView.setLayoutManager(layoutManager);
@@ -73,7 +78,10 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 if(!s.equals("")){
+                    search.setContext(SearchActivity.this);
+                    search.setNoResults(noResult);
                     search.handleSearch(s);
+
                 } else {
                     search.clearSearchResults();
                 }
