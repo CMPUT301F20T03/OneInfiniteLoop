@@ -135,25 +135,9 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.MyVi
                 }
             });
 
-//            v.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    int position = getAdapterPosition();
-//                    if (position != RecyclerView.NO_POSITION && listener != null) {
-//                        listener.onItemSwipe(getSnapshots().getSnapshot(position), position);
-//                    }
-//                }
-//            });
         }
     }
 
-//    public interface OnItemSwipeListener {
-//        void onItemSwipe(DocumentSnapshot documentSnapshot, int position);
-//    }
-//
-//    public void setOnItemSwipeListener(OnItemSwipeListener listener) {
-//        this.listener = listener;
-//    }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public BooksListAdapter(ArrayList<Books> bookList) {
@@ -216,50 +200,5 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.MyVi
     public int getItemCount() {
         return bookList.size();
     }
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//            BooksList.remove(viewHolder.getAdapterPosition());
-//            mAdapter.notifyDataSetChanged();
-
-            int position = viewHolder.getAdapterPosition();
-            db = FirebaseFirestore.getInstance();
-            String id = db.collection("Books").getId();
-            Toast.makeText(context.getApplicationContext(), "Position: " + position + " ID: " + id, Toast.LENGTH_SHORT).show();
-
-        }
-
-        // TODO: Need to clean this functionality up to look better
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            View itemView = viewHolder.itemView;
-            int rectWidth = 240;//itemView.getTop() - itemView.getBottom();
-            int deleteIconMargin = (itemView.getHeight() - deleteIcon.getIntrinsicHeight())/2;
-            int editIconMargin = (itemView.getHeight() - editIcon.getIntrinsicHeight())/2;
-            swipeBackgroundDelete.setBounds(itemView.getLeft(), itemView.getTop(), rectWidth, itemView.getBottom());
-            swipeBackgroundEdit.setBounds(itemView.getLeft() + rectWidth, itemView.getTop(), rectWidth * 2, itemView.getBottom());
-
-            deleteIcon.setBounds(itemView.getLeft() + deleteIconMargin, itemView.getTop() + deleteIconMargin, itemView.getLeft() +
-                    deleteIconMargin + deleteIcon.getIntrinsicWidth(), itemView.getBottom() - deleteIconMargin );
-            editIcon.setBounds(itemView.getLeft() + rectWidth + editIconMargin, itemView.getTop() + editIconMargin, itemView.getLeft() + rectWidth +
-                    editIconMargin + deleteIcon.getIntrinsicWidth(), itemView.getBottom() - editIconMargin );
-
-            swipeBackgroundDelete.draw(c);
-            swipeBackgroundEdit.draw(c);
-            c.save();
-            c.clipRect(itemView.getLeft(), itemView.getTop(), rectWidth, itemView.getBottom());
-            c.restore();
-            deleteIcon.draw(c);
-            editIcon.draw(c);
-
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-    };
 }
 
