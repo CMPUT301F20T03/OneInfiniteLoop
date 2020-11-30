@@ -74,11 +74,10 @@ public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     /**
-     *
+     * Gets the address of the point
      * @param latLng : the latitude and longitude
      * @return : returns the address
      */
-    // gets the address of the point
     private String getMarkerAddress(LatLng latLng) {
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(ViewMapsActivity.this, Locale.getDefault());
@@ -96,10 +95,9 @@ public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     /**
-     *
+     * Go back to whatever opened this activity
      * @return : true
      */
-    //Go back to whatever opened this activity
     @Override
     public boolean onSupportNavigateUp() {
         finish();

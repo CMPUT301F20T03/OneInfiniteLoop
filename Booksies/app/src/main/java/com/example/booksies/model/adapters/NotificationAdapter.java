@@ -28,8 +28,8 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
     /**
      * Constructor for NotificationAdapter
-     * @param context
-     * @param notifications
+     * @param context: current context
+     * @param notifications: array list of notifications
      */
     public NotificationAdapter(Context context, ArrayList<Notification> notifications) {
         super(context, 0, notifications);
@@ -60,6 +60,10 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         body.setText(notification.getBody());
 
         username.setOnClickListener(new View.OnClickListener() {
+            /**
+             * On click create new intent for ViewProfileActivity
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ViewProfileActivity.class);

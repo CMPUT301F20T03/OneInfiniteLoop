@@ -31,24 +31,24 @@ import java.util.ArrayList;
 
 import static com.example.booksies.model.database.FirestoreHandler.addRequest;
 
+//Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
 /**
  * This class is a custom adapter for RecyclerView
  *
  */
-
-//Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
-
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder> {
     public ArrayList<Books> bookList;
     //public static ArrayList<Boolean> expandable;
     Context context;
     final int[] i = {0};
 
-
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+    /**
+     * public class MyViewHolder that extends to RecyclerView.ViewHolder
+     * Provide a reference to the views for each data item
+     * Complex data items may need more than one view per item, and
+     * you provide access to all the views for a data item in a view holder
+     */
     public class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView titleView;
@@ -61,7 +61,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         public RecyclerView.Adapter mAdapter;
         public Button req_button;
 
-
+        /**
+         * MyViewHolder helps in setting values for titleView, authorView, isbnView, statusView, ownerView
+         * @param v: view to get context for and find related layout items
+         */
         public MyViewHolder(View v) {
             super(v);
             context = v.getContext();
@@ -72,20 +75,23 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             ownerView = v.findViewById(R.id.owner_user_name);
             linearLayout = v.findViewById(R.id.search_layout);
             req_button = v.findViewById(R.id.req_button);
-
-
-
-
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+    /**
+     * Provide a suitable constructor (depends on the kind of dataset)
+     * @param bookList: array list of books
+     */
     public SearchAdapter(ArrayList<Books> bookList) {
         this.bookList = bookList;
-
     }
 
-    // Create new views (invoked by the layout manager)
+    /**
+     * Useful for create new views (invoked by the layout manager)
+     * @param parent: parent to get context from
+     * @param viewType: viewType
+     * @return vh
+     */
     @Override
     public SearchAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -97,7 +103,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * Helps to replace the contents of a view (invoked by the layout manager)
+     * @param holder: an instance of MyViewHolder to help in setting texts
+     * @param position: used for getting an element of bookList at a certain position
+     */
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
@@ -109,6 +119,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         holder.statusView.setText("AVAILABLE");
         holder.ownerView.setText(bookList.get(position).getOwner());
         holder.ownerView.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * When holder.ownerView is clicked
+             * @param view: view to get context for
+             */
             @Override
             public void onClick(View view) {
                 AppCompatActivity currentActivity = (AppCompatActivity) view.getContext();
@@ -119,6 +134,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         });
 
         holder.req_button.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * When holder.req_button is clicked
+             * @param v: view to get context for
+             */
             @Override
             public void onClick(View v) {
                 addRequest(bookList.get(position).getDocID());
@@ -130,16 +150,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
                 Intent intent = new Intent(currentActivity, NavigationActivity.class);
                 intent.putExtra("request", "r");
                 currentActivity.startActivity(intent);
-
             }
         });
 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
+
+    /**
+     * Get size of book list or image count
+     * @return bookList.size()
+     */
     @Override
     public int getItemCount() {
         return bookList.size();
     }
 }
-

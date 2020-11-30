@@ -17,7 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * This class handles the autofilling of a book description
+ * AutofillBookDescription handles the api that retrieves author, title, comments of a book through
+ * a google api by using ISBN code. It is called from AddBookFragment while adding a new book.
  */
 public class AutofillBookDescription extends AsyncTask<String, Void, String> {
     private final String TAG = getClass().getSimpleName();
@@ -27,6 +28,14 @@ public class AutofillBookDescription extends AsyncTask<String, Void, String> {
     private EditText author;
     private EditText description;
 
+    /**
+     * Constructor for AutofillBookDescription
+     * @param ISBN: ISBN code to be used to look for a book
+     * @param title: title of book
+     * @param author: author of book
+     * @param description: description of book
+     * @param mView: parent View of AddBookFragment
+     */
     public AutofillBookDescription(String ISBN, EditText title, EditText author, EditText description, View mView) {
         this.ISBN = ISBN;
         this.title = title;
@@ -36,9 +45,9 @@ public class AutofillBookDescription extends AsyncTask<String, Void, String> {
     }
 
     /**
-     * Start the task that will be done in the background
-     * @param strings: an unspecified amount of parameters, in this case it is the ISBN
-     * @return the book info in JSON
+     * Start task to be done in background
+     * @param strings: ISBN
+     * @return book info in JSON
      */
     @Override
     protected String doInBackground(String... strings) {
@@ -46,8 +55,8 @@ public class AutofillBookDescription extends AsyncTask<String, Void, String> {
     }
 
     /**
-     * Converts the results of the API call in JSON to separate strings and binds them to UI
-     * @param bookDescriptionJSON: The results in JSON of the API call
+     * Converts results of API call in JSON to separate strings and binds to UI
+     * @param bookDescriptionJSON: Result JSON of API call
      */
     @Override
     protected void onPostExecute(String bookDescriptionJSON) {
@@ -71,43 +80,40 @@ public class AutofillBookDescription extends AsyncTask<String, Void, String> {
 
     }
 
+    /**
+     * Get Book Information like author, title, comments using ISBN of book
+     * @param ISBN: ISBN of book to be searched
+     * @return book description in JSON
+     */
     public static String getBookInfo(String ISBN){
-        HttpURLConnection httpURLConnection = null;
+        HttpURLConnection httpUrlConn = null;
         BufferedReader bufferedReader = null;
         String bookDescriptionJSON = null;
+        String line;
+        StringBuffer stringBuffer = new StringBuffer();
 
         try {
-
             Uri uri = Uri.parse("https://www.googleapis.com/books/v1/volumes?").buildUpon()
-                    .appendQueryParameter("q", "=isbn:" + ISBN)
-                    .appendQueryParameter("printType", "books").build();
+                    .appendQueryParameter("q", "=isbn:" + ISBN).appendQueryParameter("printType", "books").build();
 
             URL url = new URL(uri.toString());
-
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("GET");
-            httpURLConnection.connect();
-            InputStream inputStream = httpURLConnection.getInputStream();
-            StringBuffer stringBuffer = new StringBuffer();
+            httpUrlConn = (HttpURLConnection) url.openConnection();
+            httpUrlConn.setRequestMethod("GET");
+            httpUrlConn.connect();
+            InputStream inputStream = httpUrlConn.getInputStream();
 
             if (inputStream == null) return null;
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-
-            while ((line = bufferedReader.readLine()) != null){
-                stringBuffer.append(line + "\n");
-            }
+            while ((line = bufferedReader.readLine()) != null) stringBuffer.append(line + "\n");
             if (stringBuffer.length() == 0) return null;
-
             bookDescriptionJSON = stringBuffer.toString();
-
         }
         catch (Exception e){
             e.printStackTrace();
             return null;
         }
         finally {
-            if (httpURLConnection != null) httpURLConnection.disconnect();
+            if (httpUrlConn != null) httpUrlConn.disconnect();
 
             if (bufferedReader!=null){
                 try{
@@ -124,64 +130,64 @@ public class AutofillBookDescription extends AsyncTask<String, Void, String> {
     }
 
     /**
-     * Get the ISBN
-     * @return the ISBN
-     */
-    public String getISBN() {
-        return ISBN;
-    }
-
-    /**
-     * Set the ISBN
-     * @param ISBN: the ISBN
-     */
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
-    }
-
-    /**
-     * Get the title
-     * @return the title
-     */
-    public EditText getTitle() {
-        return title;
-    }
-
-    /**
-     * Set the title
-     * @param title: the title
-     */
-    public void setTitle(EditText title) {
-        this.title = title;
-    }
-
-    /**
-     * Get the author
-     * @return the author
+     * Get author of book
+     * @return author of book
      */
     public EditText getAuthor() {
         return author;
     }
 
     /**
-     * Set the author
-     * @param author: the author
+     * Set author of book
+     * @param author: author of book
      */
     public void setAuthor(EditText author) {
         this.author = author;
     }
 
     /**
-     * Get the description
-     * @return the description
+     * Get title of book
+     * @return title of book
+     */
+    public EditText getTitle() {
+        return title;
+    }
+
+    /**
+     * Set title of book
+     * @param title: title of book
+     */
+    public void setTitle(EditText title) {
+        this.title = title;
+    }
+
+    /**
+     * Get ISBN of book
+     * @return ISBN of book
+     */
+    public String getISBN() {
+        return ISBN;
+    }
+
+    /**
+     * Set ISBN of book
+     * @param ISBN: ISBN of book
+     */
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
+
+    /**
+     * Get description of book
+     * @return description of book
      */
     public EditText getDescription() {
         return description;
     }
 
     /**
-     * Sets the description
-     * @param description: the description
+     * Set description of book
+     * @param description: description of book
      */
     public void setDescription(EditText description) {
         this.description = description;

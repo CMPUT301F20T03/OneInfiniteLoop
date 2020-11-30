@@ -37,8 +37,6 @@ public class HomeFragment extends Fragment {
     public LinearLayout linearLayout;
     FirebaseFirestore db;
 
-
-
     /**
      * Responsible for creating view when first launched
      * @param inflater: inflater is responsible for converting layout to view objects
@@ -60,10 +58,7 @@ public class HomeFragment extends Fragment {
         searchView = (LinearLayout) view.findViewById(R.id.search_bar);
 
         return view;
-
     }
-    
-
 
     /**
      * It is useful for modifying UI elements.
@@ -84,6 +79,13 @@ public class HomeFragment extends Fragment {
         // Apply the adapter to the spinner
         spinnerFilter.setAdapter(adapterFilter);
         spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             * It is run when Item is selected for filtering to upper case
+             * @param parentView: It is the parent view
+             * @param selectedItemView: It is the selected Item view
+             * @param position: It is useful for getting item at a certain position
+             * @param id: id
+             */
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 f.setFilterString(parentView.getItemAtPosition(position).toString().toUpperCase());
@@ -102,7 +104,6 @@ public class HomeFragment extends Fragment {
 
         });
 
-
         Spinner spinnerSort = (Spinner) view.findViewById(R.id.sort);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapterSort = ArrayAdapter.createFromResource(getActivity(),
@@ -114,7 +115,7 @@ public class HomeFragment extends Fragment {
 
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             /**
-             * It is run when an Item is selected in HomeFragment.
+             * It is run when Item is selected in HomeFragment for setting sorted string
              * @param parentView: It is the parent view
              * @param selectedItemView: It is the selected Item view
              * @param position: It is useful for getting item at a certain position
@@ -137,8 +138,6 @@ public class HomeFragment extends Fragment {
 
         });
 
-
-
         Intent intent = new Intent(getActivity(), SearchActivity.class);
         searchView.setOnClickListener(new View.OnClickListener() {
             /**
@@ -147,19 +146,8 @@ public class HomeFragment extends Fragment {
              */
             @Override
             public void onClick(View v) {
-
-
                 startActivity(intent);
-
-
-
             }
         });
-
-
-
-
     }
-
-
 }
