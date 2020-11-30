@@ -1,5 +1,6 @@
 package com.example.booksies.controller;
 
+//Resource used: https://medium.com/analytics-vidhya/creating-a-barcode-scanner-using-android-studio-71cff11800a2
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
