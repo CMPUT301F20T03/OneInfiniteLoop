@@ -6,6 +6,7 @@ import java.util.ArrayList;
 /**
  * Class models a book object.
  * This class keeps track of the attributes of a book object
+ * @author: Michael Elgie (mbelgie)
  */
 public class Books implements bookIdentifiable {
     private String title;
@@ -89,7 +90,7 @@ public class Books implements bookIdentifiable {
     }
 
     /**
-     *
+     * get's book status
      * @return status of the book
      */
     public book_status getStatus() { return status; }
