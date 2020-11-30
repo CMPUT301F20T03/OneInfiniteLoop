@@ -45,9 +45,7 @@ import static com.example.booksies.model.database.FirestoreHandler.getCurrentUse
  */
 public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.RequestListViewHolder> {
     public ArrayList<Books> bookList;
-    FirebaseStorage storage = FirebaseStorage.getInstance();
     Context context;
-    String url;
 
     /**
      * RequestListViewHolder extends to RecyclerView.ViewHolder

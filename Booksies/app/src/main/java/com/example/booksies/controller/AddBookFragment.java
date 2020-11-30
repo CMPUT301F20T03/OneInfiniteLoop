@@ -45,17 +45,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -271,8 +262,8 @@ public class AddBookFragment extends Fragment {
      * @param context
      */
     public void scanOnClick(Context context) {
-        Intent intent = new Intent(context, Scanner.class);
-        startActivityForResult(intent, Scanner.SCAN);
+        Intent intent = new Intent(context, ScannerActivity.class);
+        startActivityForResult(intent, ScannerActivity.SCAN);
     }
 
     /**
@@ -301,7 +292,7 @@ public class AddBookFragment extends Fragment {
                     cameraImageView.setVisibility(View.VISIBLE);
                 }
             }
-            else if(requestCode == Scanner.SCAN) {
+            else if(requestCode == ScannerActivity.SCAN) {
                 // if successful
                 // get the scanned ISBN
                 String ISBN = data.getStringExtra("ISBN");

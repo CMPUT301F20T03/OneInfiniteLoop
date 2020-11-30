@@ -1,5 +1,6 @@
 package com.example.booksies.controller;
 
+//Resource used: https://medium.com/analytics-vidhya/creating-a-barcode-scanner-using-android-studio-71cff11800a2
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -27,7 +28,7 @@ import java.io.IOException;
  * Scanner opens up camera to scan ISBN code and return it to Scan Fragment which displays result
  * on dialog box. Also Scanner extends to AppCompatActivity
  */
-public class Scanner extends AppCompatActivity {
+public class ScannerActivity extends AppCompatActivity {
 
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
@@ -53,13 +54,14 @@ public class Scanner extends AppCompatActivity {
      * Initialise detectors and sources
      */
     private void initialiseDetectorsAndSources() {
+
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
 
         cameraSource = new CameraSource.Builder(this, barcodeDetector)
                 .setRequestedPreviewSize(1920, 1080)
-                .setAutoFocusEnabled(true) //you should add this feature
+                .setAutoFocusEnabled(true)
                 .build();
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -71,10 +73,10 @@ public class Scanner extends AppCompatActivity {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
-                    if (ActivityCompat.checkSelfPermission(Scanner.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(ScannerActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         cameraSource.start(surfaceView.getHolder());
                     } else {
-                        ActivityCompat.requestPermissions(Scanner.this, new
+                        ActivityCompat.requestPermissions(ScannerActivity.this, new
                                 String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                     }
                 } catch (IOException e) {
@@ -109,7 +111,6 @@ public class Scanner extends AppCompatActivity {
              */
             @Override
             public void release() {
-                // Toast.makeText(getApplicationContext(), "Prevent memory leaks and barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
             }
 
             /**
@@ -132,7 +133,7 @@ public class Scanner extends AppCompatActivity {
                                 Intent intent = new Intent();
                                 intent.putExtra("ISBN", barcodeData);
                                 setResult(Activity.RESULT_OK, intent);
-                                Toast.makeText(Scanner.this, "Barcode: "+barcodeData, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ScannerActivity.this, "Barcode: "+barcodeData, Toast.LENGTH_SHORT).show();
                                 finish();
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
                                 return;
@@ -142,7 +143,7 @@ public class Scanner extends AppCompatActivity {
                                 Intent intent = new Intent();
                                 intent.putExtra("ISBN", barcodeData);
                                 setResult(Activity.RESULT_OK, intent);
-                                Toast.makeText(Scanner.this, "Barcode: "+barcodeData, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ScannerActivity.this, "Barcode: "+barcodeData, Toast.LENGTH_SHORT).show();
                                 finish();
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
                                 return;

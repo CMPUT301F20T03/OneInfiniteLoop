@@ -13,6 +13,11 @@ Booksies is an android application with the following characteristics:
      A user can both be an owner of one's one books while borrowing someon else's books.
      Once borrower's request is accepted, the book can be borrowed and a meeting location can then be decided on. 
      Owner can denote when such book should be returned and can again make it available to other borrowers.
+  
+  3)The app can be downloaded from the CI Android Release artifact for the apk by using a valid Github Account.
+  
+  4)This app is made using the 5.0 inch, 1080x1920, 420 dpi (Pixel2) configuration. Layouts may be different or inconsistent will other dimensions.
+  (We have tried to implement relative layout wherever possible)
      
 ### **Badge Descriptions**
 * **Build:** Indicates stability of application build
