@@ -22,7 +22,7 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertTrue;
 
 /**
- * US 04.01.01 / 04.02.01 / 04.0.01 / 05.01.01 / 05.02.01 / 05.04.01 / US 09.01.01 / US 09.02.01
+ * US 02.03.01 / 04.01.01 / 04.02.01 / 04.03.01 / 05.01.01 / 05.02.01 / 05.04.01 / US 09.01.01 / US 09.02.01
  */
 public class TransactionTest {
 
@@ -245,7 +245,7 @@ public class TransactionTest {
         assertTrue(solo.waitForText("Notifications", 1, 2000));
         assertTrue(solo.waitForText("lendertest", 1, 2000));
         assertTrue(solo.waitForText("has accepted your requests for UI Test LendBook", 1, 2000));
-        
+
         //View user profile Test
         solo.clickOnText("lendertest");
         solo.waitForActivity(ViewProfileActivity.class);

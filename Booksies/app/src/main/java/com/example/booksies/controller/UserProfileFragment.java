@@ -9,6 +9,8 @@
  * https://firebase.google.com/docs/firestore/query-data/get-data#java_2
  * https://firebase.google.com/docs/auth/android/manage-users
  * https://firebase.google.com/docs/firestore/query-data/listen
+ *
+ * Author: Tony(xli)
  */
 
 package com.example.booksies.controller;
@@ -64,6 +66,13 @@ public class UserProfileFragment extends Fragment {
     ArrayList<Notification> notificationDataList;
 
 
+    /**
+     * Inflates user profile page
+     * @param inflater: inflater
+     * @param container: container
+     * @param savedInstanceState: savedInstanceState
+     * @return view
+     */
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

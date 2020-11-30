@@ -26,12 +26,24 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
     private ArrayList<Notification> notifications;
     private Context context;
 
+    /**
+     * Constructor for NotificationAdapter
+     * @param context
+     * @param notifications
+     */
     public NotificationAdapter(Context context, ArrayList<Notification> notifications) {
         super(context, 0, notifications);
         this.notifications = notifications;
         this.context = context;
     }
 
+    /**
+     * Inflates notification content
+     * @param position: position
+     * @param convertView: view
+     * @param parent: parent
+     * @return view
+     */
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
         View view = convertView;
 
