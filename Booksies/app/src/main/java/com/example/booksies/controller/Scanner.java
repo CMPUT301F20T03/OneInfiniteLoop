@@ -32,8 +32,8 @@ public class Scanner extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION = 201;
     //This class provides methods to play DTMF tones
     private ToneGenerator toneGen1;
-    private TextView barcodeText;
     private String barcodeData;
+    public static final int SCAN = 4;
 
 
 
@@ -43,7 +43,6 @@ public class Scanner extends AppCompatActivity {
         setContentView(R.layout.activity_scancamera);
         toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC,     100);
         surfaceView = findViewById(R.id.surface_view);
-        barcodeText = findViewById(R.id.barcode_text);
     }
 
     private void initialiseDetectorsAndSources() {
@@ -100,15 +99,13 @@ public class Scanner extends AppCompatActivity {
                 if (barcodes.size() != 0) {
 
 
-                    barcodeText.post(new Runnable() {
+                    surfaceView.post(new Runnable() {
 
                         @Override
                         public void run() {
 
                             if (barcodes.valueAt(0).email != null) {
-                                barcodeText.removeCallbacks(null);
                                 barcodeData = barcodes.valueAt(0).email.address;
-                                barcodeText.setText(barcodeData);
                                 Intent intent = new Intent();
                                 intent.putExtra("ISBN", barcodeData);
                                 setResult(Activity.RESULT_OK, intent);
@@ -119,7 +116,6 @@ public class Scanner extends AppCompatActivity {
                             } else {
 
                                 barcodeData = barcodes.valueAt(0).displayValue;
-                                barcodeText.setText(barcodeData);
                                 Intent intent = new Intent();
                                 intent.putExtra("ISBN", barcodeData);
                                 setResult(Activity.RESULT_OK, intent);

@@ -253,7 +253,7 @@ public class AddBookFragment extends Fragment {
      */
     public void scanOnClick(Context context) {
         Intent intent = new Intent(context, Scanner.class);
-        startActivityForResult(intent, ScanActivity.SCAN);
+        startActivityForResult(intent, Scanner.SCAN);
     }
 
     /**
