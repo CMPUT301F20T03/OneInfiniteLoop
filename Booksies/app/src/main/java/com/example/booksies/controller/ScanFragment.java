@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +31,10 @@ import com.google.firebase.storage.StorageReference;
 import com.example.booksies.model.database.FirestoreHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
- * ScanFragment opens activity_scan_books layout which is linked to the Scanner Button in Navigation tab.
+ * ScanFragment opens activity_scan_books layout which is linked to the ScannerActivity Button in Navigation tab.
  * ScanFragment handles all the buttons related to this layout and it handles functions related
  * to retrieving ISBN code and using it to verify if an owner or borrower have successfully
  * exchanged books or not. ScanFragment extends to Fragment.
@@ -56,7 +54,6 @@ public class ScanFragment extends Fragment {
     CollectionReference collectionReference;
     Context context;
     Boolean bookFoundInDB = false;
-    FirestoreHandler f;
 
     /**
      * Set content view and context and set on Click Listeners for various buttons in
@@ -128,13 +125,13 @@ public class ScanFragment extends Fragment {
     }
 
     /**
-     * Create an intent and also use Scanner to scan ISBN code and retrive ISBN code
+     * Create an intent and also use ScannerActivity to scan ISBN code and retrive ISBN code
      * information.
      * @param context: context
      */
     public void scanOnClick(Context context) {
-        Intent intent = new Intent(context, Scanner.class);
-        startActivityForResult(intent, Scanner.SCAN);
+        Intent intent = new Intent(context, ScannerActivity.class);
+        startActivityForResult(intent, ScannerActivity.SCAN);
     }
 
     private void toastMessage(String message) {
@@ -142,7 +139,7 @@ public class ScanFragment extends Fragment {
     }
 
     /**
-     * Run when Scanner Activity returns ISBN code after scanning
+     * Run when ScannerActivity Activity returns ISBN code after scanning
      * @param requestCode: requested Code to know about the request made
      * @param resultCode: result code which shows if a result was OK or NOT or CANCELLED
      * @param data: intent given
@@ -151,7 +148,7 @@ public class ScanFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_CANCELED) {
-            if(requestCode == Scanner.SCAN) {
+            if(requestCode == ScannerActivity.SCAN) {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     db = FirebaseFirestore.getInstance();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

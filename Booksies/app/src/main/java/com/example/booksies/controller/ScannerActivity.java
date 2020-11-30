@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.booksies.R;
@@ -25,7 +24,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
-public class Scanner extends AppCompatActivity {
+public class ScannerActivity extends AppCompatActivity {
 
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
@@ -48,25 +47,23 @@ public class Scanner extends AppCompatActivity {
 
     private void initialiseDetectorsAndSources() {
 
-        //Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
-
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
 
         cameraSource = new CameraSource.Builder(this, barcodeDetector)
                 .setRequestedPreviewSize(1920, 1080)
-                .setAutoFocusEnabled(true) //you should add this feature
+                .setAutoFocusEnabled(true)
                 .build();
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
-                    if (ActivityCompat.checkSelfPermission(Scanner.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(ScannerActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         cameraSource.start(surfaceView.getHolder());
                     } else {
-                        ActivityCompat.requestPermissions(Scanner.this, new
+                        ActivityCompat.requestPermissions(ScannerActivity.this, new
                                 String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                     }
 
@@ -91,7 +88,6 @@ public class Scanner extends AppCompatActivity {
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
-                // Toast.makeText(getApplicationContext(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -110,7 +106,7 @@ public class Scanner extends AppCompatActivity {
                                 Intent intent = new Intent();
                                 intent.putExtra("ISBN", barcodeData);
                                 setResult(Activity.RESULT_OK, intent);
-                                Toast.makeText(Scanner.this, "Barcode: "+barcodeData, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ScannerActivity.this, "Barcode: "+barcodeData, Toast.LENGTH_SHORT).show();
                                 finish();
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
                                 return;
@@ -120,7 +116,7 @@ public class Scanner extends AppCompatActivity {
                                 Intent intent = new Intent();
                                 intent.putExtra("ISBN", barcodeData);
                                 setResult(Activity.RESULT_OK, intent);
-                                Toast.makeText(Scanner.this, "Barcode: "+barcodeData, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ScannerActivity.this, "Barcode: "+barcodeData, Toast.LENGTH_SHORT).show();
                                 finish();
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
                                 return;

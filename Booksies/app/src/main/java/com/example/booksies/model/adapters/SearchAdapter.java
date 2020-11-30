@@ -41,9 +41,7 @@ import static com.example.booksies.model.database.FirestoreHandler.addRequest;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHolder> {
     public ArrayList<Books> bookList;
-    //public static ArrayList<Boolean> expandable;
     Context context;
-    final int[] i = {0};
 
 
     // Provide a reference to the views for each data item
