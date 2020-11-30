@@ -174,9 +174,9 @@ public class ScanFragment extends Fragment {
                                             if (buttonClickVal.equals("getBookDescription")) {
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                                                 builder.setTitle("Book Description");
-                                                builder.setMessage(book.getString("title")
-                                                        + "\n" + book.getString("author")
-                                                        + "\n" + book.getString("isbn"))
+                                                builder.setMessage("Title: " + book.getString("title").toUpperCase()
+                                                        + "\nAuthor: " + book.getString("author").toUpperCase()
+                                                        + "\nISBN: " + book.getString("isbn").toUpperCase())
                                                         .setCancelable(false)
                                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                             public void onClick(DialogInterface dialog, int id) {
