@@ -64,9 +64,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".controller.MainActivity" />
         </activity>
-        <activity
-            android:name=".controller.ScanActivity"
-            android:parentActivityName=".controller.NavigationActivity" />
         <activity android:name=".controller.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -128,13 +128,13 @@ public class ScanFragment extends Fragment {
     }
 
     /**
-     * Create an intent and also use ScanActivity to scan ISBN code and retrive ISBN code
+     * Create an intent and also use Scanner to scan ISBN code and retrive ISBN code
      * information.
      * @param context: context
      */
     public void scanOnClick(Context context) {
         Intent intent = new Intent(context, Scanner.class);
-        startActivityForResult(intent, ScanActivity.SCAN);
+        startActivityForResult(intent, Scanner.SCAN);
     }
 
     private void toastMessage(String message) {
@@ -151,7 +151,7 @@ public class ScanFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_CANCELED) {
-            if(requestCode == ScanActivity.SCAN) {
+            if(requestCode == Scanner.SCAN) {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     db = FirebaseFirestore.getInstance();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

@@ -253,7 +253,7 @@ public class AddBookFragment extends Fragment {
      */
     public void scanOnClick(Context context) {
         Intent intent = new Intent(context, Scanner.class);
-        startActivityForResult(intent, ScanActivity.SCAN);
+        startActivityForResult(intent, Scanner.SCAN);
     }
 
     /**
@@ -282,7 +282,7 @@ public class AddBookFragment extends Fragment {
                     cameraImageView.setVisibility(View.VISIBLE);
                 }
             }
-            else if(requestCode == ScanActivity.SCAN) {
+            else if(requestCode == Scanner.SCAN) {
                 // if successful
                 // get the scanned ISBN
                 String ISBN = data.getStringExtra("ISBN");
