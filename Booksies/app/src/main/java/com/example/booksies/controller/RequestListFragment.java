@@ -59,8 +59,7 @@ public class RequestListFragment extends Fragment {
         adapterFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinnerFilter.setAdapter(adapterFilter);
-        //f.setFilterString("REQUESTED");
-        //f.reqfilter();
+
         spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
