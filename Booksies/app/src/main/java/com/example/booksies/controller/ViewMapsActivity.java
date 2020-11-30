@@ -31,6 +31,10 @@ public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCal
 
     private GoogleMap mMap;
 
+    /**
+     * creates the maps activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,10 @@ public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCal
         mapFragment.getMapAsync(this);
     }
 
+    /**
+     * gets the map ready
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -65,6 +73,11 @@ public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCal
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pickup_marker, 15));
     }
 
+    /**
+     *
+     * @param latLng : the latitude and longitude
+     * @return : returns the address
+     */
     // gets the address of the point
     private String getMarkerAddress(LatLng latLng) {
         List<Address> addresses = null;
@@ -82,6 +95,10 @@ public class ViewMapsActivity extends AppCompatActivity implements OnMapReadyCal
         return address;
     }
 
+    /**
+     *
+     * @return : true
+     */
     //Go back to whatever opened this activity
     @Override
     public boolean onSupportNavigateUp() {

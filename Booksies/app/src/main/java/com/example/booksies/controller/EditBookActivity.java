@@ -77,7 +77,10 @@ public class EditBookActivity extends AppCompatActivity {
     StorageReference photoToDeleteReference;
     String photoToDelete;
 
-
+    /**
+     * creates activity
+     * @param savedInstanceState: saved instance state
+     */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -248,7 +251,10 @@ public class EditBookActivity extends AppCompatActivity {
         });
     }
 
-    // Dialog for choosing between upload or take photo
+    /**
+     * selects an image
+     * @param context: context
+     */
     private void selectImage(Context context) {
         final CharSequence[] options = { "Take Photo", "Upload From Gallery","Cancel" };
 
@@ -307,9 +313,12 @@ public class EditBookActivity extends AppCompatActivity {
         builder.show();
     }
 
-    // Function for creating file when taking a picture with camera
-    // Also sets the mImageUri to uri of current picture
-    // Returns the File object of image
+
+    /**
+      * Function for creating file when taking a picture with camera
+      * Also sets the mImageUri to uri of current picture
+      * Returns the File object of image
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -328,6 +337,13 @@ public class EditBookActivity extends AppCompatActivity {
     }
 
     //Gets data from camera intent or from gallery and sets the image into imageView in EditBookActivity
+
+    /**
+     *
+     * @param requestCode : requested code
+     * @param resultCode : the resulted code
+     * @param data : the data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
