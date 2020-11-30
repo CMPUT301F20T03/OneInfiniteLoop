@@ -19,7 +19,7 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertTrue;
 
 /**
- * US 02.02.01
+ * US 02.01.01 / 02.02.01
  */
 public class UserProfileFragmentTest {
     private Solo solo;

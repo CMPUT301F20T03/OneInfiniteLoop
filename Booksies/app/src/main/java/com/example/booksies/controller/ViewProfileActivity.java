@@ -9,6 +9,8 @@
  * https://firebase.google.com/docs/firestore/query-data/get-data#java_2
  * https://firebase.google.com/docs/auth/android/manage-users
  * https://firebase.google.com/docs/firestore/query-data/listen
+ *
+ * Author: Tony(xli)
  */
 package com.example.booksies.controller;
 
@@ -44,6 +46,11 @@ public class ViewProfileActivity extends AppCompatActivity {
     FirebaseFirestore db;
     Task<QuerySnapshot> docRef;
 
+
+    /**
+     * Inflates view user profile page
+     * @param savedInstanceState: savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +95,10 @@ public class ViewProfileActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Go back to the previous activity
+     * @return boolean
+     */
     //Go back to whatever opened this activity
     @Override
     public boolean onSupportNavigateUp() {

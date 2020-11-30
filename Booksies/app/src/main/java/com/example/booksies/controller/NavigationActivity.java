@@ -145,25 +145,4 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
 
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void notification(String title, String body){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O);
-        NotificationChannel channel=
-                new NotificationChannel("n","n", NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager manager = getSystemService(NotificationManager.class);
-        manager.createNotificationChannel(channel);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"n")
-                .setContentText(title)
-                .setAutoCancel(true)
-                .setSmallIcon(R.drawable.baseline_account_circle_24)
-                .setContentText(body);
-
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-        managerCompat.notify(999, builder.build());
-    }
-
-
-
 }

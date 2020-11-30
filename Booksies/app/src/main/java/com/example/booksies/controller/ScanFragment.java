@@ -174,9 +174,9 @@ public class ScanFragment extends Fragment {
                                             if (buttonClickVal.equals("getBookDescription")) {
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                                                 builder.setTitle("Book Description");
-                                                builder.setMessage(book.getString("title")
-                                                        + "\n" + book.getString("author")
-                                                        + "\n" + book.getString("isbn"))
+                                                builder.setMessage("Title: " + book.getString("title").toUpperCase()
+                                                        + "\nAuthor: " + book.getString("author").toUpperCase()
+                                                        + "\nISBN: " + book.getString("isbn").toUpperCase())
                                                         .setCancelable(false)
                                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                             public void onClick(DialogInterface dialog, int id) {
@@ -203,10 +203,10 @@ public class ScanFragment extends Fragment {
 
                                                     String borrower = ((ArrayList<String>) book.get("borrowerID")).get(0);
                                                     //if lending
-                                                    if ((book.getString("status").toUpperCase()).equals("ACCEPTED")
-                                                            & buttonClickVal.equals("lendBook")
-                                                            & book.get("owner").equals(currentAccount.split("@")[0])
-                                                            & validateVal.equals(false)) {
+                                                    if (book.getString("status").equals("ACCEPTED")
+                                                            && buttonClickVal.equals("lendBook")
+                                                            && book.get("owner").equals(currentAccount)
+                                                            && validateVal.equals(false)) {
                                                         db.collection("Books").document(documentID).update("validate", true);
                                                         buttonClickVal = "none";
                                                         toastMessage(currentAccount.split("@")[0] + " " + "has verified that he / she is lending");
@@ -232,7 +232,7 @@ public class ScanFragment extends Fragment {
                                                     //if accepting return
                                                     else if ((book.getString("status")).toUpperCase().equals("BORROWED")
                                                             & buttonClickVal.equals("acceptReturn") & validateVal.equals(true)
-                                                            & book.get("owner").equals(currentAccount.split("@")[0])) {
+                                                            & book.get("owner").equals(currentAccount)) {
                                                         b.setStatus(book_status.AVAILABLE);
                                                         db.collection("Books").document(documentID).update("status", "AVAILABLE");
                                                         db.collection("Books").document(documentID).update("validate", false);

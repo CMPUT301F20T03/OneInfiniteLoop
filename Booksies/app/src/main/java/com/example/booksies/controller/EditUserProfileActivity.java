@@ -3,7 +3,7 @@
 *
 * Implements US 02.02.01
 *
-* Acknowledgments
+* Author: Tony(xli)
 *
  */
 
@@ -43,6 +43,11 @@ public class EditUserProfileActivity extends AppCompatActivity {
     FirebaseFirestore db;
     DocumentReference documentReference;
 
+
+    /**
+     * Inflates edit profile page
+     * @param savedInstanceState: savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +82,12 @@ public class EditUserProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    /**
+     * Go back to the previous activity
+     * @return boolean
+     */
     //Go back to whatever opened this activity
     @Override
     public boolean onSupportNavigateUp() {

@@ -1,11 +1,8 @@
 package com.example.booksies.model.adapters;
 
-
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,10 +36,10 @@ import java.util.ArrayList;
 
 /**
  * This class is a custom adapter for RecyclerView
- *
+ * designed to handle a list of book objects.
+ * @author: Alireza Azimi (sazimi)
+ * Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
  */
-
-//Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
 public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.BooksListViewHolder> {
     public ArrayList<Books> bookList;
@@ -53,10 +50,10 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.Book
     FirebaseFirestore db;
 
 
-
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+    /**
+     * Inetranl class designed to model the view holder
+     * for recycler view elements
+     */
     public class BooksListViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView titleView;
@@ -69,6 +66,10 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.Book
         public RecyclerView r_view;
         public RecyclerView.Adapter mAdapter;
 
+        /**
+         * constructor of view holder class
+         * @param v view object
+         */
 
         public BooksListViewHolder(View v) {
             super(v);
@@ -130,13 +131,22 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.Book
     }
 
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+    /**
+     * Constructor of adapter
+     * @param bookList list of book objects
+     */
     public BooksListAdapter(ArrayList<Books> bookList) {
         this.bookList = bookList;
 
     }
 
-    // Create new views (invoked by the layout manager)
+
+    /**
+     * Create view holder for list item
+     * @param parent parent vieew
+     * @param viewType type of view
+     * @return View holder for list of books
+     */
     @Override
     public BooksListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -147,7 +157,12 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.Book
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+
+    /**
+     * Bind's the view holder
+     * @param holder View holder of books list
+     * @param position position of item
+     */
     @Override
     public void onBindViewHolder(BooksListViewHolder holder, int position) {
         // - get element from your dataset at this position
@@ -186,7 +201,11 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.Book
 
     }
 
-//     Return the size of your dataset (invoked by the layout manager)
+
+    /**
+     * get the number of items in recycler view
+     * @return number of items in recycler view
+     */
     @Override
     public int getItemCount() {
         return bookList.size();

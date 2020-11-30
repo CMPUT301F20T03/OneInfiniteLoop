@@ -1,7 +1,7 @@
 /*
 * This activity allows a user to create an account for the app
 * implements US 02.01.01
-*
+* Author Archit / Jacky(jzhuang)
  */
 
 package com.example.booksies.controller;
@@ -124,7 +124,10 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-    //Checks if user is connected to internet
+    /**
+    * Checks if user is connected to internet
+     * @return true if connected
+     */
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
