@@ -18,6 +18,9 @@ Booksies is an android application with the following characteristics:
   
   4)This app is made using the 5.0 inch, 1080x1920, 420 dpi (Pixel2) configuration. Layouts may be different or inconsistent will other dimensions.
   (We have tried to implement relative layout wherever possible)
+
+* [Demo Video](https://youtu.be/cBkVoqM6qC8)
+* [JavaDoc](https://cmput301f20t03.github.io/OneInfiniteLoop/) : OneInfiniteLoop/docs
      
 ### **Badge Descriptions**
 * **Build:** Indicates stability of application build
