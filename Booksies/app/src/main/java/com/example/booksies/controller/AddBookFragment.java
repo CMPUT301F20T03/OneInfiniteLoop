@@ -1,8 +1,8 @@
 /*
 * AddBookFragment inflates activity_add_book.xml
 *
-* Implements US 01.01.01, 08.01.01, and 08.03.01
-*
+* Implements US 01.01.01, 01.02.01 08.01.01, and 08.03.01
+* Author: Jacky(jzhuang) / Haren
 * Acknowledgments
 * https://developer.android.com/training/camera/photobasics
 * https://medium.com/@hasangi/capture-image-or-choose-from-gallery-photos-implementation-for-android-a5ca59bc6883
@@ -82,6 +82,13 @@ public class AddBookFragment extends Fragment {
     CollectionReference collectionReference;
     String downloadableUrl;
 
+    /**
+     * This function is called to show the layout and buttons of adding a book
+     * @param inflater: inflator
+     * @param container: container
+     * @param savedInstanceState: saved instance state
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +147,7 @@ public class AddBookFragment extends Fragment {
                 }
             }
         });
-
+        //click listener for the image attached
         cameraImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -154,7 +161,10 @@ public class AddBookFragment extends Fragment {
     }
 
 
-    // Dialog for choosing between upload or take photo
+    /**
+     *    Dialog for choosing between upload or take photo
+     * @param context : context
+      */
     private void selectImage(Context context) {
         final CharSequence[] options = { "Take Photo", "Upload From Gallery","Cancel" };
 
@@ -214,9 +224,12 @@ public class AddBookFragment extends Fragment {
         builder.show();
     }
 
-    // Function for creating file when taking a picture with camera
-    // Also sets the mImageUri to uri of current picture
-    // Returns the File object of image
+    /**
+     * Function for creating file when taking a picture with camera also sets the mImageUri to uri
+     * of current picture returns the File object of image
+     * @return image : the file of the image
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -234,80 +247,21 @@ public class AddBookFragment extends Fragment {
         return image;
     }
 
+    /**
+     * Starts scan activity to scan and autofill book description
+     * @param context
+     */
     public void scanOnClick(Context context) {
         Intent intent = new Intent(context, ScanActivity.class);
         startActivityForResult(intent, ScanActivity.SCAN);
     }
 
-    public static String getBookInfo(String ISBN, View mView){
-        HttpURLConnection httpURLConnection = null;
-        BufferedReader bufferedReader = null;
-        String bookDescriptionJSON = null;
-
-        try {
-
-            Uri uri = Uri.parse("https://www.googleapis.com/books/v1/volumes?").buildUpon()
-                    .appendQueryParameter("q", "=isbn:" + ISBN)
-                    .appendQueryParameter("printType", "books").build();
-
-            URL url = new URL(uri.toString());
-
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("GET");
-            httpURLConnection.connect();
-            InputStream inputStream = httpURLConnection.getInputStream();
-            StringBuffer stringBuffer = new StringBuffer();
-
-            if (inputStream == null) return null;
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-
-            while ((line = bufferedReader.readLine()) != null){
-                stringBuffer.append(line + "\n");
-            }
-            if (stringBuffer.length() == 0) return null;
-
-            bookDescriptionJSON = stringBuffer.toString();
-
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-        finally {
-            if (httpURLConnection != null) httpURLConnection.disconnect();
-
-            if (bufferedReader!=null){
-                try{
-                    bufferedReader.close();
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-
-            try {
-                JSONObject jsonObject = new JSONObject(bookDescriptionJSON);
-                JSONArray jsonArray = jsonObject.getJSONArray("items");
-                JSONObject volumeInfo = jsonArray.getJSONObject(0).getJSONObject("volumeInfo");
-
-                EditText titleEditText = mView.findViewById(R.id.titleEditText);
-                EditText authorEditText = mView.findViewById(R.id.authorEditText);
-                EditText commentsEditText = mView.findViewById(R.id.commentEditText);
-
-                titleEditText.setText(volumeInfo.getString("title"));
-                authorEditText.setText(volumeInfo.getJSONArray("authors").getString(0));
-                commentsEditText.setText(volumeInfo.getString("description"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return bookDescriptionJSON;
-        }
-
-    }
-
-    //Gets data from camera intent or from gallery and sets the image into imageView in AddBookFragment
+    /**
+     * Gets data from camera intent or from gallery and sets the image into imageView in AddBookFragment
+     * @param data : data
+     * @param requestCode : request code
+     * @param resultCode : result code
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -351,9 +305,10 @@ public class AddBookFragment extends Fragment {
             }
         }
 
-     // Function for adding a book to Firestore
-     // Puts into a document called Books with fields:
-     // title, author, isbn, comment, owner, status, and imageUrl
+    /**
+     * Function for adding a book to Firestore puts into a document called Books with
+     * fields:title, author, isbn, comment, owner, status, and imageUrl
+     */
     private void addBookToFirestore(){
         final String currentUserId = FirestoreHandler.getCurrentUserEmail();
 

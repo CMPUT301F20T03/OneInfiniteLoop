@@ -1,3 +1,8 @@
+/*
+* Implements US 02.01.01
+* Author: Archit / Haren / Jacky(jzhuang)
+ */
+
 package com.example.booksies.controller;
 
 import androidx.annotation.NonNull;
@@ -40,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean permissionsAccepted;
     private static final int PERMISSIONS_RC = 1;
 
+    /**
+     * This function is called when the activity is created and sets the layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                                         } else {
                                             // If sign in fails, display a message to the user.
                                             Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                            updateUI(null);
                                         }
                                     }
                                 });
@@ -111,15 +119,20 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this,message,Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Called when activity is started
+     */
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
     }
 
-    // Permissions required for most of the user stories. Found guide at https://developers.google.com/android/guides/permissions
+    /**
+     *     Permissions required for most of the user stories. Found guide at
+     *     https://developers.google.com/android/guides/permissions
+      */
     private void requestPermissions() {
         boolean coarseLocationNeeded = ActivityCompat
                 .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -158,9 +171,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUI(FirebaseUser currentUser) {
-
-    }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
