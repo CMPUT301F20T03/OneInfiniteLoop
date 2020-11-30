@@ -21,13 +21,19 @@ import com.example.booksies.R;
  */
 public class RequestListFragment extends Fragment {
 
-
     private  RecyclerView recyclerViewReq;
     private RecyclerView.LayoutManager layoutManager;
     FirestoreHandler f;
     View view;
 
-
+    /**
+     * Set content view and context and set onClick Listeners for various buttons in
+     * fragment_requestlist layout.
+     * @param inflater: inflater
+     * @param container: container
+     * @param savedInstanceState: saved instance state
+     * @return view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,17 +45,18 @@ public class RequestListFragment extends Fragment {
         assert recyclerViewReq != null;
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerViewReq.setLayoutManager(layoutManager);
-
         return view;
-
     }
 
+    /**
+     * Run on Activity created
+     * @param savedInstanceState: saved instance state
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         f = new FirestoreHandler(recyclerViewReq,  layoutManager);
         f.listReqBooks();
-
 
         Spinner spinnerFilter = (Spinner) view.findViewById(R.id.reqfilter);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -61,21 +68,30 @@ public class RequestListFragment extends Fragment {
         spinnerFilter.setAdapter(adapterFilter);
 
         spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            /**
+             * Run when item is selected
+             * @param parentView: parent view of current view
+             * @param selectedItemView: selected item view
+             * @param position: position of item
+             * @param id: id of item
+             */
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-
                 f.setFilterString(parentView.getItemAtPosition(position).toString().toUpperCase());
                 f.reqfilter();
-
             }
 
+            /**
+             * Run when nothing is selected
+             * @param parentView: parent view of current view
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 return;
             }
 
         });
-
 
         Spinner spinnerSort = (Spinner) view.findViewById(R.id.sort);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -87,21 +103,27 @@ public class RequestListFragment extends Fragment {
         spinnerSort.setAdapter(adapterSort);
 
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             * Run when item is selected
+             * @param parentView: parent view of current view
+             * @param selectedItemView: selected item view
+             * @param position: position of item
+             * @param id: id of item
+             */
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 f.setSortString(parentView.getItemAtPosition(position).toString());
                 f.sort();
-
             }
 
+            /**
+             * Run when nothing is selected
+             * @param parentView: parent view of current view
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 return;
             }
-
         });
-
     }
-
-
 }

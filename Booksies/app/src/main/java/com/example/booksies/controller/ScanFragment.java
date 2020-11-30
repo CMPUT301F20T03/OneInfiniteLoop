@@ -42,7 +42,7 @@ import java.util.ArrayList;
  * exchanged books or not. ScanFragment extends to Fragment.
  */
 public class ScanFragment extends Fragment {
-
+    // Manual Tests shown in wiki
     String buttonClickVal = "none";
     Button getBookDescription;
     Button borrowBookByScanning;
@@ -59,9 +59,12 @@ public class ScanFragment extends Fragment {
     FirestoreHandler f;
 
     /**
-     * Set content view and context and set on Click Listeners for various buttons in
-     * activty_scan_books layout.
+     * Set content view and context and set onClick Listeners for various buttons in
+     * activity_scan_books layout.
+     * @param inflater: inflater
+     * @param container: container
      * @param savedInstanceState: saved instance state
+     * @return view
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +83,10 @@ public class ScanFragment extends Fragment {
         storageReference = FirebaseStorage.getInstance().getReference();
 
         getBookDescription.setOnClickListener(new View.OnClickListener(){
+            /**
+             * Get and show book description to user when button is clicked
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 buttonClickVal = "getBookDescription";
@@ -88,6 +95,10 @@ public class ScanFragment extends Fragment {
         });
 
         borrowBookByScanning.setOnClickListener(new View.OnClickListener(){
+            /**
+             * Allow borrower to verify and borrow ACCEPTED book by clicking the button
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 // borrower
@@ -98,6 +109,10 @@ public class ScanFragment extends Fragment {
 
 
         returnBookByScanning.setOnClickListener(new View.OnClickListener(){
+            /**
+             * Allow borrower to verify and return BORROWED book by clicking the button
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 // borrower
@@ -107,6 +122,10 @@ public class ScanFragment extends Fragment {
         });
 
         lendBookByScanning.setOnClickListener(new View.OnClickListener(){
+            /**
+             * Allow owner to verify and lend ACCEPTED book by clicking the button
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 // owner
@@ -116,6 +135,10 @@ public class ScanFragment extends Fragment {
         });
 
         acceptReturnByScanning.setOnClickListener(new View.OnClickListener(){
+            /**
+             * Allow owner to verify and accept return of BORROWED book by clicking the button
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 // owner
@@ -137,6 +160,10 @@ public class ScanFragment extends Fragment {
         startActivityForResult(intent, Scanner.SCAN);
     }
 
+    /**
+     * toast message to user
+     * @param message: message to be shown to the user
+     */
     private void toastMessage(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
@@ -190,9 +217,7 @@ public class ScanFragment extends Fragment {
                                                 if (book.getBoolean("validate") != null) {
                                                     validateVal = book.getBoolean("validate");
                                                 }
-                                                else {
-                                                    validateVal = false;
-                                                }
+                                                else validateVal = false;
 
                                                 if (!book.getString("status").toUpperCase().equals("ACCEPTED")
                                                         && !book.getString("status").toUpperCase().equals("BORROWED")) {

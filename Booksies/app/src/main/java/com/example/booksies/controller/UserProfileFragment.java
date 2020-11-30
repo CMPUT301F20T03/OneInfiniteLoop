@@ -91,6 +91,10 @@ public class UserProfileFragment extends Fragment {
 
         final Button editProfile = view.findViewById(R.id.edit_button);
         editProfile.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Run when editProfile button is clicked and start activity for intent
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),EditUserProfileActivity.class );
@@ -102,6 +106,12 @@ public class UserProfileFragment extends Fragment {
 
         final DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+
+            /**
+             * Run on Event
+             * @param snapshot: instance of DocumentSnapshot to get email, phone and username
+             * @param e: an exception which is an instance of FirebaseFirestoreException
+             */
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
                                 @Nullable FirebaseFirestoreException e) {
@@ -125,6 +135,11 @@ public class UserProfileFragment extends Fragment {
         db.collection("Books")
                 .whereEqualTo("owner", user.getEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    /**
+                     * Run on Event
+                     * @param value: instance of QuerySnapshot
+                     * @param error: an exception which is an instance of FirebaseFirestoreException
+                     */
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
                                         @androidx.annotation.Nullable FirebaseFirestoreException error) {
@@ -148,7 +163,6 @@ public class UserProfileFragment extends Fragment {
                                 }
 
                                 notificationAdapter = new NotificationAdapter(getContext(), notificationDataList);
-
                                 notificationList.setAdapter(notificationAdapter);
                             }
                         }
@@ -159,6 +173,11 @@ public class UserProfileFragment extends Fragment {
         db.collection("Books")
                 .whereArrayContains("borrowerID", user.getEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    /**
+                     * Run on Event
+                     * @param value: instance of QuerySnapshot
+                     * @param error: an exception which is an instance of FirebaseFirestoreException
+                     */
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
                                         @androidx.annotation.Nullable FirebaseFirestoreException error) {
@@ -181,10 +200,7 @@ public class UserProfileFragment extends Fragment {
                                     }
                                 }
 
-
-
                                 notificationAdapter = new NotificationAdapter(getContext(), notificationDataList);
-
                                 notificationList.setAdapter(notificationAdapter);
                             }
                         }
@@ -194,6 +210,11 @@ public class UserProfileFragment extends Fragment {
         db.collection("Books")
                 .whereArrayContains("request", user.getEmail() + ":" + user.getUid())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    /**
+                     * Run on Event
+                     * @param value: instance of QuerySnapshot
+                     * @param error: an exception which is an instance of FirebaseFirestoreException
+                     */
                     @Override
                     public void onEvent(@androidx.annotation.Nullable QuerySnapshot value,
                                         @androidx.annotation.Nullable FirebaseFirestoreException error) {
@@ -208,10 +229,6 @@ public class UserProfileFragment extends Fragment {
                         }
                     }
                 });
-
-
         return view;
     }
-
-
 }

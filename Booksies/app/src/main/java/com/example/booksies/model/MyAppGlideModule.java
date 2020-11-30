@@ -14,9 +14,17 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.InputStream;
 
+/**
+ * MyAppGlideModule extends to AppGlideModule and it is used for images in recycler view
+ */
 @GlideModule
 public class MyAppGlideModule extends AppGlideModule {
 
+    /**
+     * When applyOptions is run, apply default request options
+     * @param context: context passed
+     * @param builder: instance of GlideBuilder to set default request options for
+     */
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
         // Glide default Bitmap Format is set to RGB_565 since it

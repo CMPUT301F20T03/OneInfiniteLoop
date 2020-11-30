@@ -46,10 +46,9 @@ public class ViewProfileActivity extends AppCompatActivity {
     FirebaseFirestore db;
     Task<QuerySnapshot> docRef;
 
-
     /**
      * Inflates view user profile page
-     * @param savedInstanceState: savedInstanceState
+     * @param savedInstanceState : savedInstanceState
      */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +59,6 @@ public class ViewProfileActivity extends AppCompatActivity {
         final TextView phoneView = findViewById(R.id.view_phone_number_display);
         final TextView emailView = findViewById(R.id.view_email_display);
 
-
-
         //Enable the back button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -69,12 +66,15 @@ public class ViewProfileActivity extends AppCompatActivity {
         username = getIntent().getStringExtra("username");
         usernameView.setText(username);
 
-
         db = FirebaseFirestore.getInstance();
         db.collection("Users")
                 .whereEqualTo("lowusername", username)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    /**
+                     * On task complete
+                     * @param task : Instance of Task<QuerySnapshot>
+                     */
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -94,7 +94,6 @@ public class ViewProfileActivity extends AppCompatActivity {
 
     }
 
-
     /**
      * Go back to the previous activity
      * @return boolean
@@ -105,8 +104,6 @@ public class ViewProfileActivity extends AppCompatActivity {
         finish();
         return true;
     }
-
-
 
 }
 

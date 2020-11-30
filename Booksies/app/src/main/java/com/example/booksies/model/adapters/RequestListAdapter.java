@@ -37,24 +37,24 @@ import java.util.ArrayList;
 
 import static com.example.booksies.model.database.FirestoreHandler.getCurrentUserEmail;
 
+//Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
 /**
  * This class is a custom adapter for RecyclerView
  *
  */
-
-//Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
-
 public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.RequestListViewHolder> {
     public ArrayList<Books> bookList;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     Context context;
     String url;
 
-
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+    /**
+     * RequestListViewHolder extends to RecyclerView.ViewHolder
+     * Provide a reference to the views for each data item
+     * Complex data items may need more than one view per item, and
+     * you provide access to all the views for a data item in a view holder
+     */
     public class RequestListViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView titleView;
@@ -66,7 +66,11 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
         public FloatingActionButton map2;
         public FloatingActionButton delete_req;
 
-
+        /**
+         * Constructor for RequestListViewHolder and helps in finding views by id
+         * for titleView, authorView, isbnView, statusView, ownerView
+         * @param v: view to get context for and find related layout items
+         */
         public RequestListViewHolder(View v) {
             super(v);
             context = v.getContext();
@@ -78,17 +82,23 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             imageView = (ImageView) v.findViewById(R.id.book_image);
             map2 = v.findViewById(R.id.map2);
             delete_req = v.findViewById(R.id.delete_req);
-
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+    /**
+     * Helps to set bookList
+     * @param bookList: bookList is an array list of books
+     */
     public RequestListAdapter(ArrayList<Books> bookList) {
         this.bookList = bookList;
-
     }
 
-    // Create new views (invoked by the layout manager)
+    /**
+     * Create new views (invoked by the layout manager)
+     * @param parent: instance of ViewGroup and used for finding parent
+     * @param viewType: viewType
+     * @return : vh
+     */
     @Override
     public RequestListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -99,7 +109,11 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * Replace the contents of a view (invoked by the layout manager)
+     * @param holder: instance of ViewGroup and used for finding parent
+     * @param position: position to get book list
+     */
     @Override
     public void onBindViewHolder(RequestListViewHolder holder, int position) {
         // - get element from your dataset at this position
@@ -112,6 +126,10 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
         // making owner name clickable
         holder.ownerView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * When onClick for holder.ownerView is clicked
+             * @param view: view
+             */
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ViewProfileActivity.class);
@@ -120,11 +138,14 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             }
         });
 
-
         Glide.with(context)
                 .load(bookList.get(position).getImageUrl())
                 .into(holder.imageView);
         holder.map2.setOnClickListener(new View.OnClickListener() {
+            /**
+             * When onClick for holder.map2 is clicked
+             * @param v: view to get context for
+             */
             @Override
             public void onClick(View v) {
                 AppCompatActivity currentActivity = (AppCompatActivity) v.getContext();
@@ -133,6 +154,10 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
                 DocumentReference docRef = db.collection("Books").document(bookList.get(position).getDocID());
 
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    /**
+                     * On task complete
+                     * @param task: instance of Task<DocumentSnapshot> to get result
+                     */
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot documentSnapshot = task.getResult();
@@ -158,6 +183,10 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             holder.delete_req.setVisibility(View.GONE);
         }
         holder.delete_req.setOnClickListener(new View.OnClickListener() {
+            /**
+             * When holder.delete_req is clicked
+             * @param v: Instance of View to get context for
+             */
             @Override
             public void onClick(View v) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -172,6 +201,10 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
+    /**
+     * When holder.delete_req is clicked
+     * @return : bookList.size()
+     */
     public int getItemCount() {
         return bookList.size();
     }

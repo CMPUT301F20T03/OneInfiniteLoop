@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.booksies.R;
@@ -24,31 +23,36 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+/**
+ * Scanner opens up camera to scan ISBN code and return it to Scan Fragment which displays result
+ * on dialog box. Also Scanner extends to AppCompatActivity
+ */
 public class Scanner extends AppCompatActivity {
 
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
-    //This class provides methods to play DTMF tones
-    private ToneGenerator toneGen1;
+    private ToneGenerator toneGen1; // Class gives methods for playing DTMF tones
     private String barcodeData;
     public static final int SCAN = 4;
 
-
-
+    /**
+     * Set content view and use ToneGenerator before scanning
+     * @param savedInstanceState: saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scancamera);
-        toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC,     100);
+        toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC,100);
         surfaceView = findViewById(R.id.surface_view);
     }
 
+    /**
+     * Initialise detectors and sources
+     */
     private void initialiseDetectorsAndSources() {
-
-        //Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
-
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
@@ -59,6 +63,11 @@ public class Scanner extends AppCompatActivity {
                 .build();
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+
+            /**
+             * Get holder for surface view
+             * @param holder: an instance of SurfaceHolder
+             */
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
@@ -68,42 +77,56 @@ public class Scanner extends AppCompatActivity {
                         ActivityCompat.requestPermissions(Scanner.this, new
                                 String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
             }
 
+            /**
+             * Works when surface is changed
+             * @param holder: an instance of SurfaceHolder
+             * @param format: format
+             * @param width: width
+             * @param height: height
+             */
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             }
 
+            /**
+             * Works when surface is destroyed
+             * @param holder: an instance of SurfaceHolder
+             */
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 cameraSource.stop();
             }
         });
 
-
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
+            /**
+             * Works on release
+             */
             @Override
             public void release() {
-                // Toast.makeText(getApplicationContext(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(), "Prevent memory leaks and barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
             }
 
+            /**
+             * Works when ISBN is detected
+             * @param detections: detections to get ISBN code
+             */
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() != 0) {
-
-
                     surfaceView.post(new Runnable() {
 
+                        /**
+                         * Gets ISBN code
+                         */
                         @Override
                         public void run() {
-
                             if (barcodes.valueAt(0).email != null) {
                                 barcodeData = barcodes.valueAt(0).email.address;
                                 Intent intent = new Intent();
@@ -113,8 +136,8 @@ public class Scanner extends AppCompatActivity {
                                 finish();
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
                                 return;
-                            } else {
-
+                            }
+                            else {
                                 barcodeData = barcodes.valueAt(0).displayValue;
                                 Intent intent = new Intent();
                                 intent.putExtra("ISBN", barcodeData);
@@ -126,12 +149,14 @@ public class Scanner extends AppCompatActivity {
                             }
                         }
                     });
-
                 }
             }
         });
     }
 
+    /**
+     * Works on pause
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -139,6 +164,9 @@ public class Scanner extends AppCompatActivity {
         cameraSource.release();
     }
 
+    /**
+     * Works on resume
+     */
     @Override
     protected void onResume() {
         super.onResume();
