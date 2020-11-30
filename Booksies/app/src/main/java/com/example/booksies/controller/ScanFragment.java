@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.example.booksies.model.database.FirestoreHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -80,7 +82,7 @@ public class ScanFragment extends Fragment {
         getBookDescription.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                buttonClickVal = "none";
+                buttonClickVal = "getBookDescription";
                 scanOnClick(context);
             }
         });
@@ -151,7 +153,7 @@ public class ScanFragment extends Fragment {
         if (resultCode != Activity.RESULT_CANCELED) {
             if(requestCode == ScanActivity.SCAN) {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    if(buttonClickVal == "none") {
+                    if(buttonClickVal == "getBookDescription") {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle("Book Description");
                         builder.setMessage("ISBN is " + data.getStringExtra("ISBN"))
@@ -164,7 +166,6 @@ public class ScanFragment extends Fragment {
                         AlertDialog alert = builder.create();
                         alert.show();
                     }
-
                     db = FirebaseFirestore.getInstance();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -188,42 +189,47 @@ public class ScanFragment extends Fragment {
                                             else
                                                 validateVal = false;
                                             String email = user.getEmail();
+                                            if(!book.getString("status").toUpperCase().equals("ACCEPTED")
+                                                && !book.getString("status").toUpperCase().equals("BORROWED")) {
+                                                toastMessage("Book needs to be accepted or borrowed to be able to scan");
+                                            }
+                                            else {
+                                                String currentAccount = email;
+                                                String borrower = ((ArrayList<String>) book.get("borrowerID")).get(0);
 
-                                            String borrower2 = email;
-                                            String borrower1 = ((ArrayList<String>)book.get("borrowerID")).get(0);
-
-                                            if ((book.getString("status").toUpperCase()).equals("ACCEPTED")
-                                                    & buttonClickVal.equals("lendBook") & b.getOwner().equals(email)
-                                                    & validateVal.equals(false)){
-                                                db.collection("Books").document(documentID).update("validate", true);
-                                                buttonClickVal = "none";
-                                                toastMessage(b.getOwner() + " " + " has verified that he / she is lending");
-                                            }
-                                            else if ((book.getString("status").toUpperCase()).equals("ACCEPTED")
-                                                    & buttonClickVal.equals("borrowBook") & validateVal.equals(true)
-                                                    & borrower1.equals(borrower2)){
-                                                b.setStatus(book_status.BORROWED);
-                                                db.collection("Books").document(documentID).update("status", "BORROWED");
-                                                db.collection("Books").document(documentID).update("validate", false);
-                                                buttonClickVal = "none";
-                                                toastMessage(book.getString("borrowerID") + " " + " has verified that he / she has borrowed");
-                                            }
-                                            else if ((book.getString("status")).toUpperCase().equals("BORROWED")
-                                                    & buttonClickVal.equals("returnBook") & validateVal.equals(false)
-                                                    & borrower1.equals(borrower2)){
-                                                db.collection("Books").document(documentID).update("validate", true);
-                                                buttonClickVal = "none";
-                                                toastMessage(book.getString("borrowerID") + " " + " has verified that he / she is returning book");
-                                            }
-                                            else if ((book.getString("status")).toUpperCase().equals("BORROWED")
-                                                    & buttonClickVal.equals("acceptReturn") & validateVal.equals(true)
-                                                    & b.getOwner().equals(email)){
-                                                b.setStatus(book_status.AVAILABLE);
-                                                db.collection("Books").document(documentID).update("status", "AVAILABLE");
-                                                db.collection("Books").document(documentID).update("validate", false);
-                                                db.collection("Books").document(documentID).update("borrowerID", FieldValue.delete());
-                                                buttonClickVal = "none";
-                                                toastMessage(book.getString("borrowerID") + " " + " has verified that he / she has received book");
+                                                if ((book.getString("status").toUpperCase()).equals("ACCEPTED")
+                                                        & buttonClickVal.equals("lendBook") & b.getOwner().equals(email)
+                                                        & validateVal.equals(false)) {
+                                                    db.collection("Books").document(documentID).update("validate", true);
+                                                    buttonClickVal = "none";
+                                                    toastMessage(currentAccount.split("@")[0] + " " + "has verified that he / she is lending");
+                                                } else if ((book.getString("status").toUpperCase()).equals("ACCEPTED")
+                                                        & buttonClickVal.equals("borrowBook") & validateVal.equals(true)
+                                                        & currentAccount.equals(borrower)) {
+                                                    b.setStatus(book_status.BORROWED);
+                                                    db.collection("Books").document(documentID).update("status", "BORROWED");
+                                                    db.collection("Books").document(documentID).update("validate", false);
+                                                    buttonClickVal = "none";
+                                                    toastMessage(currentAccount.split("@")[0] + " " + " has verified that he / she has borrowed");
+                                                } else if ((book.getString("status")).toUpperCase().equals("BORROWED")
+                                                        & buttonClickVal.equals("returnBook") & validateVal.equals(false)
+                                                        & currentAccount.equals(borrower)) {
+                                                    db.collection("Books").document(documentID).update("validate", true);
+                                                    buttonClickVal = "none";
+                                                    toastMessage(currentAccount.split("@")[0] + " " + " has verified that he / she is returning book");
+                                                } else if ((book.getString("status")).toUpperCase().equals("BORROWED")
+                                                        & buttonClickVal.equals("acceptReturn") & validateVal.equals(true)
+                                                        & currentAccount.equals(email)) {
+                                                    b.setStatus(book_status.AVAILABLE);
+                                                    db.collection("Books").document(documentID).update("status", "AVAILABLE");
+                                                    db.collection("Books").document(documentID).update("validate", false);
+                                                    db.collection("Books").document(documentID).update("borrowerID", FieldValue.delete());
+                                                    db.collection("Books").document(documentID).update("location", FieldValue.delete());
+                                                    buttonClickVal = "none";
+                                                    toastMessage(currentAccount.split("@")[0] + " " + " has verified that he / she has received book");
+                                                } else {
+                                                    toastMessage("Something went wrong\nLend > Borrow > Return > Accept");
+                                                }
                                             }
                                         }
                                     }
