@@ -35,15 +35,12 @@
             android:id="@+id/title_req"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:padding="1dp"
             android:text="Book"
             android:textColor="@color/textColor"
             android:textSize="17sp" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/status_req"
