@@ -55,7 +55,7 @@ public class ScanFragment extends Fragment {
     StorageReference storageReference;
     CollectionReference collectionReference;
     Context context;
-    String userID2 = "";
+    Boolean bookFoundInDB = false;
     FirestoreHandler f;
 
     /**
@@ -153,56 +153,66 @@ public class ScanFragment extends Fragment {
         if (resultCode != Activity.RESULT_CANCELED) {
             if(requestCode == ScanActivity.SCAN) {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    if (buttonClickVal == "getBookDescription") {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Book Description");
-                        builder.setMessage("ISBN is " + data.getStringExtra("ISBN"))
-                                .setCancelable(false)
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                    } else {
-                        db = FirebaseFirestore.getInstance();
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                        db.collection("Books")
-                                .whereEqualTo("isbn", data.getStringExtra("ISBN"))
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot book : task.getResult()) {
-//                                            if (!book.getString("owner").equals(owner)){
-                                                String documentID = book.getReference().getId();
-                                                Books b = new Books(book.getString("isbn").toUpperCase(),
-                                                        book.getString("author").toUpperCase(),
-                                                        book.getString("title").toUpperCase());
-                                                b.setOwner(book.getString("owner"));
-                                                Boolean validateVal;
-                                                if (book.getBoolean("validate") != null)
+                    db = FirebaseFirestore.getInstance();
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    db.collection("Books")
+                            .whereEqualTo("isbn", data.getStringExtra("ISBN"))
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot book : task.getResult()) {
+                                            bookFoundInDB = true;
+                                            String documentID = book.getReference().getId();
+                                            Books b = new Books(book.getString("isbn").toUpperCase(),
+                                                    book.getString("author").toUpperCase(),
+                                                    book.getString("title").toUpperCase());
+                                            b.setOwner(book.getString("owner"));
+                                            Boolean validateVal;
+                                            //if get book description and book is in database return book description
+                                            if (buttonClickVal.equals("getBookDescription")) {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                                builder.setTitle("Book Description");
+                                                builder.setMessage(book.getString("title")
+                                                        + "\n" + book.getString("author")
+                                                        + "\n" + book.getString("isbn"))
+                                                        .setCancelable(false)
+                                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                dialog.dismiss();
+                                                            }
+                                                        });
+                                                AlertDialog alert = builder.create();
+                                                alert.show();
+                                            }
+                                            else {
+                                                if (book.getBoolean("validate") != null) {
                                                     validateVal = book.getBoolean("validate");
-                                                else
+                                                }
+                                                else {
                                                     validateVal = false;
-                                                String email = user.getEmail();
+                                                }
+
                                                 if (!book.getString("status").toUpperCase().equals("ACCEPTED")
                                                         && !book.getString("status").toUpperCase().equals("BORROWED")) {
                                                     toastMessage("Book needs to be accepted or borrowed to be able to scan");
-                                                } else {
-                                                    String currentAccount = email;
-                                                    String borrower = ((ArrayList<String>) book.get("borrowerID")).get(0);
+                                                }
+                                                else {
+                                                    String currentAccount = user.getEmail();
 
+                                                    String borrower = ((ArrayList<String>) book.get("borrowerID")).get(0);
+                                                    //if lending
                                                     if ((book.getString("status").toUpperCase()).equals("ACCEPTED")
-                                                            & buttonClickVal.equals("lendBook") & b.getOwner().equals(email)
+                                                            & buttonClickVal.equals("lendBook")
+                                                            & book.get("owner").equals(currentAccount.split("@")[0])
                                                             & validateVal.equals(false)) {
                                                         db.collection("Books").document(documentID).update("validate", true);
                                                         buttonClickVal = "none";
                                                         toastMessage(currentAccount.split("@")[0] + " " + "has verified that he / she is lending");
-                                                    } else if ((book.getString("status").toUpperCase()).equals("ACCEPTED")
+                                                    }
+                                                    //if borrowing
+                                                    else if ((book.getString("status").toUpperCase()).equals("ACCEPTED")
                                                             & buttonClickVal.equals("borrowBook") & validateVal.equals(true)
                                                             & currentAccount.equals(borrower)) {
                                                         b.setStatus(book_status.BORROWED);
@@ -210,15 +220,19 @@ public class ScanFragment extends Fragment {
                                                         db.collection("Books").document(documentID).update("validate", false);
                                                         buttonClickVal = "none";
                                                         toastMessage(currentAccount.split("@")[0] + " " + " has verified that he / she has borrowed");
-                                                    } else if ((book.getString("status")).toUpperCase().equals("BORROWED")
+                                                    }
+                                                    //if returning
+                                                    else if ((book.getString("status")).toUpperCase().equals("BORROWED")
                                                             & buttonClickVal.equals("returnBook") & validateVal.equals(false)
                                                             & currentAccount.equals(borrower)) {
                                                         db.collection("Books").document(documentID).update("validate", true);
                                                         buttonClickVal = "none";
                                                         toastMessage(currentAccount.split("@")[0] + " " + " has verified that he / she is returning book");
-                                                    } else if ((book.getString("status")).toUpperCase().equals("BORROWED")
+                                                    }
+                                                    //if accepting return
+                                                    else if ((book.getString("status")).toUpperCase().equals("BORROWED")
                                                             & buttonClickVal.equals("acceptReturn") & validateVal.equals(true)
-                                                            & currentAccount.equals(email)) {
+                                                            & book.get("owner").equals(currentAccount.split("@")[0])) {
                                                         b.setStatus(book_status.AVAILABLE);
                                                         db.collection("Books").document(documentID).update("status", "AVAILABLE");
                                                         db.collection("Books").document(documentID).update("validate", false);
@@ -226,18 +240,33 @@ public class ScanFragment extends Fragment {
                                                         db.collection("Books").document(documentID).update("location", FieldValue.delete());
                                                         buttonClickVal = "none";
                                                         toastMessage(currentAccount.split("@")[0] + " " + " has verified that he / she has received book");
-                                                    } else {
+                                                    }
+                                                    else {
                                                         toastMessage("Something went wrong\nLend > Borrow > Return > Accept");
                                                     }
                                                 }
                                             }
                                         }
+                                        //If get book description and book is not in database just show isbn
+                                            if(buttonClickVal.equals("getBookDescription") &&
+                                                !bookFoundInDB) {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                            builder.setTitle("Book Description");
+                                            builder.setMessage(data.getStringExtra("ISBN"))
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.dismiss();
+                                                        }
+                                                    });
+                                            AlertDialog alert = builder.create();
+                                            alert.show();
+                                        }
                                     }
-                                });
+                                }
+                            });
                     }
                 }
             }
         }
     }
-
-}
