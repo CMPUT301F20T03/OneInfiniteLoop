@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
+public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MapAdapterViewHolder> {
     public ArrayList<String> requestList;
     public String bookID;
     //public static ArrayList<Boolean> expandable;
@@ -40,12 +40,12 @@ public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MapAdapterViewHolder extends RecyclerView.ViewHolder {
         public TextView borrower;
         public FloatingActionButton map;
 
         // each data item is just a string in this case
-        public MyViewHolder(View v) {
+        public MapAdapterViewHolder(View v) {
             super(v);
             borrower = v.findViewById(R.id.borrower);
             map = v.findViewById(R.id.map);
@@ -62,18 +62,18 @@ public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> 
 
     // Create new views (invoked by the layout manager)
     @Override
-    public Map_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MapAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.content_home_expand_accepted, parent, false);
 
-        MyViewHolder vh = new MyViewHolder(v);
+        MapAdapterViewHolder vh = new MapAdapterViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MapAdapterViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.borrower.setText(requestList.get(position).split("@gmail.com")[0]);
