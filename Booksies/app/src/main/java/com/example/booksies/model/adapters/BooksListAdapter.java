@@ -3,7 +3,6 @@ package com.example.booksies.model.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -16,11 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,26 +44,20 @@ import java.util.ArrayList;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.MyViewHolder> {
+public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.BooksListViewHolder> {
     public ArrayList<Books> bookList;
     //public static ArrayList<Boolean> expandable;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     Context context;
-    String url;
 
-    // for swiping
-    private ColorDrawable swipeBackgroundDelete = new ColorDrawable(Color.parseColor("#FF0000"));
-    private ColorDrawable swipeBackgroundEdit = new ColorDrawable(Color.parseColor("#30BEFF"));
-    private Drawable deleteIcon;
-    private Drawable editIcon;
     FirebaseFirestore db;
-//    private OnItemSwipeListener listener;
+
 
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class BooksListViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView titleView;
         public TextView authorView;
@@ -79,7 +70,7 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.MyVi
         public RecyclerView.Adapter mAdapter;
 
 
-        public MyViewHolder(View v) {
+        public BooksListViewHolder(View v) {
             super(v);
             context = v.getContext();
             titleView = v.findViewById(R.id.book_name);
@@ -102,7 +93,7 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.MyVi
                 }
             });
 
-//            linearLayout = v.findViewById(R.id.linear_layout);
+
             linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -147,18 +138,18 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.MyVi
 
     // Create new views (invoked by the layout manager)
     @Override
-    public BooksListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BooksListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.content_home, parent, false);
 
-        MyViewHolder vh = new MyViewHolder(v);
+        BooksListViewHolder vh = new BooksListViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(BooksListViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.titleView.setText(bookList.get(position).getTitle());
