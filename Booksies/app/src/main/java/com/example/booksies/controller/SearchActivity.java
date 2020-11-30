@@ -14,6 +14,7 @@ import com.example.booksies.R;
 
 /**
  * This Class handles searchView and is responsible for querying and returning requested strings
+ * @author Alireza Azimi (sazimi)
  */
 public class SearchActivity extends AppCompatActivity {
 

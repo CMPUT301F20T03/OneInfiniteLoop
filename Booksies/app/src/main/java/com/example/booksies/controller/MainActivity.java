@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -117,15 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Method overrides to disable device back button
-     */
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onBackPressed()
-    {
-
-    }
 
     private void toastMessage(String message) {
         Toast.makeText(MainActivity.this,message,Toast.LENGTH_SHORT).show();
