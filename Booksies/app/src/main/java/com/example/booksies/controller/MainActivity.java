@@ -117,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method overrides to disable device back button
+     */
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed()
