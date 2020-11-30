@@ -9,6 +9,8 @@ import androidx.test.rule.ActivityTestRule;
 import com.example.booksies.controller.MainActivity;
 import com.example.booksies.controller.NavigationActivity;
 import com.example.booksies.controller.SearchActivity;
+import com.example.booksies.controller.SetLocationActivity;
+import com.example.booksies.controller.ViewMapsActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -19,7 +21,7 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertTrue;
 
 /**
- * US 04.01.01 / 04.02.01 / 04.0.01 / 05.01.01 / 05.02.01 / 05.04.01
+ * US 04.01.01 / 04.02.01 / 04.0.01 / 05.01.01 / 05.02.01 / 05.04.01 / US 09.01.01 / US 09.02.01
  */
 public class TransactionTest {
 
@@ -38,6 +40,7 @@ public class TransactionTest {
         requestBook();
         logout();
         acceptRequest();
+        setLocation();
         logout();
         bookAccepted();
         logout();
@@ -59,7 +62,6 @@ public class TransactionTest {
         solo.clickOnText("Logout");
     }
 
-
     public void setupBooks(){
         assertTrue(solo.waitForText("Username", 1, 2000 ));
         assertTrue(solo.waitForText("Password", 1, 2000 ));
@@ -80,7 +82,6 @@ public class TransactionTest {
         solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.authorEditText), "UI Test LendAuthor");
         solo.enterText((EditText) solo.getCurrentActivity().findViewById(R.id.ISBNEditText), "1234");
         solo.clickOnView(solo.getCurrentActivity().findViewById((R.id.addButton)));
-
     }
 
 
@@ -117,10 +118,21 @@ public class TransactionTest {
         assertTrue(solo.waitForText("UI Test LendAuthor".toUpperCase(),1,3000));
         assertTrue(solo.waitForText("requested", 1, 5000 ));
         solo.clickOnText("UI Test LendBook".toUpperCase());
-        assertTrue(solo.waitForText("borrowerTest".toLowerCase(),1,3000));
+        assertTrue(solo.waitForText("borrowertest",1,3000));
         solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.accept));
-        assertTrue(solo.waitForText("accepted", 1, 3000 ));
+        assertTrue(solo.waitForText("accepted", 1, 5000));
+    }
 
+    public void setLocation() {
+        solo.clickOnText("1234");
+        assertTrue(solo.waitForText("borrowertest", 1, 3000));
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.map));
+        solo.waitForActivity(SetLocationActivity.class);
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.saveButton));
+        solo.clickOnScreen(200,800, 1);
+        solo.sleep(5000);
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.saveButton));
+        solo.goBack();
     }
 
     public void bookAccepted()
@@ -136,17 +148,14 @@ public class TransactionTest {
         solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.action_request));
         assertTrue(solo.waitForText("accepted", 1, 5000 ));
         assertTrue(solo.waitForText("lenderTest".toLowerCase(), 1, 5000 ));
-
-    }
-
-    public void mapOpens()
-    {
-
+        solo.clickOnText("UI TEST LENDBOOK");
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.map2));
+        solo.waitForActivity(ViewMapsActivity.class);
+        solo.goBack();
     }
 
     @After
     public void TearDown(){
-
         assertTrue(solo.waitForText("Username", 1, 2000 ));
         assertTrue(solo.waitForText("Password", 1, 2000 ));
         solo.assertCurrentActivity("Wrong activity", MainActivity.class);
