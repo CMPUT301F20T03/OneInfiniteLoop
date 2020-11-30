@@ -1,3 +1,7 @@
+/*
+* This class implements 09.01.01
+* Author: Jacky(jzhuang)
+ */
 package com.example.booksies.controller;
 
 import androidx.appcompat.app.ActionBar;
@@ -36,7 +40,6 @@ import java.util.Locale;
 /**
  * This class allows a user to place a marker on a map
   */
-
 public class SetLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -46,6 +49,10 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
     private boolean markerPlaced = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
+    /**
+     * This function is called when the activity is created and sets the layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +77,10 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+    /**
+     * when the map is ready this function is called
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -141,13 +152,21 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
         });
     }
 
-    //Go back to whatever opened this activity
+    /**
+     * Go back to whatever opened this activity
+     * @return true
+     */
     @Override
     public boolean onSupportNavigateUp() {
         finish();
         return true;
     }
 
+    /**
+     * Gets the address to set for title
+     * @param latLng
+     * @return
+     */
     private String getMarkerAddress(LatLng latLng) {
         List<Address> addresses = null;
         Geocoder geocoder = new Geocoder(SetLocationActivity.this, Locale.getDefault());
