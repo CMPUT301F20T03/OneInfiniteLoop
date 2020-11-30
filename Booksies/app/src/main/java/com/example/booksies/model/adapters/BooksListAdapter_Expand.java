@@ -30,8 +30,6 @@ import static com.example.booksies.model.database.FirestoreHandler.rejectRequest
 class BooksListAdapter_Expand extends RecyclerView.Adapter<BooksListAdapter_Expand.BooksListViewHolder> {
     public ArrayList<String> requestList;
     public String bookID;
-    //public static ArrayList<Boolean> expandable;
-
 
     /**
      * Custom view holder class

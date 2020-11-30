@@ -25,9 +25,9 @@ public class Books implements bookIdentifiable {
 
     /**
      * Constructor for Books class
-     * @param ISBN
-     * @param author
-     * @param title
+     * @param ISBN isbn of book
+     * @param author book author
+     * @param title book title
      */
     public Books(String ISBN, String author, String title) {
         this.ISBN = ISBN;
@@ -38,8 +38,6 @@ public class Books implements bookIdentifiable {
 
     }
 
-
-    // Getters and Setters
 
     /**
      * get the isbn code
@@ -195,10 +193,19 @@ public class Books implements bookIdentifiable {
         this.bookRequests = bookRequests;
     }
 
+    /**
+     * get the list of borrowers
+     * @return array list of borrowers
+     */
     public ArrayList<String> getBorrower() {
         return borrower;
     }
 
+
+    /**
+     * set the list of borrowers
+     * @param borrower list of borrowers
+     */
     public void setBorrower(ArrayList<String> borrower) {
         this.borrower = borrower;
     }

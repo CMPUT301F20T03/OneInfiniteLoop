@@ -1,7 +1,5 @@
 package com.example.booksies.model.books;
 
-import java.util.ArrayList;
-
 /**
  * Every book class must implement interface to be identifiable
  * @author; Alireza Azimi (sazimi)
