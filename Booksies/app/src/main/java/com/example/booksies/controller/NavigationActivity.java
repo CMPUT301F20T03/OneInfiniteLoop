@@ -1,5 +1,6 @@
 package com.example.booksies.controller;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -106,6 +107,16 @@ public class NavigationActivity extends AppCompatActivity {
                 });
 
 
+
+    }
+
+    /**
+     * Method overrides to disable device back button
+     */
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed()
+    {
 
     }
 
