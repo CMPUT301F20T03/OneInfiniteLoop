@@ -1,0 +1,8 @@
+com.example.booksies
+com.example.booksies.controller
+com.example.booksies.model
+com.example.booksies.model.adapters
+com.example.booksies.model.books
+com.example.booksies.model.database
+com.example.booksies.model.notification
+com.example.booksies.model.user
