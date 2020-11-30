@@ -165,18 +165,18 @@ public class ScanFragment extends Fragment {
                                         for (QueryDocumentSnapshot book : task.getResult()) {
                                             bookFoundInDB = true;
                                             String documentID = book.getReference().getId();
-                                            Books b = new Books(book.getString("isbn").toUpperCase().toUpperCase(),
-                                                    book.getString("author").toUpperCase().toUpperCase(),
-                                                    book.getString("title").toUpperCase().toUpperCase());
+                                            Books b = new Books(book.getString("isbn").toUpperCase(),
+                                                    book.getString("author").toUpperCase(),
+                                                    book.getString("title").toUpperCase());
                                             b.setOwner(book.getString("owner"));
                                             Boolean validateVal;
                                             //if get book description and book is in database return book description
                                             if (buttonClickVal.equals("getBookDescription")) {
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                                                 builder.setTitle("Book Description");
-                                                builder.setMessage("Title: " + book.getString("title")
-                                                        + "\nAuthor: " + book.getString("author")
-                                                        + "\nISBN: " + book.getString("isbn"))
+                                                builder.setMessage("Title: " + book.getString("title").toUpperCase()
+                                                        + "\nAuthor: " + book.getString("author").toUpperCase()
+                                                        + "\nISBN: " + book.getString("isbn").toUpperCase())
                                                         .setCancelable(false)
                                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                             public void onClick(DialogInterface dialog, int id) {
