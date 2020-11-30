@@ -47,7 +47,7 @@ import com.google.firebase.firestore.SetOptions;
  * sections.
  */
 
-public class FirestoreHandler {
+public class FirestoreHandler implements CRUD {
     // declaring variables
     FirebaseFirestore db;
     ArrayList<Books> booksList = new ArrayList<Books>();
@@ -163,6 +163,9 @@ public class FirestoreHandler {
                 });
     }
 
+    /**
+     * clears search results array list
+     */
     public void clearSearchResults(){
         searchList.clear();
         mAdapter.notifyDataSetChanged();
@@ -266,14 +269,28 @@ public class FirestoreHandler {
         recyclerView.setHasFixedSize(true);
 
     }
+
+    /**
+     * toast message handler
+     * @param message message to display
+     */
     private void toastMessage(String message) {
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * set the context of the view
+     * @param context context of view
+     */
 
     public void setContext(Context context){
         this.context = context;
     }
+
+    /**
+     * display no results view
+     * @param view view for no results
+     */
 
     public void setNoResults(TextView view){
         this.noResults = view;
@@ -529,6 +546,7 @@ public class FirestoreHandler {
                     }
 
                 });
+
         db.collection("Books").whereNotEqualTo("owner", getCurrentUserEmail())
                 .whereArrayContains("borrowerID",getCurrentUserEmail())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -575,8 +593,6 @@ public class FirestoreHandler {
                     }
 
                 });
-        
-
 
     }
 
