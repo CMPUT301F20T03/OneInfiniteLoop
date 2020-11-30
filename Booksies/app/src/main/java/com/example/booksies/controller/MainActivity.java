@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +114,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed()
+    {
 
     }
 

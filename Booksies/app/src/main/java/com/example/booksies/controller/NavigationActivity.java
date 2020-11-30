@@ -109,6 +109,12 @@ public class NavigationActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
+
     /**
      * onCreateOptionsMenu is useful for creating a new Menu.
      * @param menu: A Menu object that is used to create Navigation Activity
