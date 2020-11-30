@@ -9,6 +9,7 @@ import androidx.test.rule.ActivityTestRule;
 import com.example.booksies.controller.MainActivity;
 import com.example.booksies.controller.NavigationActivity;
 import com.example.booksies.controller.SearchActivity;
+import com.example.booksies.controller.ViewProfileActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -99,6 +100,18 @@ public class TransactionTest {
         solo.assertCurrentActivity("Wrong activity", SearchActivity.class);
         solo.enterText(0, "UI Test LendBook");
         assertTrue(solo.waitForText("UI Test LendAuthor".toUpperCase(),1,3000));
+
+        //View user profile Test
+        solo.clickOnText("lendertest");
+        solo.waitForActivity(ViewProfileActivity.class);
+        solo.assertCurrentActivity("Wrong activity", ViewProfileActivity.class);
+        assertTrue(solo.waitForText("lendertest", 1, 3000));
+        assertTrue(solo.waitForText("123456789", 1 ,3000));
+        assertTrue(solo.waitForText("lendtest@gmail.com", 1, 3000));
+        solo.goBack();
+        solo.waitForActivity(SearchActivity.class);
+        solo.assertCurrentActivity("Wrong activity", SearchActivity.class);
+
         solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.req_button));
         assertTrue(solo.waitForText("requested", 1, 5000 ));
     }
@@ -118,6 +131,18 @@ public class TransactionTest {
         assertTrue(solo.waitForText("requested", 1, 5000 ));
         solo.clickOnText("UI Test LendBook".toUpperCase());
         assertTrue(solo.waitForText("borrowerTest".toLowerCase(),1,3000));
+
+        //View user profile Test
+        solo.clickOnText("borrowertest");
+        solo.waitForActivity(ViewProfileActivity.class);
+        solo.assertCurrentActivity("Wrong activity", ViewProfileActivity.class);
+        assertTrue(solo.waitForText("borrowertest", 1, 3000));
+        assertTrue(solo.waitForText("123456789", 1 ,3000));
+        assertTrue(solo.waitForText("borrowtest@gmail.com", 1, 3000));
+        solo.goBack();
+        solo.waitForActivity(NavigationActivity.class);
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+
         solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.accept));
         assertTrue(solo.waitForText("accepted", 1, 3000 ));
 
@@ -137,6 +162,17 @@ public class TransactionTest {
         assertTrue(solo.waitForText("accepted", 1, 5000 ));
         assertTrue(solo.waitForText("lenderTest".toLowerCase(), 1, 5000 ));
 
+        //View user profile Test
+        solo.clickOnText("lendertest");
+        solo.waitForActivity(ViewProfileActivity.class);
+        solo.assertCurrentActivity("Wrong activity", ViewProfileActivity.class);
+        assertTrue(solo.waitForText("borrowertest", 1, 3000));
+        assertTrue(solo.waitForText("123456789", 1 ,3000));
+        assertTrue(solo.waitForText("borrowtest@gmail.com", 1, 3000));
+        solo.goBack();
+        solo.waitForActivity(NavigationActivity.class);
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+
     }
 
     public void mapOpens()
@@ -147,8 +183,8 @@ public class TransactionTest {
     @After
     public void TearDown(){
 
-        assertTrue(solo.waitForText("Username", 1, 2000 ));
-        assertTrue(solo.waitForText("Password", 1, 2000 ));
+        assertTrue(solo.waitForText("Username", 1, 3000 ));
+        assertTrue(solo.waitForText("Password", 1, 3000 ));
         solo.assertCurrentActivity("Wrong activity", MainActivity.class);
         solo.enterText((EditText) solo.getView(R.id.username), "lenderTest");
         solo.enterText((EditText) solo.getView(R.id.password), "123456");
