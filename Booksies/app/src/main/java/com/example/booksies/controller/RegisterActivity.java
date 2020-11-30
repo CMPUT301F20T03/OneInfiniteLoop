@@ -45,14 +45,17 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference collectionReference;
 
-
+    /**
+     * Set content view and context and set onClick Listeners for various buttons in
+     * activity_register layout.
+     * @param savedInstanceState: saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
         //Initialize UI refs
-
         rEmail = (EditText) findViewById(R.id.emailEditText);
         rUsername = (EditText) findViewById(R.id.usernameEditText);
         rPassword = (EditText) findViewById(R.id.passwordEditText);
@@ -66,6 +69,10 @@ public class RegisterActivity extends AppCompatActivity {
         collectionReference = db.collection("Users");
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Allow user to register
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 if(isNetworkConnected()) {
@@ -81,6 +88,9 @@ public class RegisterActivity extends AppCompatActivity {
                             && phone.length() > 0) {
                         mAuth.createUserWithEmailAndPassword(username.concat("@gmail.com"), pass)
                                 .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                    /**
+                                     * Works on complete
+                                     */
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
@@ -118,14 +128,19 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-    //Goes to login activity
+
+    /**
+     * Update UI for user
+     * @param user: user to update UI for
+     */
     private void updateUI(FirebaseUser user) {
+        // Goes to login activity
         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         startActivity(intent);
-
     }
+
     /**
-    * Checks if user is connected to internet
+     * Checks if user is connected to internet
      * @return true if connected
      */
     private boolean isNetworkConnected() {

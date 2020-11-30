@@ -101,6 +101,10 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
             if (ActivityCompat.checkSelfPermission(SetLocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 fusedLocationProviderClient.getLastLocation()
                         .addOnSuccessListener(new OnSuccessListener<Location>() {
+                            /**
+                             * Run when onSuccess button is clicked
+                             * @param location: location to get latitude and longitude for
+                             */
                             @Override
                             public void onSuccess(Location location) {
                                 if (location != null) {
@@ -113,6 +117,10 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
             }
         }
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            /**
+             * Run when onMapClick button is clicked to set latitude and longitude
+             * @param latLng: set value for latitude and longitude
+             */
             @Override
             public void onMapClick(LatLng latLng) {
                 MarkerOptions markerOptions = new MarkerOptions();
@@ -135,6 +143,10 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
         //Save location button listener
         FloatingActionButton saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Run when button to save location is clicked
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 if (markerPlaced) {

@@ -143,5 +143,4 @@ public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MapAdapterView
         return requestList.size();
     }
 
-
 }

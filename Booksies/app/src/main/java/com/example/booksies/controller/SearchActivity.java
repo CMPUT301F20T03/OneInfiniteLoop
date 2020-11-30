@@ -42,6 +42,9 @@ public class SearchActivity extends AppCompatActivity {
         searchRecyclerView.setLayoutManager(layoutManager);
         searchView.setOnClickListener(new View.OnClickListener() {
 
+            /**
+             * Executed on click
+             */
             @Override
             public void onClick(View v) {
                 searchView.setIconified(false);
@@ -49,13 +52,12 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         searchView.setOnCloseListener(new SearchView.OnCloseListener(){
+
             /**
              * Executed on close
              */
-
             @Override
             public boolean onClose() {
-
                 return false;
             }
         });
@@ -69,30 +71,25 @@ public class SearchActivity extends AppCompatActivity {
              */
             @Override
             public boolean onQueryTextSubmit(String s) {
-
                 search.handleSearch(s);
-
                 return false;
             }
 
+            /**
+             * Runs when query text is changed and handles search for it
+             * @param s: String to be searched
+             */
             @Override
             public boolean onQueryTextChange(String s) {
                 if(!s.equals("")){
                     search.setContext(SearchActivity.this);
                     search.setNoResults(noResult);
                     search.handleSearch(s);
-
-                } else {
-                    search.clearSearchResults();
                 }
-
+                else search.clearSearchResults();
 
                 return false;
             }
         });
-
-
-
     }
-
 }

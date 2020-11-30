@@ -29,8 +29,6 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 public class NavigationActivity extends AppCompatActivity {
 
-
-
     /**
      * Responsible for creating activity when first launched
      * @param savedInstanceState: savedInstanceState is a reference to a Bundle object passed into the onCreate method
@@ -45,17 +43,14 @@ public class NavigationActivity extends AppCompatActivity {
                 (BottomNavigationView) findViewById(R.id.bottom_navigation); // handles switch for bottom navigation
 
         Fragment frag;
-        if(getIntent().getStringExtra("request")!= null)
-        {
+        if(getIntent().getStringExtra("request")!= null) {
             frag = new RequestListFragment();
             View action = findViewById(R.id.action_request);
             action.performClick();
 
         }
-        else
-        {
-            frag =new HomeFragment();
-
+        else {
+            frag = new HomeFragment();
         }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,frag).addToBackStack(null).commit();
@@ -105,9 +100,6 @@ public class NavigationActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-
-
-
     }
 
     /**
@@ -115,8 +107,7 @@ public class NavigationActivity extends AppCompatActivity {
      */
     @SuppressLint("MissingSuperCall")
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
 
     }
 
@@ -125,8 +116,7 @@ public class NavigationActivity extends AppCompatActivity {
      * @param menu: A Menu object that is used to create Navigation Activity
      */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.action_bar, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -137,9 +127,9 @@ public class NavigationActivity extends AppCompatActivity {
      * @param item: A MenuItem at the top of user interface
      */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch(item.getItemId()){
+        switch(item.getItemId()) {
             case R.id.action_logout:   //this item has your app icon
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(this, MainActivity.class);
@@ -147,13 +137,8 @@ public class NavigationActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             default:
-
                 break;
-
-
         }
         return true;
     }
-
-
 }

@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
         requestPermissions();
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This function is called when the btnSignIn is clicked
+             * @param view : view
+             */
             @Override
             public void onClick(View view) {
                 if (isNetworkConnected()) {
@@ -77,6 +81,10 @@ public class MainActivity extends AppCompatActivity {
                     if (!userName.equals("") && !pass.equals("")) {
                         mAuth.signInWithEmailAndPassword(userName.concat("@gmail.com"), pass)
                                 .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                    /**
+                                     * This function is called when task is completed
+                                     * @param task : Instance of Task<AuthResult> and it can fail or be successful
+                                     */
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
@@ -85,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                                             toastMessage("Welcome back " + user.getEmail().split("@gmail.com")[0] + "!");
                                             Intent intent = new Intent(MainActivity.this, NavigationActivity.class);
                                             setCurrentUserID();
-
                                             startActivity(intent);
                                         } else {
                                             // If sign in fails, display a message to the user.
@@ -106,6 +113,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This function is called when the btnRegister is clicked
+             * @param view : view
+             */
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
@@ -127,6 +138,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Makes a toast message to print something on user's UI
+     */
     private void toastMessage(String message) {
         Toast.makeText(MainActivity.this,message,Toast.LENGTH_SHORT).show();
     }
@@ -144,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      *     Permissions required for most of the user stories. Found guide at
      *     https://developers.google.com/android/guides/permissions
-      */
+     */
     private void requestPermissions() {
         boolean coarseLocationNeeded = ActivityCompat
                 .checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -160,18 +174,10 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String> permissions = new ArrayList<>();
 
-        if (coarseLocationNeeded){
-            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        }
-        if (fineLocationNeeded){
-            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-        if (cameraNeeded){
-            permissions.add(Manifest.permission.CAMERA);
-        }
-        if (storageNeeded){
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
+        if (coarseLocationNeeded) permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        if (fineLocationNeeded) permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        if (cameraNeeded) permissions.add(Manifest.permission.CAMERA);
+        if (storageNeeded) permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         if (permissions.size() > 0){
             ActivityCompat.requestPermissions(this,

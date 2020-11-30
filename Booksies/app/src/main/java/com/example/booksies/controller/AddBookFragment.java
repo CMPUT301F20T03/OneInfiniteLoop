@@ -75,10 +75,10 @@ public class AddBookFragment extends Fragment {
 
     /**
      * This function is called to show the layout and buttons of adding a book
-     * @param inflater: inflator
+     * @param inflater: inflater
      * @param container: container
      * @param savedInstanceState: saved instance state
-     * @return
+     * @return view
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,9 +101,12 @@ public class AddBookFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-
         //Button to add photo leads to a dialog to choose how to upload image
         scanISBNButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Works when scan ISBN button is pressed and gets all the book details
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 scanOnClick(getActivity());
@@ -112,6 +115,10 @@ public class AddBookFragment extends Fragment {
 
         //Button to add photo leads to a dialog to choose how to upload image
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Works when add photo button is pressed and allows user to chose how to attach photo
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 selectImage(getActivity());
@@ -120,6 +127,10 @@ public class AddBookFragment extends Fragment {
 
         //add button gets all attributes of book and adds to Cloud Firestore
         addButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Works when add button is pressed and gets book attributes and adds to Firestore
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 addBookToFirestore();
@@ -128,6 +139,10 @@ public class AddBookFragment extends Fragment {
 
         //cancel button goes back to activity or fragment that called it
         cancelButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Works when cancel button is pressed and goes to caller activity or fragment
+             * @param view: current view
+             */
             @Override
             public void onClick(View view) {
                 if(getFragmentManager().getBackStackEntryCount() == 0) {
@@ -140,6 +155,10 @@ public class AddBookFragment extends Fragment {
         });
         //click listener for the image attached
         cameraImageView.setOnClickListener(new View.OnClickListener() {
+                /**
+                 * Works when image is attached
+                 * @param view: current view
+                 */
                 @Override
                 public void onClick(View view) {
                     Intent viewImageIntent = new Intent(getActivity(), ViewPhotoActivity.class);
@@ -153,7 +172,7 @@ public class AddBookFragment extends Fragment {
 
 
     /**
-     *    Dialog for choosing between upload or take photo
+     * Dialog for choosing between upload or take photo
      * @param context : context
       */
     private void selectImage(Context context) {
@@ -279,8 +298,6 @@ public class AddBookFragment extends Fragment {
                 String ISBN = data.getStringExtra("ISBN");
                 isbnEditText.setText(ISBN);
                 new AutofillBookDescription(ISBN, titleEditText, authorEditText, commentsEditText, mView).execute(ISBN);
-//                new AutofillBookDescription(ISBN, mView);
-//                getBookInfo(ISBN, mView);
             }
             else {
                 if (resultCode == Activity.RESULT_OK && data != null) {
