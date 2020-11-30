@@ -1,5 +1,7 @@
 package com.example.booksies.controller;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,11 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.booksies.R;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -21,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
  * This Class handles the Home view
  */
 public class NavigationActivity extends AppCompatActivity {
+
 
 
     /**
@@ -49,7 +56,6 @@ public class NavigationActivity extends AppCompatActivity {
             frag =new HomeFragment();
 
         }
-
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,frag).addToBackStack(null).commit();
 
@@ -101,8 +107,6 @@ public class NavigationActivity extends AppCompatActivity {
 
 
 
-
-
     }
 
     /**
@@ -138,6 +142,26 @@ public class NavigationActivity extends AppCompatActivity {
 
         }
         return true;
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void notification(String title, String body){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O);
+        NotificationChannel channel=
+                new NotificationChannel("n","n", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"n")
+                .setContentText(title)
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.baseline_account_circle_24)
+                .setContentText(body);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        managerCompat.notify(999, builder.build());
     }
 
 

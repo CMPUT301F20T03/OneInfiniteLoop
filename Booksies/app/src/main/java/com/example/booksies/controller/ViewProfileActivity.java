@@ -1,3 +1,15 @@
+/*
+ * ViewProfileFragment inflates activity_view_profile.xml
+ *
+ * Implements US 02.03.01
+ *
+ * view user profile when you click on a username with in the app
+ *
+ * Acknowledgments
+ * https://firebase.google.com/docs/firestore/query-data/get-data#java_2
+ * https://firebase.google.com/docs/auth/android/manage-users
+ * https://firebase.google.com/docs/firestore/query-data/listen
+ */
 package com.example.booksies.controller;
 
 import android.os.Bundle;
@@ -22,6 +34,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import javax.annotation.Nullable;
 
+/**
+ * This Class handles the Viewing User Profiles
+ */
 public class ViewProfileActivity extends AppCompatActivity {
     String userEmail;
     String username;
@@ -50,7 +65,7 @@ public class ViewProfileActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         db.collection("Users")
-                .whereEqualTo("username", username)
+                .whereEqualTo("lowusername", username)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

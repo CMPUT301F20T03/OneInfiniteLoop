@@ -34,6 +34,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+/**
+ * This class handles the creating of a user account
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -68,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(isNetworkConnected()) {
                     final String email = rEmail.getText().toString();
                     final String username = rUsername.getText().toString();
+                    final String lowerUsername = username.toLowerCase();
                     final String pass = rPassword.getText().toString();
                     final String phone = rPhone.getText().toString();
                     //Makes sure fields are filled in
@@ -85,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             //Add user to Users collection
                                             final HashMap<String, String> data = new HashMap<>();
                                             data.put("username", username.split("@gmail.com")[0]);
+                                            data.put("lowusername", lowerUsername);
                                             data.put("email", email);
                                             data.put("phone", phone);
                                             collectionReference

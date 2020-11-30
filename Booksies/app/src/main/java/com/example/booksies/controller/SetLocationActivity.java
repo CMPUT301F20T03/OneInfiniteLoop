@@ -10,7 +10,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -34,8 +33,10 @@ import java.util.List;
 import java.util.Locale;
 
 //Acknowledgements: https://developers.google.com/maps/documentation/android-sdk/start
-// This class allows a user to place a marker on a map
-// implements US 09.01.01
+/**
+ * This class allows a user to place a marker on a map
+  */
+
 public class SetLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -48,7 +49,7 @@ public class SetLocationActivity extends AppCompatActivity implements OnMapReady
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_set_location);
 
         //Enable the back button
         ActionBar actionBar = getSupportActionBar();

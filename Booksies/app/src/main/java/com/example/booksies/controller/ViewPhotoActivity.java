@@ -1,6 +1,4 @@
 /*
-* This activity gets the imageUrl from the extras in the intent and loads the image onto a full
-* screen image view
 * implements US 08.02.01 and US 08.03.01
  */
 
@@ -22,6 +20,9 @@ import com.bumptech.glide.Glide;
 import com.example.booksies.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * This class allows you to view a full sized image of a photo taken and allows you to delete it
+ */
 public class ViewPhotoActivity extends AppCompatActivity {
     String imageUrl;
 

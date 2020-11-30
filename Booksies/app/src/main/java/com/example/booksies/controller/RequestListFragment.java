@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.booksies.model.database.FirestoreHandler;
 import com.example.booksies.R;
 
+/**
+ * This class is a recycler view that shows the requests on a book
+ */
 public class RequestListFragment extends Fragment {
 
 
@@ -56,8 +59,7 @@ public class RequestListFragment extends Fragment {
         adapterFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinnerFilter.setAdapter(adapterFilter);
-        //f.setFilterString("REQUESTED");
-        //f.reqfilter();
+
         spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {

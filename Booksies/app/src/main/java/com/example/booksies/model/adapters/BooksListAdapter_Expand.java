@@ -27,7 +27,7 @@ import static com.example.booksies.model.database.FirestoreHandler.rejectRequest
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
-class BooksListAdapter_Expand extends RecyclerView.Adapter<BooksListAdapter_Expand.MyViewHolder> {
+class BooksListAdapter_Expand extends RecyclerView.Adapter<BooksListAdapter_Expand.BooksListViewHolder> {
     public ArrayList<String> requestList;
     public String bookID;
     //public static ArrayList<Boolean> expandable;
@@ -36,13 +36,13 @@ class BooksListAdapter_Expand extends RecyclerView.Adapter<BooksListAdapter_Expa
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class BooksListViewHolder extends RecyclerView.ViewHolder {
         public TextView request;
         public FloatingActionButton accept;
         public FloatingActionButton reject;
 
         // each data item is just a string in this case
-        public MyViewHolder(View v) {
+        public BooksListViewHolder(View v) {
             super(v);
             request = v.findViewById(R.id.request);
             accept = v.findViewById(R.id.accept);
@@ -60,18 +60,18 @@ class BooksListAdapter_Expand extends RecyclerView.Adapter<BooksListAdapter_Expa
 
     // Create new views (invoked by the layout manager)
     @Override
-    public BooksListAdapter_Expand.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BooksListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.content_home_expand, parent, false);
 
-        MyViewHolder vh = new MyViewHolder(v);
+        BooksListViewHolder vh = new BooksListViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(BooksListViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.request.setText(requestList.get(position).split("@gmail.com")[0]);

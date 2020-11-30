@@ -18,6 +18,9 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
 
+/**
+ * US 02.02.01
+ */
 public class UserProfileFragmentTest {
     private Solo solo;
     @Rule
