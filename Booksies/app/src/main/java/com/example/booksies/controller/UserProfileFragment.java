@@ -159,7 +159,7 @@ public class UserProfileFragment extends Fragment {
                         for (QueryDocumentSnapshot doc : value) {
                             if (Objects.equals(doc.getString("status"),"ACCEPTED")){
                                 ArrayList<String> borrow = (ArrayList<String>) doc.get("borrowerID");
-                                String body = String.format("has accepted your requested for %s", doc.getString("title"));
+                                String body = String.format("has accepted your requests for %s", doc.getString("title"));
                                 for (int counter = 0; counter < borrow.size(); counter++){
                                     Notification newAcceptNotification = new Notification(doc.getString("owner").split("@")[0], body);
                                     if (!notificationDataList.contains(newAcceptNotification)){
@@ -189,7 +189,7 @@ public class UserProfileFragment extends Fragment {
 
                         assert value != null;
                         for (QueryDocumentSnapshot doc : value){
-                            String body = String.format("has denied your requested for %s", doc.getString("title"));
+                            String body = String.format("has denied your requests for %s", doc.getString("title"));
                         }
                     }
                 });

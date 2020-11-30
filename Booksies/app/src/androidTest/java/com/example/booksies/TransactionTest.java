@@ -40,8 +40,12 @@ public class TransactionTest {
         logout();
         requestBook();
         logout();
+        requestNotification();
+        logout();
         acceptRequest();
         setLocation();
+        logout();
+        acceptNotification();
         logout();
         bookAccepted();
         mapOpens();
@@ -182,7 +186,6 @@ public class TransactionTest {
         assertTrue(solo.waitForText("123456789", 1 ,3000));
         assertTrue(solo.waitForText("lendtest@gmail.com", 1, 3000));
         solo.goBack();
-
         assertTrue(solo.waitForText("accepted", 1, 5000 ));
 
     }
@@ -193,6 +196,66 @@ public class TransactionTest {
         solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.map2));
         solo.waitForActivity(ViewMapsActivity.class);
         solo.goBack();
+    }
+
+    public void requestNotification(){
+        assertTrue(solo.waitForText("Username", 1, 2000 ));
+        assertTrue(solo.waitForText("Password", 1, 2000 ));
+        solo.assertCurrentActivity("Wrong activity", MainActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.username), "lenderTest");
+        solo.enterText((EditText) solo.getView(R.id.password), "123456");
+        solo.clickOnText("Login");
+
+        solo.waitForActivity(NavigationActivity.class);
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.action_profile));
+        assertTrue(solo.waitForText("lenderTest", 1, 2000));
+        assertTrue(solo.waitForText("123456789", 1, 2000));
+        assertTrue(solo.waitForText("lendtest@gmail.com", 1, 2000));
+        assertTrue(solo.waitForText("Notifications", 1, 2000));
+        assertTrue(solo.waitForText("borrowertest", 1, 2000));
+        assertTrue(solo.waitForText("has requested UI Test LendBook", 1, 2000));
+
+        //View user profile Test
+        solo.clickOnText("borrowertest");
+        solo.waitForActivity(ViewProfileActivity.class);
+        solo.assertCurrentActivity("Wrong activity", ViewProfileActivity.class);
+        assertTrue(solo.waitForText("borrowertest", 1, 3000));
+        assertTrue(solo.waitForText("123456789", 1 ,3000));
+        assertTrue(solo.waitForText("borrowtest@gmail.com", 1, 3000));
+        solo.goBack();
+        solo.waitForActivity(NavigationActivity.class);
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+    }
+
+    public void acceptNotification() {
+        assertTrue(solo.waitForText("Username", 1, 2000 ));
+        assertTrue(solo.waitForText("Password", 1, 2000 ));
+        solo.assertCurrentActivity("Wrong activity", MainActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.username), "borrowerTest");
+        solo.enterText((EditText) solo.getView(R.id.password), "123456");
+        solo.clickOnText("Login");
+
+        solo.waitForActivity(NavigationActivity.class);
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
+        solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.action_profile));
+        assertTrue(solo.waitForText("borrowerTest", 1, 2000));
+        assertTrue(solo.waitForText("123456789", 1, 2000));
+        assertTrue(solo.waitForText("borrowtest@gmail.com", 1, 2000));
+        assertTrue(solo.waitForText("Notifications", 1, 2000));
+        assertTrue(solo.waitForText("lendertest", 1, 2000));
+        assertTrue(solo.waitForText("has accepted your requests for UI Test LendBook", 1, 2000));
+        
+        //View user profile Test
+        solo.clickOnText("lendertest");
+        solo.waitForActivity(ViewProfileActivity.class);
+        solo.assertCurrentActivity("Wrong activity", ViewProfileActivity.class);
+        assertTrue(solo.waitForText("lendertest", 1, 3000));
+        assertTrue(solo.waitForText("123456789", 1 ,3000));
+        assertTrue(solo.waitForText("lendtest@gmail.com", 1, 3000));
+        solo.goBack();
+        solo.waitForActivity(NavigationActivity.class);
+        solo.assertCurrentActivity("Wrong activity", NavigationActivity.class);
     }
 
     @After
