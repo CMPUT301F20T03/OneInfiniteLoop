@@ -22,20 +22,18 @@ import static com.example.booksies.model.database.FirestoreHandler.rejectRequest
 
 /**
  * This class is a custom adapter for RecyclerView
- *
+ * designed to handle a list of requests for books.
+ * @author: Archit Siby (siby)
+ * Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
  */
-
-//Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
 class BooksListAdapter_Expand extends RecyclerView.Adapter<BooksListAdapter_Expand.BooksListViewHolder> {
     public ArrayList<String> requestList;
     public String bookID;
-    //public static ArrayList<Boolean> expandable;
 
-
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+    /**
+     * Custom view holder class
+     */
     public class BooksListViewHolder extends RecyclerView.ViewHolder {
         public TextView request;
         public FloatingActionButton accept;
@@ -52,13 +50,24 @@ class BooksListAdapter_Expand extends RecyclerView.Adapter<BooksListAdapter_Expa
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+
+    /**
+     * Constructor of expandable adapter class
+     * @param requestList list of book requests
+     * @param bookID doument id of book
+     */
     public BooksListAdapter_Expand(ArrayList<String> requestList, String bookID) {
         this.requestList = requestList;
         this.bookID = bookID;
     }
 
-    // Create new views (invoked by the layout manager)
+
+    /**
+     * Creates the view holder
+     * @param parent parent view
+     * @param viewType type of view
+     * @return ViewHolder of book item
+     */
     @Override
     public BooksListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -69,7 +78,11 @@ class BooksListAdapter_Expand extends RecyclerView.Adapter<BooksListAdapter_Expa
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * Bind's the view holder
+     * @param holder custom view holder
+     * @param position position of item
+     */
     @Override
     public void onBindViewHolder(BooksListViewHolder holder, int position) {
         // - get element from your dataset at this position
@@ -102,7 +115,10 @@ class BooksListAdapter_Expand extends RecyclerView.Adapter<BooksListAdapter_Expa
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    /**
+     * get's the number of items in adapter
+     * @return the number of items in recycler view
+     */
     @Override
     public int getItemCount() {
         return requestList.size();
