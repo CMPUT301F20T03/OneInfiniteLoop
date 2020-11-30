@@ -31,6 +31,9 @@ import java.util.ArrayList;
 
 //Acknowledgement: https://developer.android.com/guide/topics/ui/layout/recyclerview
 
+/**
+ * the adapter for the map
+ */
 public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> {
     public ArrayList<String> requestList;
     public String bookID;
@@ -54,13 +57,25 @@ public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> 
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+    // Provide a suitable constructor
+
+    /**
+     *
+     * @param requestList : the list of requested books
+     * @param bookID : returns the id of the selected book
+     */
     public Map_Adapter(ArrayList<String> requestList, String bookID) {
         this.requestList = requestList;
         this.bookID = bookID;
     }
 
-    // Create new views (invoked by the layout manager)
+
+    /**
+     * Create new views (invoked by the layout manager)
+     * @param parent : the parent
+     * @param viewType : the view type
+     * @return : the view type to be created
+     */
     @Override
     public Map_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -71,7 +86,11 @@ public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> 
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * Replace the contents of a view (invoked by the layout manager)
+     * @param holder : the views holder
+     * @param position : returns the position
+     */
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
@@ -115,7 +134,10 @@ public class Map_Adapter extends RecyclerView.Adapter<Map_Adapter.MyViewHolder> 
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    /**
+     * Return the size of your dataset (invoked by the layout manager)
+     * @return : size of the data set
+     */
     @Override
     public int getItemCount() {
         return requestList.size();
